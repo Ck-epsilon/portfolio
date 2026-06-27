@@ -3,7 +3,9 @@
 > Python Backend · Web Scraping · Frontend Dashboards  
 > Python 后端 · 数据采集 · 前端管理面板
 
-🌐 **[View Portfolio Site →](./index.html)** — Apple-inspired landing page with project previews.
+🌐 **Live Preview:** [Portfolio Home](https://htmlpreview.github.io/?https://github.com/Ck-epsilon/portfolio/blob/master/index.html) | [API Starter](https://htmlpreview.github.io/?https://github.com/Ck-epsilon/portfolio/blob/master/api-starter/preview.html) | [Web Scraper](https://htmlpreview.github.io/?https://github.com/Ck-epsilon/portfolio/blob/master/scraper-template/preview.html) | [Admin Dashboard](https://htmlpreview.github.io/?https://github.com/Ck-epsilon/portfolio/blob/master/admin-dashboard/preview.html)
+
+> 💡 For cleaner URLs, enable **GitHub Pages** in repo Settings → Pages → Source: `master` branch, folder: `/ (root)`. Then visit `https://ck-epsilon.github.io/portfolio/`.
 
 [English](#english) | [中文](#中文)
 
@@ -30,17 +32,17 @@ Full-stack developer specializing in Python REST APIs, web scraping pipelines, a
 #### 1. REST API Starter — [api-starter/](./api-starter)
 Production-ready FastAPI scaffold with JWT auth, async SQLAlchemy, Swagger docs.
 
-→ [Live Preview](./api-starter/preview.html)
+→ [Live Preview](https://htmlpreview.github.io/?https://github.com/Ck-epsilon/portfolio/blob/master/api-starter/preview.html)
 
 #### 2. Web Scraper Template — [scraper-template/](./scraper-template)
 Multi-site async scraper with Playwright, anti-detection, CSV/JSON export.
 
-→ [Live Preview](./scraper-template/preview.html)
+→ [Live Preview](https://htmlpreview.github.io/?https://github.com/Ck-epsilon/portfolio/blob/master/scraper-template/preview.html)
 
 #### 3. Admin Dashboard — [admin-dashboard/](./admin-dashboard)
 React + TypeScript + Ant Design dashboard with dark mode, charts, data tables.
 
-→ [Live Preview](./admin-dashboard/preview.html)
+→ [Live Preview](https://htmlpreview.github.io/?https://github.com/Ck-epsilon/portfolio/blob/master/admin-dashboard/preview.html)
 
 ### Tech Stack
 
@@ -80,9 +82,9 @@ React + TypeScript + Ant Design dashboard with dark mode, charts, data tables.
 
 | 项目 | 描述 | 技术栈 | 预览 |
 |------|------|--------|------|
-| [API 后端脚手架](./api-starter) | FastAPI + JWT认证 + 异步数据库 | Python, FastAPI, SQLAlchemy 2.0 | [预览](./api-starter/preview.html) |
-| [爬虫模板](./scraper-template) | Playwright 多站采集 + 反检测 | Python, Playwright, Pandas | [预览](./scraper-template/preview.html) |
-| [管理面板](./admin-dashboard) | React + Ant Design 暗色模式 | TypeScript, React 18, Ant Design 5 | [预览](./admin-dashboard/preview.html) |
+| [API 后端脚手架](./api-starter) | FastAPI + JWT认证 + 异步数据库 | Python, FastAPI, SQLAlchemy 2.0 | [预览](https://htmlpreview.github.io/?https://github.com/Ck-epsilon/portfolio/blob/master/api-starter/preview.html) |
+| [爬虫模板](./scraper-template) | Playwright 多站采集 + 反检测 | Python, Playwright, Pandas | [预览](https://htmlpreview.github.io/?https://github.com/Ck-epsilon/portfolio/blob/master/scraper-template/preview.html) |
+| [管理面板](./admin-dashboard) | React + Ant Design 暗色模式 | TypeScript, React 18, Ant Design 5 | [预览](https://htmlpreview.github.io/?https://github.com/Ck-epsilon/portfolio/blob/master/admin-dashboard/preview.html) |
 
 ### 联系方式
 
