@@ -1,0 +1,13 @@
+# Demo config for local testing
+name: "demo-jobs"
+start_urls:
+  - "file:///E:/workspaces/portfolio/scraper-template/sites/demo.html"
+
+selectors:
+  title: "h2.job-title"
+  company: "span.company"
+  salary: "span.salary"
+
+delay_min: 0.1
+delay_max: 0.3
+output_format: "csv"

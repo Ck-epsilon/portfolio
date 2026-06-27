@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+body{font-family:Consolas,monospace;background:#1e1e1e;color:#d4d4d4;padding:30px;margin:0}
+.cmd{color:#569cd6}.output{color:#d4d4d4}.success{color:#4ec9b0}.warn{color:#dcdcaa}
+table{border-collapse:collapse;margin-top:15px;width:100%}
+th{background:#264f78;color:#fff;padding:8px 12px;text-align:left}
+td{padding:8px 12px;border-bottom:1px solid #333}
+</style>
+</head>
+<body>
+<p class="cmd">> python run.py --config sites/demo.yaml</p>
+<p class="output">[<span class="success">demo-jobs</span>] Starting scrape...</p>
+<p class="output">  → file:///sites/demo.html</p>
+<p class="output">    <span class="success">5 items extracted</span></p>
+<p class="output">[<span class="success">demo-jobs</span>] Done. Total: 5 items</p>
+<p class="output"><span class="warn">Saved 5 items</span> → output/demo.csv</p>
+<table>
+<tr><th>title</th><th>company</th><th>salary</th></tr>
+<tr><td>Senior Python Developer</td><td>TechCorp Inc.</td><td>$120k - $150k</td></tr>
+<tr><td>Data Engineer</td><td>DataFlow Ltd.</td><td>$100k - $130k</td></tr>
+<tr><td>Full-Stack Developer</td><td>WebWorks GmbH</td><td>$90k - $120k</td></tr>
+<tr><td>ML Engineer</td><td>AI Labs</td><td>$130k - $160k</td></tr>
+<tr><td>DevOps Specialist</td><td>CloudFirst</td><td>$110k - $140k</td></tr>
+</table>
+</body>
+</html>
