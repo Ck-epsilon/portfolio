@@ -36,6 +36,7 @@ A full-stack AI development platform demonstrating five core AI capabilities in 
 ### Quick Start
 
 ```bash
+# Prerequisite: install Ollama from https://ollama.com
 # Start Ollama (local LLM server)
 ollama serve
 
@@ -112,6 +113,7 @@ ai-workbench/
 ### 快速启动
 
 ```bash
+# 前置条件：从 https://ollama.com 安装 Ollama
 # 启动 Ollama（本地大模型服务）
 ollama serve
 

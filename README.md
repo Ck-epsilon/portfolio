@@ -75,7 +75,7 @@ A five-capability platform: LLM integration (3 providers), Function Calling (5 t
 | Frontend | React 18, TypeScript, Ant Design 5, Recharts |
 | Real-Time | WebSocket, SSE, Streaming Responses |
 | Database | PostgreSQL, MySQL, SQLite, Redis |
-| DevOps | Docker, Git, GitHub Actions |
+| DevOps | Docker, Git |
 
 ### Contact
 
@@ -145,7 +145,7 @@ A five-capability platform: LLM integration (3 providers), Function Calling (5 t
 | 前端 | React 18, TypeScript, Ant Design 5, Recharts |
 | 实时通信 | WebSocket, SSE, 流式响应 |
 | 数据库 | PostgreSQL, MySQL, SQLite, Redis |
-| DevOps | Docker, Git, GitHub Actions |
+| DevOps | Docker, Git |
 
 ### 联系方式
 
