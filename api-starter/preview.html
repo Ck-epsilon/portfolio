@@ -1,101 +1,114 @@
 <!DOCTYPE html>
 <!-- Author: Ck.epsilon & Chaos (AI Programming Assistant) -->
-<html lang="zh-CN">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>API Starter — Ck.epsilon</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='28' font-size='28' font-family='serif' font-style='italic'>ε</text></svg>">
 <style>
-/* === Apple Design System === */
 :root{
-  --bg: #ffffff; --bg-secondary: #f5f5f7; --text: #1d1d1f;
-  --text-secondary: #86868b; --text-tertiary: #6e6e73;
-  --blue: #0071e3; --green: #34c759; --red: #ff3b30;
-  --card-bg: #ffffff; --card-shadow: 0 4px 24px rgba(0,0,0,0.06);
-  --border: rgba(0,0,0,0.08); --radius: 18px; --radius-sm: 12px;
-  --max-width: 980px; --font: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', sans-serif;
+  --bg:#fff;--bg-elevated:#f5f5f7;--text:#1d1d1f;
+  --text-secondary:#86868b;--blue:#0071e3;--blue-hover:#0077ed;--green:#34c759;--orange:#ff9500;--red:#ff3b30;
+  --link:#0066cc;--card-bg:#fff;--border:rgba(0,0,0,0.08);
+  --nav-height:44px;--max-width:1024px;
+  --font:"SF Pro Text","SF Pro Icons","Helvetica Neue",Helvetica,Arial,sans-serif;
+  --font-display:"SF Pro Display","SF Pro Text","SF Pro Icons","Helvetica Neue",Helvetica,Arial,sans-serif;
 }
-@media (prefers-color-scheme: dark){
-  :root{--bg: #000000; --bg-secondary: #1d1d1f; --text: #f5f5f7; --text-secondary: #86868b; --text-tertiary: #6e6e73; --card-bg: #1d1d1f; --card-shadow: 0 4px 24px rgba(0,0,0,0.4); --border: rgba(255,255,255,0.12)}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#000;--bg-elevated:#1d1d1f;--text:#f5f5f7;--text-secondary:#86868b;--card-bg:#1d1d1f;--border:rgba(255,255,255,0.12)}
 }
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:var(--font); background:var(--bg); color:var(--text); -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; line-height:1.47059}
-nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.8);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid var(--border)}
-@media (prefers-color-scheme: dark){nav{background:rgba(29,29,31,0.8)}}
-nav .inner{max-width:var(--max-width);margin:0 auto;height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 24px}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font);color:var(--text);background:var(--bg);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-size:17px;line-height:1.47059;letter-spacing:-0.022em}
+nav{position:sticky;top:0;z-index:100;height:var(--nav-height);background:rgba(255,255,255,0.8);backdrop-filter:saturate(1.8) blur(20px);-webkit-backdrop-filter:saturate(1.8) blur(20px);border-bottom:1px solid var(--border)}
+@media (prefers-color-scheme:dark){nav{background:rgba(29,29,31,0.8)}}
+nav .inner{max-width:var(--max-width);margin:0 auto;height:100%;display:flex;align-items:center;justify-content:space-between;padding:0 22px}
 nav .logo{font-size:17px;font-weight:600;letter-spacing:-0.022em}
-nav .back{font-size:14px;color:var(--blue);text-decoration:none}
+nav .back{font-size:14px;color:var(--link);text-decoration:none}
 nav .back:hover{text-decoration:underline}
-.hero{padding:100px 24px 60px;text-align:center;max-width:var(--max-width);margin:0 auto}
-.hero .badge{display:inline-block;padding:4px 16px;background:var(--blue);color:#fff;border-radius:980px;font-size:13px;font-weight:500;letter-spacing:-0.01em;margin-bottom:20px}
-.hero h1{font-size:64px;font-weight:700;letter-spacing:-0.012em;line-height:1.05;margin-bottom:12px}
-.hero .subtitle{font-size:21px;color:var(--text-secondary);letter-spacing:0.011em;max-width:480px;margin:0 auto}
-.section{max-width:var(--max-width);margin:0 auto;padding:60px 24px}
-.section h2{font-size:32px;font-weight:700;letter-spacing:-0.003em;margin-bottom:32px}
+
+.hero{padding:96px 24px 72px;text-align:center;max-width:var(--max-width);margin:0 auto}
+.hero .badge{display:inline-block;padding:4px 14px;background:var(--blue);color:#fff;border-radius:980px;font-size:12px;font-weight:500;letter-spacing:0em;margin-bottom:20px}
+.hero .headline{font-family:var(--font-display);font-size:48px;font-weight:700;letter-spacing:-0.003em;line-height:1.08349;margin-bottom:12px}
+.hero .subhead{font-size:21px;color:var(--text-secondary);letter-spacing:0.011em;max-width:480px;margin:0 auto}
+
+.section{padding:72px 24px;max-width:var(--max-width);margin:0 auto}
+.section h2{font-family:var(--font-display);font-size:32px;font-weight:600;letter-spacing:0em;line-height:1.125;margin-bottom:32px}
+
 /* Endpoint list */
-.endpoint+.endpoint{border-top:1px solid var(--border)}
-.endpoint{padding:20px 0;display:flex;align-items:center;gap:16px}
-.method{padding:4px 12px;border-radius:6px;font-size:12px;font-weight:700;letter-spacing:-0.01em;min-width:56px;text-align:center}
+.ep-list{background:var(--card-bg);border:1px solid var(--border);border-radius:18px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,0.04)}
+.ep{padding:16px 24px;display:flex;align-items:center;gap:16px}
+.ep+.ep{border-top:1px solid var(--border)}
+.ep .method{padding:3px 10px;border-radius:5px;font-size:11px;font-weight:600;min-width:52px;text-align:center;letter-spacing:0em}
 .get{background:rgba(0,113,227,0.1);color:var(--blue)}
 .post{background:rgba(52,199,89,0.1);color:var(--green)}
-.put{background:rgba(255,149,0,0.1);color:#ff9500}
+.put{background:rgba(255,149,0,0.1);color:var(--orange)}
 .delete{background:rgba(255,59,48,0.1);color:var(--red)}
-.endpoint .path{font-family:'SF Mono',Consolas,monospace;font-size:15px;font-weight:500}
-.endpoint .desc{font-size:14px;color:var(--text-secondary);margin-left:auto;text-align:right}
+.ep .path{font-family:"SF Mono",Consolas,monospace;font-size:14px;font-weight:500;letter-spacing:0.01em}
+.ep .desc{font-size:14px;color:var(--text-secondary);margin-left:auto;text-align:right}
+
 /* Feature grid */
 .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.card{background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:28px;box-shadow:var(--card-shadow)}
-.card .icon{font-size:36px;margin-bottom:12px}
-.card h3{font-size:17px;font-weight:600;margin-bottom:8px}
-.card p{font-size:14px;color:var(--text-secondary);line-height:1.5}
+.card{background:var(--card-bg);border:1px solid var(--border);border-radius:18px;padding:28px;box-shadow:0 4px 12px rgba(0,0,0,0.04);transition:box-shadow .3s,transform .3s}
+.card:hover{box-shadow:0 8px 28px rgba(0,0,0,0.08);transform:translateY(-2px)}
+.card .icon{font-size:36px;margin-bottom:16px}
+.card h3{font-size:17px;font-weight:600;letter-spacing:-0.022em;margin-bottom:8px}
+.card p{font-size:14px;color:var(--text-secondary);line-height:1.42859}
+
 /* Try it */
-.try-section{background:var(--bg-secondary);border-radius:var(--radius);padding:40px;text-align:center}
-.try-btn{padding:12px 32px;background:var(--blue);color:#fff;border:none;border-radius:980px;font-size:15px;font-weight:500;font-family:var(--font);cursor:pointer;letter-spacing:-0.01em;transition:all .2s}
-.try-btn:hover{background:#0077ed;transform:scale(1.02)}
-.response{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:24px;margin-top:20px;font-family:'SF Mono',Consolas,monospace;font-size:13px;text-align:left;display:none;line-height:1.6}
+.try-section{background:var(--bg-elevated);border-radius:18px;padding:40px;text-align:center}
+.try-section h2{margin-bottom:12px}
+.try-section p.desc{font-size:15px;color:var(--text-secondary);margin-bottom:24px}
+.try-btn{font-size:17px;padding:11px 21px;background:var(--blue);color:#fff;border:none;border-radius:980px;cursor:pointer;font-family:var(--font);letter-spacing:-0.022em;transition:all .15s}
+.try-btn:hover{background:var(--blue-hover)}
+.response{background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:24px;margin-top:20px;font-family:"SF Mono",Consolas,monospace;font-size:13px;text-align:left;display:none;line-height:1.6}
 .response.show{display:block}
+
 /* Structure */
-.structure{background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:32px;overflow-x:auto}
-.structure pre{font-family:'SF Mono',Consolas,monospace;font-size:13px;color:var(--text-secondary);line-height:1.8}
-@media(max-width:768px){.hero h1{font-size:40px}.grid-3{grid-template-columns:1fr}.endpoint{flex-wrap:wrap}.endpoint .desc{margin-left:0;text-align:left;width:100%;margin-top:4px}}
+.structure{background:var(--card-bg);border:1px solid var(--border);border-radius:18px;padding:32px;overflow-x:auto;box-shadow:0 4px 12px rgba(0,0,0,0.04)}
+.structure pre{font-family:"SF Mono",Consolas,monospace;font-size:13px;color:var(--text-secondary);line-height:1.8}
+
+@media(max-width:768px){.hero .headline{font-size:36px}.grid-3{grid-template-columns:1fr}.ep{flex-wrap:wrap}.ep .desc{margin-left:0;text-align:left;width:100%;margin-top:4px}}
 </style>
 </head>
 <body>
-<nav><div class="inner"><span class="logo">Ck.epsilon</span><a href="../index.html" class="back">← Portfolio</a></div></nav>
+<nav><div class="inner"><span class="logo">ε Ck.epsilon</span><a href="../index.html" class="back">← Portfolio</a></div></nav>
+
 <header class="hero">
   <span class="badge">Python · FastAPI</span>
-  <h1>REST API Starter</h1>
-  <p class="subtitle">Production-ready scaffold with JWT auth, async database, and automatic API documentation.</p>
+  <h1 class="headline">REST API Starter</h1>
+  <p class="subhead">Production‑ready scaffold with JWT auth, async database, and automatic API documentation.</p>
 </header>
 
 <section class="section">
   <h2>Endpoints</h2>
-  <div class="endpoint"><span class="method get">GET</span><span class="path">/health</span><span class="desc">Service health &amp; version</span></div>
-  <div class="endpoint"><span class="method post">POST</span><span class="path">/auth/register</span><span class="desc">Create account → JWT tokens</span></div>
-  <div class="endpoint"><span class="method post">POST</span><span class="path">/auth/login</span><span class="desc">Email + password → tokens</span></div>
-  <div class="endpoint"><span class="method post">POST</span><span class="path">/auth/refresh</span><span class="desc">Renew access token</span></div>
-  <div class="endpoint"><span class="method post">POST</span><span class="path">/auth/logout</span><span class="desc">Blacklist current token</span></div>
-  <div class="endpoint"><span class="method get">GET</span><span class="path">/users/me</span><span class="desc">Get profile (auth required)</span></div>
-  <div class="endpoint"><span class="method put">PUT</span><span class="path">/users/me</span><span class="desc">Update profile (auth required)</span></div>
+  <div class="ep-list">
+    <div class="ep"><span class="method get">GET</span><span class="path">/health</span><span class="desc">Service health &amp; version</span></div>
+    <div class="ep"><span class="method post">POST</span><span class="path">/auth/register</span><span class="desc">Create account → JWT tokens</span></div>
+    <div class="ep"><span class="method post">POST</span><span class="path">/auth/login</span><span class="desc">Email + password → tokens</span></div>
+    <div class="ep"><span class="method post">POST</span><span class="path">/auth/refresh</span><span class="desc">Renew access token</span></div>
+    <div class="ep"><span class="method post">POST</span><span class="path">/auth/logout</span><span class="desc">Blacklist current token</span></div>
+    <div class="ep"><span class="method get">GET</span><span class="path">/users/me</span><span class="desc">Get profile (auth required)</span></div>
+    <div class="ep"><span class="method put">PUT</span><span class="path">/users/me</span><span class="desc">Update profile (auth required)</span></div>
+  </div>
 </section>
 
 <section class="section">
   <h2>Built with</h2>
   <div class="grid-3">
-    <div class="card"><div class="icon">⚡</div><h3>FastAPI</h3><p>Full async. Automatic OpenAPI &amp; Swagger UI. Type-safe with Pydantic v2.</p></div>
+    <div class="card"><div class="icon">⚡</div><h3>FastAPI</h3><p>Full async. Automatic OpenAPI &amp; Swagger UI. Type‑safe with Pydantic v2.</p></div>
     <div class="card"><div class="icon">🗄️</div><h3>SQLAlchemy 2.0</h3><p>Async engine. PostgreSQL or SQLite. Alembic migrations ready.</p></div>
     <div class="card"><div class="icon">🔐</div><h3>JWT Auth</h3><p>Register, login, refresh, logout. Password hashing. Token blacklisting.</p></div>
-    <div class="card"><div class="icon">📋</div><h3>Pydantic v2</h3><p>Request validation. Response serialization. Auto-generated JSON Schema.</p></div>
-    <div class="card"><div class="icon">🌐</div><h3>CORS Ready</h3><p>Pre-configured middleware. Works with any frontend out of the box.</p></div>
-    <div class="card"><div class="icon">🐳</div><h3>Docker</h3><p>Multi-stage build. Health checks. Ready for deployment.</p></div>
+    <div class="card"><div class="icon">📋</div><h3>Pydantic v2</h3><p>Request validation. Response serialization. Auto‑generated JSON Schema.</p></div>
+    <div class="card"><div class="icon">🌐</div><h3>CORS Ready</h3><p>Pre‑configured middleware. Works with any frontend out of the box.</p></div>
+    <div class="card"><div class="icon">🐳</div><h3>Docker</h3><p>Multi‑stage build. Health checks. Ready for deployment.</p></div>
   </div>
 </section>
 
 <section class="section">
   <div class="try-section">
-    <h2 style="margin-bottom:16px">Try it</h2>
-    <p style="color:var(--text-secondary);margin-bottom:24px;font-size:15px">Simulate an API call to the health endpoint.</p>
+    <h2 style="margin-bottom:8px;font-size:28px">Try it</h2>
+    <p class="desc">Simulate an API call to the health endpoint.</p>
     <button class="try-btn" onclick="tryHealth()">GET /health</button>
     <div id="resp" class="response">
       <span style="color:var(--green)">HTTP 200 OK</span><br>
@@ -103,7 +116,7 @@ nav .back:hover{text-decoration:underline}
       &nbsp;&nbsp;<span style="color:var(--blue)">"status"</span>: <span style="color:var(--green)">"ok"</span>,<br>
       &nbsp;&nbsp;<span style="color:var(--blue)">"version"</span>: <span style="color:var(--green)">"1.0.0"</span>,<br>
       &nbsp;&nbsp;<span style="color:var(--blue)">"database"</span>: <span style="color:var(--green)">"connected"</span>,<br>
-      &nbsp;&nbsp;<span style="color:var(--blue)">"uptime_seconds"</span>: <span style="color:var(--orange)">127.5</span><br>
+      &nbsp;&nbsp;<span style="color:var(--blue)">"uptime_seconds"</span>: <span style="color:#ff9500">127.5</span><br>
       }
     </div>
   </div>
@@ -125,12 +138,10 @@ nav .back:hover{text-decoration:underline}
 </section>
 
 <div style="text-align:center;padding:40px 24px 80px">
-  <a href="../index.html" style="color:var(--blue);text-decoration:none;font-size:15px">← Back to Portfolio</a>
+  <a href="../index.html" style="font-size:15px;color:var(--link);text-decoration:none">← Back to Portfolio</a>
 </div>
 <script>
-function tryHealth(){
-  document.getElementById('resp').classList.toggle('show');
-}
+function tryHealth(){document.getElementById('resp').classList.toggle('show')}
 </script>
 </body>
 </html>

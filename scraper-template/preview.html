@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- Author: Ck.epsilon & Chaos (AI Programming Assistant) -->
-<html lang="zh-CN">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,66 +8,78 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='28' font-size='28' font-family='serif' font-style='italic'>ε</text></svg>">
 <style>
 :root{
-  --bg: #ffffff; --bg-secondary: #f5f5f7; --text: #1d1d1f;
-  --text-secondary: #86868b; --text-tertiary: #6e6e73;
-  --blue: #0071e3; --green: #34c759; --orange: #ff9500;
-  --card-bg: #ffffff; --card-shadow: 0 4px 24px rgba(0,0,0,0.06);
-  --border: rgba(0,0,0,0.08); --radius: 18px; --radius-sm: 12px;
-  --max-width: 980px; --font: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', sans-serif;
+  --bg:#fff;--bg-elevated:#f5f5f7;--text:#1d1d1f;
+  --text-secondary:#86868b;--blue:#0071e3;--green:#34c759;--orange:#ff9500;
+  --link:#0066cc;--card-bg:#fff;--border:rgba(0,0,0,0.08);
+  --nav-height:44px;--max-width:1024px;
+  --font:"SF Pro Text","SF Pro Icons","Helvetica Neue",Helvetica,Arial,sans-serif;
+  --font-display:"SF Pro Display","SF Pro Text","SF Pro Icons","Helvetica Neue",Helvetica,Arial,sans-serif;
 }
-@media (prefers-color-scheme: dark){
-  :root{--bg: #000000; --bg-secondary: #1d1d1f; --text: #f5f5f7; --text-secondary: #86868b; --text-tertiary: #6e6e73; --card-bg: #1d1d1f; --card-shadow: 0 4px 24px rgba(0,0,0,0.4); --border: rgba(255,255,255,0.12)}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#000;--bg-elevated:#1d1d1f;--text:#f5f5f7;--text-secondary:#86868b;--card-bg:#1d1d1f;--border:rgba(255,255,255,0.12)}
 }
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:var(--font); background:var(--bg); color:var(--text); -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; line-height:1.47059}
-nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.8);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid var(--border)}
-@media (prefers-color-scheme: dark){nav{background:rgba(29,29,31,0.8)}}
-nav .inner{max-width:var(--max-width);margin:0 auto;height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 24px}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font);color:var(--text);background:var(--bg);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-size:17px;line-height:1.47059;letter-spacing:-0.022em}
+nav{position:sticky;top:0;z-index:100;height:var(--nav-height);background:rgba(255,255,255,0.8);backdrop-filter:saturate(1.8) blur(20px);-webkit-backdrop-filter:saturate(1.8) blur(20px);border-bottom:1px solid var(--border)}
+@media (prefers-color-scheme:dark){nav{background:rgba(29,29,31,0.8)}}
+nav .inner{max-width:var(--max-width);margin:0 auto;height:100%;display:flex;align-items:center;justify-content:space-between;padding:0 22px}
 nav .logo{font-size:17px;font-weight:600;letter-spacing:-0.022em}
-nav .back{font-size:14px;color:var(--blue);text-decoration:none}
-.hero{padding:100px 24px 60px;text-align:center;max-width:var(--max-width);margin:0 auto}
-.hero .badge{display:inline-block;padding:4px 16px;background:var(--green);color:#fff;border-radius:980px;font-size:13px;font-weight:500;letter-spacing:-0.01em;margin-bottom:20px}
-.hero h1{font-size:64px;font-weight:700;letter-spacing:-0.012em;line-height:1.05;margin-bottom:12px}
-.hero .subtitle{font-size:21px;color:var(--text-secondary);letter-spacing:0.011em;max-width:480px;margin:0 auto}
-.section{max-width:var(--max-width);margin:0 auto;padding:60px 24px}
-.section h2{font-size:32px;font-weight:700;letter-spacing:-0.003em;margin-bottom:32px}
+nav .back{font-size:14px;color:var(--link);text-decoration:none}
+nav .back:hover{text-decoration:underline}
+.hero{padding:96px 24px 72px;text-align:center;max-width:var(--max-width);margin:0 auto}
+.hero .badge{display:inline-block;padding:4px 14px;background:var(--green);color:#fff;border-radius:980px;font-size:12px;font-weight:500;margin-bottom:20px}
+.hero .headline{font-family:var(--font-display);font-size:48px;font-weight:700;letter-spacing:-0.003em;line-height:1.08349;margin-bottom:12px}
+.hero .subhead{font-size:21px;color:var(--text-secondary);letter-spacing:0.011em;max-width:480px;margin:0 auto}
+
+.section{padding:72px 24px;max-width:var(--max-width);margin:0 auto}
+.section h2{font-family:var(--font-display);font-size:32px;font-weight:600;letter-spacing:0em;line-height:1.125;margin-bottom:32px}
+
 /* Stats */
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.stat{text-align:center;padding:32px 20px;background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--card-shadow)}
-.stat .value{font-size:40px;font-weight:700;letter-spacing:-0.01em;color:var(--green)}
+.stat{text-align:center;padding:32px 20px;background:var(--card-bg);border:1px solid var(--border);border-radius:18px;box-shadow:0 4px 12px rgba(0,0,0,0.04);transition:box-shadow .3s,transform .3s}
+.stat:hover{box-shadow:0 8px 28px rgba(0,0,0,0.08);transform:translateY(-2px)}
+.stat .value{font-family:var(--font-display);font-size:40px;font-weight:700;letter-spacing:0em;color:var(--green)}
 .stat .label{font-size:14px;color:var(--text-secondary);margin-top:8px}
+
 /* Terminal */
-.terminal{background:var(--bg-secondary);border:1px solid var(--border);border-radius:var(--radius);padding:28px;font-family:'SF Mono',Consolas,monospace;font-size:13px;line-height:1.7;overflow-x:auto;box-shadow:var(--card-shadow)}
+.terminal{background:var(--bg-elevated);border:1px solid var(--border);border-radius:18px;padding:28px;font-family:"SF Mono",Consolas,monospace;font-size:13px;line-height:1.7;overflow-x:auto;box-shadow:0 4px 12px rgba(0,0,0,0.04)}
 .terminal .cmd{color:var(--blue)}
 .terminal .ok{color:var(--green)}
-.terminal .dim{color:var(--text-tertiary)}
+.terminal .dim{color:var(--text-secondary)}
+
 /* Table */
-.table-wrap{overflow-x:auto;background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--card-shadow)}
+.table-wrap{overflow-x:auto;background:var(--card-bg);border:1px solid var(--border);border-radius:18px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,0.04)}
 table{width:100%;border-collapse:collapse}
-th{text-align:left;padding:12px 20px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-tertiary);background:var(--bg-secondary);border-bottom:1px solid var(--border)}
+th{text-align:left;padding:12px 20px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-secondary);background:var(--bg-elevated);border-bottom:1px solid var(--border)}
 td{padding:14px 20px;font-size:14px;border-bottom:1px solid var(--border)}
 tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--bg-elevated)}
+
 /* Side-by-side */
 .side-by-side{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-.code-block{background:var(--bg-secondary);border:1px solid var(--border);border-radius:var(--radius);padding:24px;font-family:'SF Mono',Consolas,monospace;font-size:12px;line-height:1.8;overflow-x:auto}
+.code-block{background:var(--bg-elevated);border:1px solid var(--border);border-radius:18px;padding:24px;font-family:"SF Mono",Consolas,monospace;font-size:12px;line-height:1.8;overflow-x:auto;box-shadow:0 4px 12px rgba(0,0,0,0.04)}
 .code-block .key{color:var(--blue)}
 .code-block .val{color:var(--green)}
-.code-block .com{color:var(--text-tertiary);font-style:italic}
-/* Feature tags */
-.tags{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
-.tag{padding:6px 16px;background:var(--bg-secondary);border:1px solid var(--border);border-radius:980px;font-size:13px;color:var(--text-secondary)}
+.code-block .com{color:var(--text-secondary);font-style:italic}
+
+/* Tags */
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.tag{padding:6px 14px;background:var(--bg-elevated);border:1px solid var(--border);border-radius:980px;font-size:12px;color:var(--text-secondary)}
+
 /* Structure */
-.structure{background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:32px;overflow-x:auto}
-.structure pre{font-family:'SF Mono',Consolas,monospace;font-size:13px;color:var(--text-secondary);line-height:1.8}
-@media(max-width:768px){.hero h1{font-size:40px}.stats,.side-by-side{grid-template-columns:1fr}}
+.structure{background:var(--card-bg);border:1px solid var(--border);border-radius:18px;padding:32px;overflow-x:auto;box-shadow:0 4px 12px rgba(0,0,0,0.04)}
+.structure pre{font-family:"SF Mono",Consolas,monospace;font-size:13px;color:var(--text-secondary);line-height:1.8}
+
+@media(max-width:768px){.hero .headline{font-size:36px}.stats,.side-by-side{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-<nav><div class="inner"><span class="logo">Ck.epsilon</span><a href="../index.html" class="back">← Portfolio</a></div></nav>
+<nav><div class="inner"><span class="logo">ε Ck.epsilon</span><a href="../index.html" class="back">← Portfolio</a></div></nav>
+
 <header class="hero">
   <span class="badge">Python · Playwright</span>
-  <h1>Web Scraper</h1>
-  <p class="subtitle">Multi-site async scraping with anti-detection. YAML config, CSV output, zero code changes between sites.</p>
+  <h1 class="headline">Web Scraper</h1>
+  <p class="subhead">Multi‑site async scraping with anti‑detection. YAML config, CSV output, zero code changes between sites.</p>
 </header>
 
 <section class="section">
@@ -82,7 +94,7 @@ tr:last-child td{border-bottom:none}
   <h2>Terminal Output</h2>
   <div class="terminal">
     <p><span class="dim">~/portfolio $</span> <span class="cmd">python run.py --config sites/demo.yaml</span></p>
-    <p><span class="ok">[demo-jobs]</span> Starting scrape...</p>
+    <p><span class="ok">[demo-jobs]</span> Starting scrape…</p>
     <p>&nbsp;&nbsp;→ file:///sites/demo.html</p>
     <p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="ok">5 items extracted</span></p>
     <p><span class="ok">[demo-jobs]</span> Done. Total: 5 items</p>
@@ -94,12 +106,14 @@ tr:last-child td{border-bottom:none}
   <h2>Output: demo.csv</h2>
   <div class="table-wrap">
     <table>
-      <tr><th>Title</th><th>Company</th><th>Salary</th></tr>
+      <thead><tr><th>Title</th><th>Company</th><th>Salary</th></tr></thead>
+      <tbody>
       <tr><td>Senior Python Developer</td><td>TechCorp Inc.</td><td>$120k – $150k</td></tr>
       <tr><td>Data Engineer</td><td>DataFlow Ltd.</td><td>$100k – $130k</td></tr>
-      <tr><td>Full-Stack Developer</td><td>WebWorks GmbH</td><td>$90k – $120k</td></tr>
+      <tr><td>Full‑Stack Developer</td><td>WebWorks GmbH</td><td>$90k – $120k</td></tr>
       <tr><td>ML Engineer</td><td>AI Labs</td><td>$130k – $160k</td></tr>
       <tr><td>DevOps Specialist</td><td>CloudFirst</td><td>$110k – $140k</td></tr>
+      </tbody>
     </table>
   </div>
 </section>
@@ -121,11 +135,11 @@ tr:last-child td{border-bottom:none}
       </div>
     </div>
     <div>
-      <h3 style="font-size:21px;font-weight:600;margin-bottom:12px">Anti‑Detection</h3>
-      <p style="color:var(--text-secondary);font-size:14px;line-height:1.5;margin-bottom:16px">Playwright stealth mode. No one knows it's a bot.</p>
+      <h3 style="font-size:17px;font-weight:600;letter-spacing:-0.022em;margin-bottom:12px">Anti‑Detection</h3>
+      <p style="color:var(--text-secondary);font-size:14px;line-height:1.42859;margin-bottom:16px">Playwright stealth mode. No one knows it&rsquo;s a bot.</p>
       <div class="tags">
         <span class="tag">Remove WebDriver flag</span>
-        <span class="tag">Random User-Agent</span>
+        <span class="tag">Random User‑Agent</span>
         <span class="tag">Random viewport</span>
         <span class="tag">Request delay</span>
         <span class="tag">Auto pagination</span>
@@ -150,7 +164,7 @@ tr:last-child td{border-bottom:none}
 </section>
 
 <div style="text-align:center;padding:40px 24px 80px">
-  <a href="../index.html" style="color:var(--blue);text-decoration:none;font-size:15px">← Back to Portfolio</a>
+  <a href="../index.html" style="font-size:15px;color:var(--link);text-decoration:none">← Back to Portfolio</a>
 </div>
 </body>
 </html>
