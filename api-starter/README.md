@@ -6,6 +6,10 @@
 
 ## English
 
+![Python](https://img.shields.io/badge/python-3.10+-blue) ![FastAPI](https://img.shields.io/badge/fastapi-0.100+-009688) ![Docker](https://img.shields.io/badge/docker-ready-2496ED)
+
+Production-ready FastAPI scaffold with JWT auth, async database, CORS, health checks. 8 endpoints in <300 LOC — deploy in 30 seconds.
+
 ### Supported Environment
 
 | Software | Required | Tested |
@@ -26,6 +30,29 @@ uvicorn app.main:app --reload
 Open http://localhost:8000/docs for interactive Swagger docs.
 
 **→ [Open Live Preview](preview.html)** — zero-dependency interactive demo
+
+#### Docker (recommended for production)
+
+```bash
+docker compose up
+```
+
+Open http://localhost:8000/docs.
+
+#### Database Setup
+
+SQLite (zero-config, for quick start):
+```bash
+# Auto-created on first run with SQLite
+uvicorn app.main:app --reload
+```
+
+PostgreSQL (recommended for production):
+```bash
+# 1. Set DATABASE_URL in .env
+# 2. Run migrations (if using Alembic) or let SQLAlchemy create_all
+uvicorn app.main:app --reload
+```
 
 ### Project Structure
 
@@ -109,3 +136,7 @@ api-starter/
 - Pydantic v2 请求校验
 - 健康检查端点
 - 可 Docker 部署
+
+---
+
+*Author: Ck.epsilon & Chaos (AI Programming Assistant)*

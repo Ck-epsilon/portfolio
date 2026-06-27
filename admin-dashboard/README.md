@@ -6,6 +6,10 @@
 
 ## English
 
+![React](https://img.shields.io/badge/react-18-blue) ![TypeScript](https://img.shields.io/badge/typescript-5-blue) ![Ant Design](https://img.shields.io/badge/antd-5-0170FE)
+
+Responsive admin dashboard with dark/light mode, KPI charts, and a searchable data table. Production template, not a tutorial demo.
+
 ### Supported Environment
 
 | Software | Required | Tested |
@@ -57,6 +61,18 @@ admin-dashboard/
 | Dashboard | Data Table |
 |-----------|------------|
 | ![Dashboard](./screenshots/dashboard.png) | ![Table](./screenshots/table.png) |
+
+### Customizing Data Sources
+
+Replace demo data with your own API:
+
+1. Open `src/components/Dashboard.tsx`
+2. Replace `kpiData` with `await fetch('/api/your-endpoint')` in `useEffect`
+3. Open `src/components/DataTable.tsx`
+4. Replace `mockOrders` with your API response
+5. Update chart labels and table columns to match your data schema
+
+> All data structures are typed — TypeScript will guide the integration.
 
 ---
 
@@ -116,3 +132,7 @@ admin-dashboard/
 | 图标 | @ant-design/icons |
 | 图表 | Recharts |
 | 路由 | React Router 6 |
+
+---
+
+*Author: Ck.epsilon & Chaos (AI Programming Assistant)*

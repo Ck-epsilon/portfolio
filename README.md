@@ -81,7 +81,18 @@ A five-capability platform: LLM integration (3 providers), Function Calling (5 t
 
 - GitHub: [@Ck-epsilon](https://github.com/Ck-epsilon)
 - Email: Ck.epsilon@outlook.com
-- Available on Fiverr & Upwork
+- 🛒 **Fiverr**: [@ck_epsilon](https://www.fiverr.com/ck_epsilon)
+- 💼 **Upwork**: [Profile](https://www.upwork.com/freelancers/ckepsilon)
+
+### Why Work With Me
+
+- **Bilingual delivery** — all code comes with EN/CN docs, no lost-in-translation
+- **Live demos on every project** — test before you buy
+- **AI-audited code** — every line reviewed by a dedicated Auditor agent before delivery
+- **Fast first response** — you won't wait days to hear back
+
+---
+*Author: Ck.epsilon & Chaos (AI Programming Assistant)*
 
 ---
 
@@ -140,4 +151,15 @@ A five-capability platform: LLM integration (3 providers), Function Calling (5 t
 
 - GitHub: [@Ck-epsilon](https://github.com/Ck-epsilon)
 - 邮箱: Ck.epsilon@outlook.com
-- Fiverr & Upwork 可用
+- Fiverr: [@ck_epsilon](https://www.fiverr.com/ck_epsilon)
+- Upwork: [Ck.epsilon](https://www.upwork.com/freelancers/ckepsilon)
+
+### 为什么选我
+
+- **中英双语交付** — 所有代码附带中英文文档，无沟通损耗
+- **每个项目有在线演示** — 购买前可测试
+- **AI 审查代码** — 每条代码由专属 Auditor Agent 审查后才交付
+- **快速响应** — 你不会等几天才收到回复
+
+---
+*Author: Ck.epsilon & Chaos (AI Programming Assistant)*

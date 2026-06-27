@@ -1,10 +1,14 @@
-# Web Scraper Template — Multi-Site + Stealth / 多站爬虫 + 反检测
+# Web Scraper Template — Configurable + Stealth / 可配置爬虫 + 反检测
+
+> **Who is this for?** Python developers who need a configurable, anti-detection web scraper they can deploy in 5 minutes — no crawling framework to learn.
 
 [English](#english) | [中文](#中文)
 
 ---
 
 ## English
+
+![Python](https://img.shields.io/badge/python-3.10+-blue) ![Playwright](https://img.shields.io/badge/playwright-1.30+-2EAD33)
 
 ### Supported Environment
 
@@ -142,3 +146,7 @@ python run.py -c sites/你的站点.yaml -o output/结果.csv
 - 请求间随机延时
 - `domcontentloaded` 等待策略
 - YAML 配置选择器，零代码改参数
+
+---
+
+*Author: Ck.epsilon & Chaos (AI Programming Assistant)*
