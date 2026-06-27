@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<!-- Author: Ck.epsilon & Chaos (AI Programming Assistant) -->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Agent Workbench — Ck.epsilon</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='28' font-size='28' font-family='serif' font-style='italic'>ε</text></svg>">
+<style>
+:root{
+  --bg:#fff;--bg-elevated:#f5f5f7;--text:#1d1d1f;--text-secondary:#86868b;
+  --blue:#0071e3;--green:#34c759;--purple:#af52de;--orange:#ff9500;
+  --link:#0066cc;--card-bg:#fff;--border:rgba(0,0,0,0.08);
+  --nav-height:44px;--max-width:1024px;
+  --font:system-ui, -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-display:"SF Pro Display",system-ui, -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#000;--bg-elevated:#1d1d1f;--text:#f5f5f7;--text-secondary:#86868b;--card-bg:#1d1d1f;--border:rgba(255,255,255,0.12)}
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font);color:var(--text);background:var(--bg);-webkit-font-smoothing:antialiased;font-size:17px;line-height:1.47059;letter-spacing:-0.022em}
+nav{position:sticky;top:0;z-index:100;height:var(--nav-height);background:rgba(255,255,255,0.8);backdrop-filter:saturate(1.8) blur(20px);-webkit-backdrop-filter:saturate(1.8) blur(20px);border-bottom:1px solid var(--border)}
+@media (prefers-color-scheme:dark){nav{background:rgba(29,29,31,0.8)}}
+nav .inner{max-width:var(--max-width);margin:0 auto;height:100%;display:flex;align-items:center;justify-content:space-between;padding:0 22px}
+nav .logo{font-size:17px;font-weight:600;letter-spacing:-0.022em}
+nav .back{font-size:14px;color:var(--link);text-decoration:none}
+nav .back:hover{text-decoration:underline}
+.hero{padding:96px 24px 72px;text-align:center;max-width:var(--max-width);margin:0 auto}
+.hero .badge{display:inline-block;padding:4px 14px;background:var(--purple);color:#fff;border-radius:980px;font-size:12px;font-weight:500;margin-bottom:20px}
+.hero .headline{font-family:var(--font-display);font-size:48px;font-weight:700;letter-spacing:-0.003em;line-height:1.08349;margin-bottom:12px}
+.hero .headline span{color:var(--purple)}
+.hero .subhead{font-size:21px;color:var(--text-secondary);letter-spacing:0.011em;max-width:520px;margin:0 auto}
+
+.section{padding:72px 24px;max-width:var(--max-width);margin:0 auto}
+.section h2{font-family:var(--font-display);font-size:32px;font-weight:600;letter-spacing:0em;line-height:1.125;margin-bottom:32px}
+
+.caps{display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
+.cap{text-align:center;padding:28px 16px;background:var(--card-bg);border:1px solid var(--border);border-radius:18px;transition:transform .3s}
+.cap:hover{transform:translateY(-3px)}
+.cap .num{font-size:32px;font-weight:700;color:var(--purple);margin-bottom:8px}
+.cap .name{font-size:13px;font-weight:600;margin-bottom:6px}
+.cap .desc{font-size:12px;color:var(--text-secondary);line-height:1.4}
+
+.chat-demo{background:var(--card-bg);border:1px solid var(--border);border-radius:18px;padding:24px;max-width:680px;margin:0 auto}
+.msg{display:flex;gap:10px;margin-bottom:14px}
+.msg .avatar{width:28px;height:28px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff}
+.msg.user .avatar{background:var(--blue)}
+.msg.assistant .avatar{background:var(--purple)}
+.msg .bubble{padding:10px 14px;border-radius:11px;font-size:14px;line-height:1.5;max-width:85%}
+.msg.user .bubble{background:var(--blue);color:#fff;margin-left:auto}
+.msg.assistant .bubble{background:var(--bg-elevated);color:var(--text)}
+.msg.assistant .bubble .thinking{color:var(--text-secondary);font-size:12px}
+
+.tool-call{background:#f0e6f6;border-left:3px solid var(--purple);padding:8px 14px;margin:8px 0 8px 38px;border-radius:8px;font-size:12px;font-family:"SF Mono","Fira Code","Consolas",monospace}
+.tool-call .fn{font-weight:600;color:var(--purple)}
+.tool-call .args{color:var(--text-secondary)}
+.tool-call .result{color:var(--green);margin-top:4px}
+@media (prefers-color-scheme:dark){.tool-call{background:rgba(175,82,222,0.1)}}
+
+.models{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.model{text-align:center;padding:24px 16px;background:var(--card-bg);border:1px solid var(--border);border-radius:18px}
+.model .provider{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.04em;color:var(--text-secondary);margin-bottom:8px}
+.model .name{font-size:17px;font-weight:600}
+
+.agents-list{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.agent-card{padding:20px;background:var(--card-bg);border:1px solid var(--border);border-radius:18px}
+.agent-card .agent-name{font-size:17px;font-weight:600;margin-bottom:6px}
+.agent-card .agent-role{font-size:13px;color:var(--text-secondary);line-height:1.5;margin-bottom:10px}
+.agent-card .tools{display:flex;gap:4px;flex-wrap:wrap}
+.agent-card .tool-tag{font-size:10px;padding:2px 8px;background:var(--bg-elevated);border-radius:980px;color:var(--text-secondary)}
+
+.code-block{background:#1d1d1f;color:#f5f5f7;padding:24px;border-radius:18px;font-family:"SF Mono","Fira Code","Consolas",monospace;font-size:13px;line-height:1.8;overflow-x:auto;margin-top:20px}
+.comment{color:#86868b}.keyword{color:#ff6b6b}.string{color:#34c759}.func{color:var(--purple)}
+
+.btn{display:inline-block;padding:11px 21px;font-size:17px;font-family:var(--font);border:none;border-radius:980px;cursor:pointer;font-weight:600;background:var(--purple);color:#fff;text-decoration:none;transition:background .2s}
+.btn:hover{background:#9b3fd4}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="inner">
+    <div class="logo">ε AI Agent Workbench</div>
+    <a class="back" href="../index.html">← Back to Portfolio</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="badge">Track 2 · AI Services</div>
+  <h1 class="headline">AI Agent <span>Workbench</span></h1>
+  <p class="subhead">Five core AI capabilities in one project: LLM integration, Function Calling, multi-agent orchestration, WebSocket streaming, and a clean web UI.</p>
+</div>
+
+<div class="section">
+  <h2>Five Core Capabilities</h2>
+  <div class="caps">
+    <div class="cap"><div class="num">1</div><div class="name">LLM Integration</div><div class="desc">Ollama / OpenAI / Tongyi — unified streaming API</div></div>
+    <div class="cap"><div class="num">2</div><div class="name">Function Calling</div><div class="desc">5 built-in tools with JSON Schema definitions</div></div>
+    <div class="cap"><div class="num">3</div><div class="name">Multi-Agent</div><div class="desc">Role-based agents with tool loops &amp; memory</div></div>
+    <div class="cap"><div class="num">4</div><div class="name">WebSocket</div><div class="desc">Token-by-token streaming with tool viz</div></div>
+    <div class="cap"><div class="num">5</div><div class="name">Web UI</div><div class="desc">Three-column layout, zero dependencies</div></div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>Simulated Conversation</h2>
+  <div class="chat-demo">
+    <div class="msg user">
+      <div class="avatar">U</div>
+      <div class="bubble">Calculate sqrt(144) * sin(pi/4) and tell me what time it is.</div>
+    </div>
+    <div class="msg assistant">
+      <div class="avatar">A</div>
+      <div class="bubble">
+        I'll use the calculator and time tools for this.
+        <div class="thinking">Calling calculator with expression: sqrt(144) * sin(pi/4)</div>
+      </div>
+    </div>
+    <div class="tool-call">
+      <div class="fn">⚙ calculator</div>
+      <div class="args">Args: {"expression": "sqrt(144) * sin(pi/4)"}</div>
+      <div class="result">→ 8.48528137423857</div>
+    </div>
+    <div class="tool-call">
+      <div class="fn">⚙ get_time</div>
+      <div class="args">Args: {"timezone": "UTC"}</div>
+      <div class="result">→ 2026-06-27 06:32:00 UTC</div>
+    </div>
+    <div class="msg assistant">
+      <div class="avatar">A</div>
+      <div class="bubble">The result is <strong>8.485</strong>. The current time is <strong>2026-06-27 06:32 UTC</strong>.</div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>Built-in Agents</h2>
+  <div class="agents-list">
+    <div class="agent-card">
+      <div class="agent-name">assistant</div>
+      <div class="agent-role">General-purpose AI assistant with calculator, time, and search tools.</div>
+      <div class="tools"><span class="tool-tag">calculator</span><span class="tool-tag">get_time</span><span class="tool-tag">web_search</span></div>
+    </div>
+    <div class="agent-card">
+      <div class="agent-name">coder</div>
+      <div class="agent-role">Senior software engineer. Writes clean, production-ready code with reasoning.</div>
+      <div class="tools"><span class="tool-tag">calculator</span><span class="tool-tag">code_executor</span><span class="tool-tag">file_read</span></div>
+    </div>
+    <div class="agent-card">
+      <div class="agent-name">researcher</div>
+      <div class="agent-role">Research analyst. Gathers information and synthesizes clear conclusions.</div>
+      <div class="tools"><span class="tool-tag">web_search</span><span class="tool-tag">get_time</span><span class="tool-tag">file_read</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>Supported Models</h2>
+  <div class="models">
+    <div class="model"><div class="provider">Ollama</div><div class="name">qwen2.5:7b</div></div>
+    <div class="model"><div class="provider">Ollama</div><div class="name">llama3.2:3b</div></div>
+    <div class="model"><div class="provider">OpenAI</div><div class="name">gpt-4o-mini</div></div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>Getting Started</h2>
+  <div class="code-block">
+<span class="comment"># Start Ollama</span>
+ollama serve
+ollama pull <span class="string">qwen2.5:7b</span>
+
+<span class="comment"># Start the workbench</span>
+cd ai-workbench/backend
+pip install -r requirements.txt
+uvicorn <span class="func">main:app</span> --port <span class="string">8800</span> --reload
+
+<span class="comment"># Open frontend/index.html in your browser</span>
+<span class="comment"># Connect to http://localhost:8800 via WebSocket</span>
+  </div>
+  <div style="margin-top:24px;text-align:center">
+    <a class="btn" href="frontend/index.html">Open Full Workbench</a>
+  </div>
+</div>
+
+</body>
+</html>

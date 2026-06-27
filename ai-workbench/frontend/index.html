@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<!-- Author: Ck.epsilon & Chaos (AI Programming Assistant) -->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Agent Workbench — Multi-Agent AI Platform</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='28' font-size='28' font-family='serif' font-style='italic'>ε</text></svg>">
+<style>
+:root{
+  --bg:#ffffff;--bg-elevated:#f5f5f7;--text:#1d1d1f;--text-secondary:#86868b;
+  --blue:#0071e3;--blue-hover:#0077ed;--link:#0066cc;--card-bg:#ffffff;
+  --border:rgba(0,0,0,0.08);--green:#34c759;--red:#ff3b30;--orange:#ff9500;
+  --purple:#af52de;--nav-height:44px;--max-width:1200px;
+  --font:system-ui, -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-display:system-ui, -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --radius:18px;--radius-sm:11px;
+}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#000000;--bg-elevated:#1d1d1f;--text:#f5f5f7;--card-bg:#1d1d1f;--border:rgba(255,255,255,0.12)}
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font);color:var(--text);background:var(--bg);-webkit-font-smoothing:antialiased;font-size:17px;line-height:1.47059;letter-spacing:-0.022em}
+nav{position:sticky;top:0;z-index:100;height:var(--nav-height);background:rgba(255,255,255,0.8);backdrop-filter:saturate(1.8) blur(20px);-webkit-backdrop-filter:saturate(1.8) blur(20px);border-bottom:1px solid var(--border)}
+@media (prefers-color-scheme:dark){nav{background:rgba(29,29,31,0.8)}}
+nav .inner{max-width:var(--max-width);margin:0 auto;height:100%;display:flex;align-items:center;justify-content:space-between;padding:0 22px}
+nav .logo{font-size:17px;font-weight:600}
+nav .status{font-size:12px;color:var(--text-secondary);display:flex;align-items:center;gap:6px}
+nav .dot{width:6px;height:6px;border-radius:50%;background:var(--green)}
+main{max-width:var(--max-width);margin:0 auto;padding:24px 22px;display:grid;grid-template-columns:260px 1fr 280px;gap:20px;min-height:calc(100vh - var(--nav-height) - 48px)}
+@media(max-width:900px){main{grid-template-columns:1fr}}
+
+/* Sidebar */
+.sidebar{display:flex;flex-direction:column;gap:16px}
+.card{background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:20px}
+.card h3{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.04em;color:var(--text-secondary);margin-bottom:12px}
+.agent-list{display:flex;flex-direction:column;gap:6px}
+.agent-item{padding:10px 14px;border-radius:var(--radius-sm);cursor:pointer;font-size:14px;font-weight:500;transition:background .15s;display:flex;align-items:center;gap:8px}
+.agent-item:hover{background:var(--bg-elevated)}
+.agent-item.active{background:var(--blue);color:#fff}
+.agent-item .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+select,input[type=text],textarea{width:100%;padding:9px 12px;font-size:14px;font-family:var(--font);border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg);color:var(--text);outline:none;resize:vertical}
+select:focus,input:focus,textarea:focus{border-color:var(--blue)}
+textarea{min-height:80px;font-size:13px}
+
+/* Main chat */
+.chat-area{display:flex;flex-direction:column;gap:16px}
+.chat-header{font-size:21px;font-weight:600;letter-spacing:-0.01em;margin-bottom:8px}
+.messages{flex:1;overflow-y:auto;max-height:calc(100vh - 280px);display:flex;flex-direction:column;gap:12px;padding-right:8px}
+.msg{display:flex;gap:10px;animation:fadeIn .2s ease}
+.msg .avatar{width:32px;height:32px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff}
+.msg.user .avatar{background:var(--blue)}
+.msg.assistant .avatar{background:var(--purple)}
+.msg .bubble{background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 16px;max-width:85%;font-size:14px;line-height:1.5;white-space:pre-wrap}
+.msg.user .bubble{background:var(--blue);color:#fff;border-color:var(--blue)}
+.chat-input-wrap{display:flex;gap:8px}
+.chat-input-wrap input{flex:1;padding:11px 16px;font-size:17px}
+.btn{padding:11px 21px;font-size:17px;font-family:var(--font);border:none;border-radius:980px;cursor:pointer;font-weight:600;transition:background .2s}
+.btn-primary{background:var(--blue);color:#fff}
+.btn-primary:hover{background:var(--blue-hover)}
+.btn-primary:disabled{opacity:0.4;cursor:not-allowed}
+.btn-ghost{background:var(--bg-elevated);color:var(--link);font-size:13px;padding:6px 14px}
+.btn-ghost:hover{background:var(--border)}
+
+/* Tools panel */
+.tools-panel{display:flex;flex-direction:column;gap:16px}
+.tool-check{display:flex;align-items:center;gap:8px;font-size:13px;padding:4px 0}
+.tool-check input[type=checkbox]{width:16px;height:16px;accent-color:var(--blue)}
+.tool-log{padding:8px 0}
+.tool-entry{padding:8px 12px;margin-bottom:6px;background:var(--bg-elevated);border-radius:var(--radius-sm);font-size:12px;font-family:"Cascadia Code","Fira Code","Consolas",monospace}
+.tool-entry .tool-name{font-weight:600;color:var(--purple);margin-bottom:4px}
+.tool-entry .tool-result{color:var(--text-secondary);max-height:100px;overflow-y:auto}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.loading{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--text-secondary);animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{opacity:0.3}50%{opacity:1}}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+</style>
+</head>
+<body>
+
+<nav role="navigation" aria-label="Main navigation">
+  <div class="inner">
+    <div class="logo">&epsilon; AI Agent Workbench</div>
+    <div class="status" role="status" aria-live="polite"><span class="dot" id="statusDot"></span><span id="statusText">Checking...</span></div>
+  </div>
+</nav>
+
+<main role="main">
+  <!-- Left: Agents + Config -->
+  <aside class="sidebar" aria-label="Agent configuration">
+    <div class="card">
+      <h3 id="provider-heading">Provider &amp; Model</h3>
+      <label for="providerSelect" class="sr-only">LLM Provider</label>
+      <select id="providerSelect" onchange="onProviderChange()" style="margin-bottom:8px" aria-labelledby="provider-heading">
+        <option value="ollama">Ollama (Local)</option>
+        <option value="openai">OpenAI</option>
+        <option value="tongyi">Tongyi Qwen</option>
+      </select>
+      <label for="modelSelect" class="sr-only">Model</label>
+      <select id="modelSelect"></select>
+    </div>
+    <div class="card">
+      <h3 id="agents-heading">Agents</h3>
+      <div class="agent-list" id="agentList" role="listbox" aria-labelledby="agents-heading"></div>
+      <button class="btn btn-ghost" style="margin-top:8px;width:100%" onclick="toggleNewAgent()" aria-label="Create new agent">+ New Agent</button>
+    </div>
+    <div class="card" id="newAgentCard" style="display:none" role="form" aria-label="Create agent form">
+      <h3>Create Agent</h3>
+      <label for="newAgentName">Name</label>
+      <input type="text" id="newAgentName" placeholder="Agent name" style="margin-bottom:6px">
+      <label for="newAgentPrompt">System Prompt</label>
+      <textarea id="newAgentPrompt" placeholder="System prompt..."></textarea>
+      <fieldset style="margin:8px 0;border:none;padding:0">
+        <legend style="font-size:12px;font-weight:600;color:var(--text-secondary);margin-bottom:4px">Tools</legend>
+        <label class="tool-check"><input type="checkbox" value="calculator" checked> Calculator</label>
+        <label class="tool-check"><input type="checkbox" value="get_time" checked> Get Time</label>
+        <label class="tool-check"><input type="checkbox" value="web_search"> Web Search</label>
+        <label class="tool-check"><input type="checkbox" value="code_executor"> Code Executor</label>
+        <label class="tool-check"><input type="checkbox" value="file_read"> File Read</label>
+      </fieldset>
+      <button class="btn btn-primary" onclick="createAgent()" style="width:100%;font-size:14px;padding:8px">Create</button>
+    </div>
+  </aside>
+
+  <!-- Center: Chat -->
+  <section class="chat-area" aria-label="Chat conversation">
+    <div class="chat-header" id="chatTitle">Chat with <span style="color:var(--blue)">assistant</span></div>
+    <div class="messages" id="messages" role="log" aria-live="polite" aria-label="Conversation messages">
+      <div style="text-align:center;color:var(--text-secondary);padding:40px 0;font-size:17px">
+        Start a conversation with an AI agent.<br>
+        <span style="font-size:14px">Try: "Calculate sqrt(144) * sin(pi/4)" or "What time is it?"</span>
+      </div>
+    </div>
+    <form class="chat-input-wrap" aria-label="Send message" onsubmit="event.preventDefault();sendMessage()">
+      <label for="chatInput" class="sr-only">Message</label>
+      <input type="text" id="chatInput" placeholder="Type a message...">
+      <button class="btn btn-primary" id="sendBtn" type="submit">Send</button>
+    </form>
+  </section>
+
+  <!-- Right: Tools -->
+  <aside class="tools-panel card" aria-label="Tool execution log">
+    <h3>Tool Calls</h3>
+    <div class="tool-log" id="toolLog" role="log" aria-live="polite">
+      <div style="color:var(--text-secondary);font-size:13px;text-align:center;padding:20px 0">Tool calls will appear here during conversation.</div>
+    </div>
+  </aside>
+</main>
+
+<script>
+const API='http://localhost:8800';
+let ws=null, currentAgent='assistant',currentProvider='ollama';
+const agentColors = {assistant:'#0071e3',coder:'#34c759',researcher:'#ff9500'};
+
+async function checkHealth(){
+  try{const r=await fetch(API+'/health');document.getElementById('statusDot').style.background='var(--green)';document.getElementById('statusText').textContent='Connected'}
+  catch(e){document.getElementById('statusDot').style.background='var(--red)';document.getElementById('statusText').textContent='Disconnected'}
+}
+checkHealth();setInterval(checkHealth,5000);
+
+async function loadAgents(){
+  try{const r=await fetch(API+'/agents');const d=await r.json();
+    const el=document.getElementById('agentList');
+    el.innerHTML=d.agents.map(a=>`
+      <div class="agent-item${a.name===currentAgent?' active':''}" role="option" aria-selected="${a.name===currentAgent}" onclick="selectAgent('${a.name}')" tabindex="0" onkeydown="if(event.key==='Enter')selectAgent('${a.name}')">
+        <span class="dot" style="background:${agentColors[a.name]||'#86868b'}"></span>${a.name}
+      </div>`).join('');
+  }catch(e){}
+}
+async function onProviderChange(){
+  currentProvider=document.getElementById('providerSelect').value;
+  try{const r=await fetch(API+'/models?provider='+currentProvider);const d=await r.json();
+    document.getElementById('modelSelect').innerHTML=d.models.map(m=>`<option>${m}</option>`).join('');
+  }catch(e){document.getElementById('modelSelect').innerHTML='<option>qwen2.5:7b</option>'}
+}
+function selectAgent(name){
+  currentAgent=name;
+  document.getElementById('chatTitle').innerHTML='Chat with <span style="color:var(--blue)">'+name+'</span>';
+  document.querySelectorAll('.agent-item').forEach(el=>{
+    el.classList.toggle('active',el.textContent.trim()===name);
+    el.setAttribute('aria-selected',el.textContent.trim()===name);
+  });
+  document.getElementById('messages').innerHTML='<div style="text-align:center;color:var(--text-secondary);padding:40px 0">Switched to <b>'+name+'</b>. Start a new conversation.</div>';
+}
+function toggleNewAgent(){
+  const card=document.getElementById('newAgentCard');card.style.display=card.style.display==='none'?'block':'none';
+}
+async function createAgent(){
+  const name=document.getElementById('newAgentName').value.trim();
+  const prompt=document.getElementById('newAgentPrompt').value.trim();
+  if(!name)return alert('Agent name required');
+  const tools=Array.from(document.querySelectorAll('#newAgentCard input[type=checkbox]:checked')).map(c=>c.value);
+  try{
+    const r=await fetch(API+'/agents',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,system_prompt:prompt,model:document.getElementById('modelSelect').value,provider:currentProvider,tools})});
+    const a=await r.json();
+    document.getElementById('newAgentCard').style.display='none';
+    document.getElementById('newAgentName').value='';document.getElementById('newAgentPrompt').value='';
+    loadAgents();selectAgent(a.name);
+  }catch(e){alert('Failed: '+e.message)}
+}
+
+function connectWS(){
+  if(ws)ws.close();
+  ws=new WebSocket(API.replace('http','ws')+'/ws/chat');
+  ws.onmessage=function(e){
+    const msg=JSON.parse(e.data);
+    if(msg.type==='text')appendText(msg.content);
+    else if(msg.type==='tool_call')appendToolCall(msg);
+    else if(msg.type==='tool_result')appendToolResult(msg);
+    else if(msg.type==='done')onDone();
+    else if(msg.type==='error')appendError(msg.message);
+  };
+  ws.onerror=function(){appendError('WebSocket connection lost')};
+}
+function sendMessage(){
+  const input=document.getElementById('chatInput');const text=input.value.trim();
+  if(!text)return;
+  if(!ws||ws.readyState!==WebSocket.OPEN)connectWS();
+  appendMessage('user',text);input.value='';
+  document.getElementById('sendBtn').disabled=true;
+  ws.send(JSON.stringify({agent:currentAgent,message:text,provider:currentProvider,model:document.getElementById('modelSelect').value}));
+  appendLoading();
+}
+function appendMessage(role,text){
+  const el=document.getElementById('messages');
+  const div=document.createElement('div');div.className='msg '+role;
+  div.innerHTML=`<div class="avatar">${role==='user'?'U':'A'}</div><div class="bubble">${esc(text)}</div>`;
+  el.appendChild(div);el.scrollTop=el.scrollHeight;
+}
+function appendText(text){
+  const el=document.getElementById('messages');
+  const last=el.lastElementChild;
+  if(last?.classList.contains('assistant')&&!last.classList.contains('loading')){
+    last.querySelector('.bubble').textContent+=text;
+  }else{
+    const div=document.createElement('div');div.className='msg assistant';
+    div.innerHTML=`<div class="avatar">A</div><div class="bubble">${text}</div>`;
+    el.appendChild(div);
+  }
+  el.scrollTop=el.scrollHeight;
+}
+function appendLoading(){
+  const el=document.getElementById('messages');
+  const div=document.createElement('div');div.className='msg assistant loading';
+  div.innerHTML='<div class="avatar">A</div><div class="bubble"><span class="loading"></span> Thinking...</div>';
+  el.appendChild(div);el.scrollTop=el.scrollHeight;
+}
+function appendToolCall(msg){
+  const el=document.getElementById('messages');
+  const div=document.createElement('div');div.className='msg assistant';
+  div.innerHTML=`<div class="avatar">A</div><div class="bubble" style="background:var(--bg-elevated);color:var(--purple)">Calling <b>${msg.name}</b>...</div>`;
+  el.appendChild(div);el.scrollTop=el.scrollHeight;
+  const log=document.getElementById('toolLog');
+  log.innerHTML+='<div class="tool-entry"><div class="tool-name">'+msg.name+'</div><div style="color:var(--text-secondary)">Args: '+JSON.stringify(msg.arguments)+'</div></div>';
+  log.scrollTop=log.scrollHeight;
+}
+function appendToolResult(msg){
+  const log=document.getElementById('toolLog');
+  const entries=log.querySelectorAll('.tool-entry');
+  if(entries.length)entries[entries.length-1].querySelector('.tool-result')?.remove();
+  const last=entries[entries.length-1];
+  if(last)last.innerHTML+='<div class="tool-result">Result: '+esc(msg.result)+'</div>';
+}
+function appendError(text){
+  const el=document.getElementById('messages');document.querySelectorAll('.loading').forEach(d=>d.remove());
+  const div=document.createElement('div');div.className='msg assistant';
+  div.innerHTML='<div class="avatar">A</div><div class="bubble" style="color:var(--red)">Error: '+esc(text)+'</div>';
+  el.appendChild(div);el.scrollTop=el.scrollHeight;
+  document.getElementById('sendBtn').disabled=false;
+}
+function onDone(){
+  document.querySelectorAll('.loading').forEach(d=>d.remove());
+  document.getElementById('sendBtn').disabled=false;
+}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+
+connectWS();loadAgents();onProviderChange();
+</script>
+</body>
+</html>
