@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="zh">
+<!-- Author: Ck.epsilon & Chaos (AI Programming Assistant) -->
+<html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -53,6 +54,25 @@ tr:hover td{background:#fafafa}
 .pagination{display:flex;justify-content:flex-end;gap:8px;margin-top:12px}
 .pagination span{padding:6px 12px;border:1px solid #d9d9d9;border-radius:6px;font-size:13px;cursor:pointer}
 .pagination span.active{background:#1890ff;color:#fff;border-color:#1890ff}
+/* Dark mode — CSS class toggle (reliable across all browsers) */
+body.dark{background:#14141c;color:#c9d1d9}
+body.dark .topbar{background:#1c1c28;box-shadow:0 1px 4px rgba(0,0,0,0.3)}
+body.dark .topbar .title{color:#e0e0e0}
+body.dark .kpi-card{background:#1c1c28}
+body.dark .kpi-card .value{color:#e0e0e0}
+body.dark .chart-card{background:#1c1c28}
+body.dark .chart-card h3{color:#e0e0e0}
+body.dark .table-card{background:#1c1c28}
+body.dark .table-card h3{color:#e0e0e0}
+body.dark th{background:#24242f;color:#e0e0e0}
+body.dark td{color:#b0b0b0}
+body.dark tr:hover td{background:#24242f}
+body.dark .dark-toggle{background:#1c1c28;color:#e0e0e0;border-color:#444}
+body.dark .structure-card{background:#1c1c28}
+body.dark .structure-card h3{color:#e0e0e0}
+body.dark .structure-card pre{color:#b0b0b0}
+body.dark input{background:#24242f;color:#e0e0e0;border-color:#444}
+body.dark select{background:#24242f;color:#e0e0e0;border-color:#444}
 </style>
 </head>
 <body>
@@ -160,16 +180,8 @@ tr:hover td{background:#fafafa}
   </div>
 </div>
 <script>
-function toggleDark(){
-  const b = document.body;
-  const isDark = b.style.background === 'rgb(20, 20, 28)';
-  if(isDark){
-    b.style.background='#f0f2f5'; b.style.color='';
-    document.querySelector('.content').style.color='';
-  }else{
-    b.style.background='#14141c'; b.style.color='#c9d1d9';
-  }
-}
+// Toggle dark mode via CSS class (reliable across all browsers)
+function toggleDark(){document.body.classList.toggle('dark');}
 </script>
 </body>
 </html>

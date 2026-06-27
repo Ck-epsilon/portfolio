@@ -17,7 +17,7 @@ Full-stack developer specializing in Python REST APIs, web scraping pipelines, a
 
 | Category | Requirement | Tested |
 |----------|------------|--------|
-| OS | Windows 10+, macOS 12+, Linux (Ubuntu 20.04+) | Windows 11 ✅ |
+| OS | Windows 10+, macOS 12+, Linux (Ubuntu 22.04+) | Windows 11 ✅ |
 | Python | 3.10+ | 3.10.20 ✅ |
 | Node.js | 18+ | 24.15.0 ✅ |
 | npm | 9+ | 11.12.1 ✅ |
@@ -68,7 +68,7 @@ React + TypeScript + Ant Design dashboard with dark mode, charts, data tables.
 
 | 类别 | 要求 | 实测 |
 |------|------|------|
-| 操作系统 | Windows 10+, macOS 12+, Linux (Ubuntu 20.04+) | Windows 11 ✅ |
+| 操作系统 | Windows 10+, macOS 12+, Linux (Ubuntu 22.04+) | Windows 11 ✅ |
 | Python | 3.10+ | 3.10.20 ✅ |
 | Node.js | 18+ | 24.15.0 ✅ |
 | npm | 9+ | 11.12.1 ✅ |
