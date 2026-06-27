@@ -34,6 +34,7 @@ Open http://localhost:8000/docs for interactive Swagger docs.
 #### Docker (recommended for production)
 
 ```bash
+cp .env.example .env          # First time only — then edit .env with your secrets
 docker compose up
 ```
 
@@ -108,6 +109,30 @@ uvicorn app.main:app --reload
 ```
 
 访问 http://localhost:8000/docs 查看交互式 API 文档。
+
+#### Docker（推荐用于生产环境）
+
+```bash
+cp .env.example .env          # 首次：复制模板 → 编辑 .env 填入真实密钥
+docker compose up
+```
+
+访问 http://localhost:8000/docs。
+
+#### 数据库设置
+
+SQLite（零配置，快速启动）：
+```bash
+# 首次运行时自动创建 SQLite 数据库
+uvicorn app.main:app --reload
+```
+
+PostgreSQL（推荐用于生产环境）：
+```bash
+# 1. 在 .env 中设置 DATABASE_URL
+# 2. 运行迁移（如使用 Alembic）或让 SQLAlchemy create_all 建表
+uvicorn app.main:app --reload
+```
 
 ### 项目结构
 

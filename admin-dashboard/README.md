@@ -122,6 +122,18 @@ admin-dashboard/
 - **TypeScript** — 全类型安全
 - **路由** — React Router 6
 
+### 自定义数据源
+
+将 Demo 数据替换为你自己的 API：
+
+1. 打开 `src/components/Dashboard.tsx`
+2. 在 `useEffect` 中将 `kpiData` 替换为 `await fetch('/api/你的接口')`
+3. 打开 `src/components/DataTable.tsx`
+4. 将 `mockOrders` 替换为你的 API 响应
+5. 更新图表标签和表格列名以匹配你的数据结构
+
+> 所有数据结构都有 TypeScript 类型定义，IDE 会引导你完成集成。
+
 ### 技术栈
 
 | 层级 | 选择 |

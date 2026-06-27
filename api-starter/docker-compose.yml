@@ -1,5 +1,4 @@
 # Author: Ck.epsilon & Chaos (AI Programming Assistant)
-version: "3.9"
 
 services:
   api:
@@ -7,7 +6,7 @@ services:
     ports:
       - "8000:8000"
     env_file:
-      - .env.example
+      - .env
     depends_on:
       postgres:
         condition: service_healthy
