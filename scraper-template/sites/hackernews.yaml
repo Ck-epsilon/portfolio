@@ -1,0 +1,14 @@
+# Scraper Config — Example: Hacker News Job Listings
+name: "hackernews-jobs"
+start_urls:
+  - "https://news.ycombinator.com/jobs"
+
+selectors:
+  title: "span.titleline > a"
+  site: "span.sitestr"
+
+pagination_selector: "a.morelink"
+max_pages: 5
+delay_min: 1.0
+delay_max: 2.5
+output_format: "csv"
