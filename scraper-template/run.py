@@ -15,11 +15,37 @@ import yaml
 
 from scraper.engine import ScraperConfig, StealthScraper
 
+_VALID_FORMATS = frozenset({"csv", "json"})
+
+
+def _sanitize_name(name: str) -> str:
+    """Remove path separators to prevent directory traversal."""
+    return re.sub(r'[\\/]', '_', name)
+
 
 def load_config(path: str) -> ScraperConfig:
-    """Load scraper config from YAML file."""
+    """Load scraper config from YAML, with validation."""
     raw = yaml.safe_load(Path(path).read_text(encoding="utf-8"))
-    config = ScraperConfig(
+
+    missing = [k for k in ("name", "start_urls", "selectors") if k not in raw]
+    if missing:
+        raise KeyError(f"Missing required config keys: {', '.join(missing)}")
+
+    fmt = raw.get("output_format", "csv")
+    if fmt not in _VALID_FORMATS:
+        raise ValueError(
+            f"Invalid output_format '{fmt}'. Must be one of: {', '.join(sorted(_VALID_FORMATS))}"
+        )
+
+    # Validate selectors are field names, not CSS selectors
+    invalid = [k for k in raw["selectors"] if ">" in k or "<" in k]
+    if invalid:
+        raise ValueError(
+            f"Selector keys must be field names, not CSS. "
+            f"Found: {invalid}. Values: {' '.join(raw['selectors'].keys())}"
+        )
+
+    return ScraperConfig(
         name=raw["name"],
         start_urls=raw["start_urls"],
         selectors=raw["selectors"],
@@ -27,18 +53,10 @@ def load_config(path: str) -> ScraperConfig:
         max_pages=raw.get("max_pages", 10),
         delay_min=raw.get("delay_min", 1.0),
         delay_max=raw.get("delay_max", 3.0),
-        output_format=raw.get("output_format", "csv"),
+        max_retries=raw.get("max_retries", 3),
+        retry_backoff=raw.get("retry_backoff", 2.0),
+        output_format=fmt,
     )
-
-    # Validate selectors format
-    invalid = [k for k in config.selectors if ">" in k or "<" in k]
-    if invalid:
-        raise ValueError(
-            f"Selector keys must be field names, not CSS. "
-            f"Found: {invalid}. Got: {' '.join(config.selectors.keys())}"
-        )
-
-    return config
 
 
 async def main():
@@ -51,12 +69,13 @@ async def main():
     )
     parser.add_argument(
         "--output", "-o",
-        help="Output file path (default: output/<config_name>.<format>)"
+        help="Output file path (default: output/<name>.<format>)"
     )
     args = parser.parse_args()
 
     config = load_config(args.config)
-    output = args.output or f"output/{config.name}.{config.output_format}"
+    safe_name = _sanitize_name(config.name)
+    output = args.output or f"output/{safe_name}.{config.output_format}"
 
     async with StealthScraper(config) as scraper:
         await scraper.run()

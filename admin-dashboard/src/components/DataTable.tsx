@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Table, Tag, Input, Select, Space, Card } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
@@ -22,45 +22,76 @@ const mockData: Order[] = [
   { key: '7', id: 'ORD-007', customer: 'Grace Kim', amount: 720, status: 'pending', date: '2026-06-27' },
 ];
 
-const statusColors: Record<string, string> = {
+const STATUS_COLORS: Record<string, string> = {
   completed: 'green',
   pending: 'gold',
   cancelled: 'red',
 };
+const STATUS_FALLBACK_COLOR = 'default';
+
+const STATUS_OPTIONS: { value: string; text: string }[] = [
+  { value: 'completed', text: 'Completed' },
+  { value: 'pending', text: 'Pending' },
+  { value: 'cancelled', text: 'Cancelled' },
+];
+
+const STATUS_SELECT_OPTIONS = STATUS_OPTIONS.map(({ value, text }) => ({
+  value,
+  label: text,
+}));
 
 export default function DataTablePage() {
   const [searchText, setSearchText] = useState('');
   const [statusFilter, setStatusFilter] = useState<string | null>(null);
 
-  const columns: ColumnsType<Order> = [
-    { title: 'Order ID', dataIndex: 'id', key: 'id', sorter: (a, b) => a.id.localeCompare(b.id) },
-    { title: 'Customer', dataIndex: 'customer', key: 'customer',
-      filteredValue: searchText ? [searchText] : null,
-      onFilter: (_, record) => record.customer.toLowerCase().includes(searchText.toLowerCase()),
-    },
+  const filteredData = useMemo(() => {
+    return mockData.filter((item) => {
+      const matchSearch = !searchText
+        || item.customer.toLowerCase().includes(searchText.toLowerCase());
+      const matchStatus = !statusFilter || item.status === statusFilter;
+      return matchSearch && matchStatus;
+    });
+  }, [searchText, statusFilter]);
+
+  const columns: ColumnsType<Order> = useMemo(() => [
     {
-      title: 'Amount', dataIndex: 'amount', key: 'amount',
+      title: 'Order ID',
+      dataIndex: 'id',
+      sorter: (a, b) => a.id.localeCompare(b.id),
+    },
+    { title: 'Customer', dataIndex: 'customer' },
+    {
+      title: 'Amount',
+      dataIndex: 'amount',
       sorter: (a, b) => a.amount - b.amount,
       render: (v: number) => `$${v.toLocaleString()}`,
     },
     {
-      title: 'Status', dataIndex: 'status', key: 'status',
+      title: 'Status',
+      dataIndex: 'status',
+      filters: STATUS_OPTIONS,
       filteredValue: statusFilter ? [statusFilter] : null,
-      onFilter: (_, record) => !statusFilter || record.status === statusFilter,
-      render: (s: string) => <Tag color={statusColors[s]}>{s.toUpperCase()}</Tag>,
+      onFilter: (value, record) => record.status === value,
+      render: (s: string) => (
+        <Tag color={STATUS_COLORS[s] || STATUS_FALLBACK_COLOR}>
+          {s.toUpperCase()}
+        </Tag>
+      ),
     },
     {
-      title: 'Date', dataIndex: 'date', key: 'date',
+      title: 'Date',
+      dataIndex: 'date',
       sorter: (a, b) => a.date.localeCompare(b.date),
       render: (d: string) => dayjs(d).format('MMM D, YYYY'),
     },
-  ];
+  ], []);
 
   return (
     <Card title="Orders">
       <Space style={{ marginBottom: 16 }}>
         <Input.Search
           placeholder="Search customer..."
+          onChange={(e) => setSearchText(e.target.value)}
           onSearch={setSearchText}
           style={{ width: 240 }}
           allowClear
@@ -70,17 +101,14 @@ export default function DataTablePage() {
           allowClear
           style={{ width: 160 }}
           onChange={(v) => setStatusFilter(v || null)}
-          options={[
-            { value: 'completed', label: 'Completed' },
-            { value: 'pending', label: 'Pending' },
-            { value: 'cancelled', label: 'Cancelled' },
-          ]}
+          options={STATUS_SELECT_OPTIONS}
         />
       </Space>
       <Table
         columns={columns}
-        dataSource={mockData}
+        dataSource={filteredData}
         pagination={{ pageSize: 5, showSizeChanger: true }}
+        locale={{ emptyText: 'No orders found' }}
       />
     </Card>
   );

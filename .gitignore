@@ -71,3 +71,8 @@ output/
 logs/
 *.db
 *.sqlite3
+dist/ 
+node_modules/ 
+/admin-dashboard/dist/ 
+node_modules/ 
+admin-dashboard/dist/ 
