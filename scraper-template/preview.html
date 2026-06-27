@@ -4,118 +4,152 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Web Scraper — Preview</title>
+<title>Web Scraper — Ck.epsilon</title>
 <style>
+:root{
+  --bg: #ffffff; --bg-secondary: #f5f5f7; --text: #1d1d1f;
+  --text-secondary: #86868b; --text-tertiary: #6e6e73;
+  --blue: #0071e3; --green: #34c759; --orange: #ff9500;
+  --card-bg: #ffffff; --card-shadow: 0 4px 24px rgba(0,0,0,0.06);
+  --border: rgba(0,0,0,0.08); --radius: 18px; --radius-sm: 12px;
+  --max-width: 980px; --font: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root{--bg: #000000; --bg-secondary: #1d1d1f; --text: #f5f5f7; --text-secondary: #86868b; --text-tertiary: #6e6e73; --card-bg: #1d1d1f; --card-shadow: 0 4px 24px rgba(0,0,0,0.4); --border: rgba(255,255,255,0.12)}
+}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0d1117; color: #c9d1d9; padding: 24px 48px}
-.container{max-width:1000px;margin:0 auto}
-h1{font-size:24px;color:#58a6ff;margin-bottom:8px}
-.subtitle{color:#8b949e;font-size:13px;margin-bottom:32px}
+body{font-family:var(--font); background:var(--bg); color:var(--text); -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; line-height:1.47059}
+nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.8);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid var(--border)}
+@media (prefers-color-scheme: dark){nav{background:rgba(29,29,31,0.8)}}
+nav .inner{max-width:var(--max-width);margin:0 auto;height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 24px}
+nav .logo{font-size:17px;font-weight:600;letter-spacing:-0.022em}
+nav .back{font-size:14px;color:var(--blue);text-decoration:none}
+.hero{padding:100px 24px 60px;text-align:center;max-width:var(--max-width);margin:0 auto}
+.hero .badge{display:inline-block;padding:4px 16px;background:var(--green);color:#fff;border-radius:980px;font-size:13px;font-weight:500;letter-spacing:-0.01em;margin-bottom:20px}
+.hero h1{font-size:64px;font-weight:700;letter-spacing:-0.012em;line-height:1.05;margin-bottom:12px}
+.hero .subtitle{font-size:21px;color:var(--text-secondary);letter-spacing:0.011em;max-width:480px;margin:0 auto}
+.section{max-width:var(--max-width);margin:0 auto;padding:60px 24px}
+.section h2{font-size:32px;font-weight:700;letter-spacing:-0.003em;margin-bottom:32px}
+/* Stats */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.stat{text-align:center;padding:32px 20px;background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--card-shadow)}
+.stat .value{font-size:40px;font-weight:700;letter-spacing:-0.01em;color:var(--green)}
+.stat .label{font-size:14px;color:var(--text-secondary);margin-top:8px}
 /* Terminal */
-.terminal{background:#161b22; border:1px solid #30363d; border-radius:8px; padding:20px; font-family:Consolas,monospace; font-size:13px; margin-bottom:24px}
-.cmd{color:#58a6ff}
-.output{color:#c9d1d9}
-.success{color:#3fb950}
-.warn{color:#d2991d}
-.dim{color:#8b949e}
-.stats{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:24px}
-.stat{background:#161b22; border:1px solid #30363d; border-radius:8px; padding:16px; text-align:center}
-.stat .val{font-size:28px; font-weight:700; color:#58a6ff}
-.stat .lbl{font-size:12px; color:#8b949e; margin-top:4px}
-/* Results table */
-.table-wrap{background:#161b22; border:1px solid #30363d; border-radius:8px; overflow:hidden; margin-bottom:24px}
-.table-wrap h3{padding:14px 20px; font-size:14px; border-bottom:1px solid #30363d; color:#c9d1d9}
+.terminal{background:var(--bg-secondary);border:1px solid var(--border);border-radius:var(--radius);padding:28px;font-family:'SF Mono',Consolas,monospace;font-size:13px;line-height:1.7;overflow-x:auto;box-shadow:var(--card-shadow)}
+.terminal .cmd{color:var(--blue)}
+.terminal .ok{color:var(--green)}
+.terminal .dim{color:var(--text-tertiary)}
+/* Table */
+.table-wrap{overflow-x:auto;background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--card-shadow)}
 table{width:100%;border-collapse:collapse}
-th{text-align:left;padding:10px 20px;font-size:12px;color:#8b949e;font-weight:600;text-transform:uppercase;background:#0d1117}
-td{padding:10px 20px;font-size:13px;border-bottom:1px solid #21262d}
+th{text-align:left;padding:12px 20px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-tertiary);background:var(--bg-secondary);border-bottom:1px solid var(--border)}
+td{padding:14px 20px;font-size:14px;border-bottom:1px solid var(--border)}
 tr:last-child td{border-bottom:none}
-tr:hover td{background:#1c2128}
-/* Config preview */
-.config-preview{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:24px}
-.yaml-block{background:#161b22; border:1px solid #30363d; border-radius:8px; padding:16px; font-family:Consolas,monospace; font-size:12px; line-height:1.7}
-.yaml-block .key{color:#79c0ff}
-.yaml-block .str{color:#a5d6ff}
-.yaml-block .num{color:#79c0ff}
-.yaml-block .comment{color:#8b949e; font-style:italic}
-.features{background:#161b22; border:1px solid #30363d; border-radius:8px; padding:20px; margin-bottom:24px}
-.features h3{font-size:14px; color:#c9d1d9; margin-bottom:12px}
-.feature-row{display:flex; gap:16px; flex-wrap:wrap}
-.feature-tag{background:#1f6feb22; color:#58a6ff; border:1px solid #1f6feb44; border-radius:20px; padding:6px 16px; font-size:12px}
-.structure{background:#161b22; border:1px solid #30363d; border-radius:8px; padding:20px}
-.structure h3{font-size:14px; color:#c9d1d9; margin-bottom:12px}
-.structure pre{color:#8b949e; font-size:12px; line-height:1.8}
+/* Side-by-side */
+.side-by-side{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.code-block{background:var(--bg-secondary);border:1px solid var(--border);border-radius:var(--radius);padding:24px;font-family:'SF Mono',Consolas,monospace;font-size:12px;line-height:1.8;overflow-x:auto}
+.code-block .key{color:var(--blue)}
+.code-block .val{color:var(--green)}
+.code-block .com{color:var(--text-tertiary);font-style:italic}
+/* Feature tags */
+.tags{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+.tag{padding:6px 16px;background:var(--bg-secondary);border:1px solid var(--border);border-radius:980px;font-size:13px;color:var(--text-secondary)}
+/* Structure */
+.structure{background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:32px;overflow-x:auto}
+.structure pre{font-family:'SF Mono',Consolas,monospace;font-size:13px;color:var(--text-secondary);line-height:1.8}
+@media(max-width:768px){.hero h1{font-size:40px}.stats,.side-by-side{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-<div class="container">
-  <h1>🕷️ Web Scraper Template</h1>
-  <p class="subtitle">Multi-site async scraping with Playwright anti-detection</p>
+<nav><div class="inner"><span class="logo">Ck.epsilon</span><a href="../index.html" class="back">← Portfolio</a></div></nav>
+<header class="hero">
+  <span class="badge">Python · Playwright</span>
+  <h1>Web Scraper</h1>
+  <p class="subtitle">Multi-site async scraping with anti-detection. YAML config, CSV output, zero code changes between sites.</p>
+</header>
 
+<section class="section">
   <div class="stats">
-    <div class="stat"><div class="val">5</div><div class="lbl">Items Scraped</div></div>
-    <div class="stat"><div class="val">0.8s</div><div class="lbl">Total Time</div></div>
-    <div class="stat"><div class="val">CSV</div><div class="lbl">Output Format</div></div>
+    <div class="stat"><div class="value">5</div><div class="label">Items Scraped</div></div>
+    <div class="stat"><div class="value">0.8s</div><div class="label">Total Time</div></div>
+    <div class="stat"><div class="value">CSV</div><div class="label">Output Format</div></div>
   </div>
+</section>
 
+<section class="section">
+  <h2>Terminal Output</h2>
   <div class="terminal">
-    <p><span class="dim">PS E:\portfolio></span> <span class="cmd">python run.py --config sites/demo.yaml</span></p>
-    <p><span class="success">[demo-jobs]</span> <span class="output">Starting scrape...</span></p>
-    <p class="output">  → file:///sites/demo.html</p>
-    <p class="output">    <span class="success">5 items extracted</span></p>
-    <p><span class="success">[demo-jobs]</span> <span class="output">Done. Total: 5 items</span></p>
-    <p><span class="warn">Saved 5 items</span> <span class="output">→ output/demo.csv</span></p>
+    <p><span class="dim">~/portfolio $</span> <span class="cmd">python run.py --config sites/demo.yaml</span></p>
+    <p><span class="ok">[demo-jobs]</span> Starting scrape...</p>
+    <p>&nbsp;&nbsp;→ file:///sites/demo.html</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="ok">5 items extracted</span></p>
+    <p><span class="ok">[demo-jobs]</span> Done. Total: 5 items</p>
+    <p><span style="color:var(--orange)">Saved 5 items</span> → output/demo.csv</p>
   </div>
+</section>
 
+<section class="section">
+  <h2>Output: demo.csv</h2>
   <div class="table-wrap">
-    <h3>📊 输出: demo.csv</h3>
     <table>
       <tr><th>Title</th><th>Company</th><th>Salary</th></tr>
-      <tr><td>Senior Python Developer</td><td>TechCorp Inc.</td><td>$120k - $150k</td></tr>
-      <tr><td>Data Engineer</td><td>DataFlow Ltd.</td><td>$100k - $130k</td></tr>
-      <tr><td>Full-Stack Developer</td><td>WebWorks GmbH</td><td>$90k - $120k</td></tr>
-      <tr><td>ML Engineer</td><td>AI Labs</td><td>$130k - $160k</td></tr>
-      <tr><td>DevOps Specialist</td><td>CloudFirst</td><td>$110k - $140k</td></tr>
+      <tr><td>Senior Python Developer</td><td>TechCorp Inc.</td><td>$120k – $150k</td></tr>
+      <tr><td>Data Engineer</td><td>DataFlow Ltd.</td><td>$100k – $130k</td></tr>
+      <tr><td>Full-Stack Developer</td><td>WebWorks GmbH</td><td>$90k – $120k</td></tr>
+      <tr><td>ML Engineer</td><td>AI Labs</td><td>$130k – $160k</td></tr>
+      <tr><td>DevOps Specialist</td><td>CloudFirst</td><td>$110k – $140k</td></tr>
     </table>
   </div>
+</section>
 
-  <div class="config-preview">
-    <div class="yaml-block">
-      <span class="comment"># sites/demo.yaml</span><br>
-      <span class="key">name:</span> <span class="str">"demo-jobs"</span><br>
-      <span class="key">start_urls:</span><br>
-      &nbsp;&nbsp;- <span class="str">"file:///sites/demo.html"</span><br>
-      <span class="key">selectors:</span><br>
-      &nbsp;&nbsp;<span class="key">title:</span> <span class="str">"h2.job-title"</span><br>
-      &nbsp;&nbsp;<span class="key">company:</span> <span class="str">"span.company"</span><br>
-      &nbsp;&nbsp;<span class="key">salary:</span> <span class="str">"span.salary"</span><br>
-      <span class="key">output_format:</span> <span class="str">"csv"</span>
+<section class="section">
+  <h2>Configuration</h2>
+  <div class="side-by-side">
+    <div>
+      <div class="code-block">
+        <span class="com"># sites/demo.yaml</span><br>
+        <span class="key">name:</span> <span class="val">"demo-jobs"</span><br>
+        <span class="key">start_urls:</span><br>
+        &nbsp;&nbsp;- <span class="val">"file:///sites/demo.html"</span><br>
+        <span class="key">selectors:</span><br>
+        &nbsp;&nbsp;<span class="key">title:</span> <span class="val">"h2.job-title"</span><br>
+        &nbsp;&nbsp;<span class="key">company:</span> <span class="val">"span.company"</span><br>
+        &nbsp;&nbsp;<span class="key">salary:</span> <span class="val">"span.salary"</span><br>
+        <span class="key">output_format:</span> <span class="val">"csv"</span>
+      </div>
     </div>
-    <div class="features">
-      <h3>🛡️ 反检测特性</h3>
-      <div class="feature-row">
-        <span class="feature-tag">隐藏 WebDriver 标记</span>
-        <span class="feature-tag">随机 User-Agent</span>
-        <span class="feature-tag">随机视口</span>
-        <span class="feature-tag">请求间延时</span>
-        <span class="feature-tag">自动分页</span>
-        <span class="feature-tag">CSV / JSON</span>
+    <div>
+      <h3 style="font-size:21px;font-weight:600;margin-bottom:12px">Anti‑Detection</h3>
+      <p style="color:var(--text-secondary);font-size:14px;line-height:1.5;margin-bottom:16px">Playwright stealth mode. No one knows it's a bot.</p>
+      <div class="tags">
+        <span class="tag">Remove WebDriver flag</span>
+        <span class="tag">Random User-Agent</span>
+        <span class="tag">Random viewport</span>
+        <span class="tag">Request delay</span>
+        <span class="tag">Auto pagination</span>
+        <span class="tag">CSV &amp; JSON export</span>
       </div>
     </div>
   </div>
+</section>
 
-  <div class="structure">
-    <h3>📁 项目结构</h3>
-    <pre>scraper-template/
+<section class="section">
+  <h2>Project Structure</h2>
+  <div class="structure"><pre>scraper-template/
 ├── scraper/
-│   └── engine.py       ← 反检测爬虫引擎 (StealthScraper)
-├── sites/              ← YAML 站点配置 (零代码换站)
-│   ├── demo.yaml       ← 本地演示 (5条职位)
-│   └── hackernews.yaml ← HN 职位采集示例
-├── output/             ← 输出 CSV / JSON
-├── run.py              ← 命令行入口
+│   └── engine.py       ← StealthScraper class
+├── sites/              ← YAML configs (zero code)
+│   ├── demo.yaml       ← Local demo
+│   └── hackernews.yaml ← HN example
+├── output/             ← CSV / JSON results
+├── run.py              ← CLI entry
 ├── requirements.txt
-└── README.md</pre>
-  </div>
+└── README.md</pre></div>
+</section>
+
+<div style="text-align:center;padding:40px 24px 80px">
+  <a href="../index.html" style="color:var(--blue);text-decoration:none;font-size:15px">← Back to Portfolio</a>
 </div>
 </body>
 </html>

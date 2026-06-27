@@ -3,6 +3,8 @@
 > Python Backend · Web Scraping · Frontend Dashboards  
 > Python 后端 · 数据采集 · 前端管理面板
 
+🌐 **[View Portfolio Site →](./index.html)** — Apple-inspired landing page with project previews.
+
 [English](#english) | [中文](#中文)
 
 ---
