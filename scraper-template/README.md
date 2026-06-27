@@ -25,6 +25,8 @@ python run.py --config sites/demo.yaml
 
 Output appears in `output/` directory as CSV or JSON.
 
+**→ [Open Live Preview](preview.html)** — terminal output + results in one page
+
 ### Example Output
 
 ```

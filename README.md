@@ -28,17 +28,17 @@ Full-stack developer specializing in Python REST APIs, web scraping pipelines, a
 #### 1. REST API Starter — [api-starter/](./api-starter)
 Production-ready FastAPI scaffold with JWT auth, async SQLAlchemy, Swagger docs.
 
-![API Starter Screenshot](./screenshots/api-starter.png)
+→ [Live Preview](./api-starter/preview.html)
 
 #### 2. Web Scraper Template — [scraper-template/](./scraper-template)
 Multi-site async scraper with Playwright, anti-detection, CSV/JSON export.
 
-![Scraper Output](./screenshots/scraper-output.png)
+→ [Live Preview](./scraper-template/preview.html)
 
 #### 3. Admin Dashboard — [admin-dashboard/](./admin-dashboard)
 React + TypeScript + Ant Design dashboard with dark mode, charts, data tables.
 
-![Admin Dashboard](./screenshots/admin-dashboard.png)
+→ [Live Preview](./admin-dashboard/preview.html)
 
 ### Tech Stack
 
@@ -76,11 +76,11 @@ React + TypeScript + Ant Design dashboard with dark mode, charts, data tables.
 
 ### 示例项目
 
-| 项目 | 描述 | 技术栈 |
-|------|------|--------|
-| [API 后端脚手架](./api-starter) | FastAPI + JWT认证 + 异步数据库 | Python, FastAPI, SQLAlchemy 2.0 |
-| [爬虫模板](./scraper-template) | Playwright 多站采集 + 反检测 | Python, Playwright, Pandas |
-| [管理面板](./admin-dashboard) | React + Ant Design 暗色模式 | TypeScript, React 18, Ant Design 5 |
+| 项目 | 描述 | 技术栈 | 预览 |
+|------|------|--------|------|
+| [API 后端脚手架](./api-starter) | FastAPI + JWT认证 + 异步数据库 | Python, FastAPI, SQLAlchemy 2.0 | [预览](./api-starter/preview.html) |
+| [爬虫模板](./scraper-template) | Playwright 多站采集 + 反检测 | Python, Playwright, Pandas | [预览](./scraper-template/preview.html) |
+| [管理面板](./admin-dashboard) | React + Ant Design 暗色模式 | TypeScript, React 18, Ant Design 5 | [预览](./admin-dashboard/preview.html) |
 
 ### 联系方式
 

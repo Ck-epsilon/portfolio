@@ -25,6 +25,8 @@ uvicorn app.main:app --reload
 
 Open http://localhost:8000/docs for interactive Swagger docs.
 
+**→ [Open Live Preview](preview.html)** — zero-dependency interactive demo
+
 ### Project Structure
 
 ```

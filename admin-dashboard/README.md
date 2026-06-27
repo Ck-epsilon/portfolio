@@ -25,6 +25,8 @@ npm run dev
 
 Open http://localhost:3000.
 
+**→ [Open Live Preview](preview.html)** — full dashboard mockup with working dark mode
+
 ### Project Structure
 
 ```

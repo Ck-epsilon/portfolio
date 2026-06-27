@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard — Preview</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background:#f0f2f5; display:flex; min-height:100vh}
+/* Sidebar */
+.sidebar{width:220px; background:#001529; color:#fff; padding:20px 0; flex-shrink:0}
+.sidebar .logo{font-size:18px; font-weight:700; padding:0 20px 24px; color:#fff}
+.sidebar .nav-item{padding:10px 20px; font-size:14px; cursor:pointer; color:#ffffffa0; display:flex; align-items:center; gap:10px}
+.sidebar .nav-item.active{background:#1890ff; color:#fff}
+.sidebar .nav-item:hover{color:#fff}
+/* Main content */
+.main{flex:1; display:flex; flex-direction:column}
+.topbar{background:#fff; padding:12px 24px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 1px 4px rgba(0,0,0,0.08)}
+.topbar .title{font-size:16px; font-weight:600; color:#262626}
+.topbar .actions{display:flex; gap:12px; align-items:center}
+.dark-toggle{padding:4px 16px; border:1px solid #d9d9d9; border-radius:6px; background:#fff; cursor:pointer; font-size:13px}
+.content{padding:24px; overflow-y:auto}
+/* KPI cards */
+.kpi-row{display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:24px}
+.kpi-card{background:#fff; border-radius:8px; padding:20px; box-shadow:0 1px 2px rgba(0,0,0,0.06)}
+.kpi-card .label{font-size:13px; color:#8c8c8c; margin-bottom:8px}
+.kpi-card .value{font-size:28px; font-weight:700; color:#262626}
+.kpi-card .change{font-size:12px; margin-top:4px}
+.up{color:#52c41a}.down{color:#ff4d4f}
+/* Charts */
+.chart-row{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:24px}
+.chart-card{background:#fff; border-radius:8px; padding:20px; box-shadow:0 1px 2px rgba(0,0,0,0.06)}
+.chart-card h3{font-size:14px; color:#262626; margin-bottom:12px}
+.chart-area{height:200px; display:flex; align-items:flex-end; gap:8px; padding:12px 0}
+.bar{flex:1; background:linear-gradient(180deg,#1890ff,#69c0ff); border-radius:4px 4px 0 0; position:relative; transition:height .3s}
+.bar .val{position:absolute; top:-20px; left:50%; transform:translateX(-50%); font-size:10px; color:#8c8c8c}
+.line-chart{height:200px; position:relative}
+.line-chart svg{width:100%;height:100%}
+/* Table */
+.table-card{background:#fff; border-radius:8px; padding:20px; box-shadow:0 1px 2px rgba(0,0,0,0.06)}
+.table-card h3{font-size:14px; color:#262626; margin-bottom:16px}
+.table-card .toolbar{display:flex; gap:12px; margin-bottom:12px}
+.table-card input{padding:6px 12px; border:1px solid #d9d9d9; border-radius:6px; font-size:13px; width:200px}
+.table-card select{padding:6px 12px; border:1px solid #d9d9d9; border-radius:6px; font-size:13px}
+table{width:100%;border-collapse:collapse}
+th{background:#fafafa;padding:10px 12px;text-align:left;font-size:13px;color:#262626;font-weight:600;border-bottom:1px solid #f0f0f0}
+td{padding:10px 12px;font-size:13px;color:#595959;border-bottom:1px solid #f0f0f0}
+tr:hover td{background:#fafafa}
+.tag{padding:2px 8px;border-radius:4px;font-size:12px;font-weight:500}
+.tag-ok{background:#f6ffed;color:#52c41a;border:1px solid #b7eb8f}
+.tag-warn{background:#fffbe6;color:#faad14;border:1px solid #ffe58f}
+.tag-info{background:#e6f7ff;color:#1890ff;border:1px solid #91d5ff}
+.pagination{display:flex;justify-content:flex-end;gap:8px;margin-top:12px}
+.pagination span{padding:6px 12px;border:1px solid #d9d9d9;border-radius:6px;font-size:13px;cursor:pointer}
+.pagination span.active{background:#1890ff;color:#fff;border-color:#1890ff}
+</style>
+</head>
+<body>
+<div class="sidebar">
+  <div class="logo">⚡ Admin Panel</div>
+  <div class="nav-item active">📊 Dashboard</div>
+  <div class="nav-item">📋 Orders</div>
+  <div class="nav-item">👥 Users</div>
+  <div class="nav-item">📦 Products</div>
+  <div class="nav-item">⚙️ Settings</div>
+</div>
+<div class="main">
+  <div class="topbar">
+    <span class="title">Dashboard</span>
+    <div class="actions">
+      <button class="dark-toggle" onclick="toggleDark()">🌓 Dark / Light</button>
+    </div>
+  </div>
+  <div class="content">
+    <div class="kpi-row">
+      <div class="kpi-card">
+        <div class="label">Total Revenue</div>
+        <div class="value">$48,290</div>
+        <div class="change up">↑ 12.5% vs last month</div>
+      </div>
+      <div class="kpi-card">
+        <div class="label">Active Users</div>
+        <div class="value">2,847</div>
+        <div class="change up">↑ 8.2% vs last month</div>
+      </div>
+      <div class="kpi-card">
+        <div class="label">New Orders</div>
+        <div class="value">1,240</div>
+        <div class="change down">↓ 3.1% vs last month</div>
+      </div>
+      <div class="kpi-card">
+        <div class="label">Conversion Rate</div>
+        <div class="value">24.8%</div>
+        <div class="change up">↑ 5.6% vs last month</div>
+      </div>
+    </div>
+
+    <div class="chart-row">
+      <div class="chart-card">
+        <h3>Revenue Trend</h3>
+        <div class="line-chart">
+          <svg viewBox="0 0 400 200">
+            <defs><linearGradient id="area" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1890ff" stop-opacity="0.3"/><stop offset="100%" stop-color="#1890ff" stop-opacity="0"/></linearGradient></defs>
+            <path d="M0,160 L50,140 L100,155 L150,100 L200,120 L250,60 L300,80 L350,40 L400,55 L400,200 L0,200Z" fill="url(#area)"/>
+            <path d="M0,160 L50,140 L100,155 L150,100 L200,120 L250,60 L300,80 L350,40 L400,55" fill="none" stroke="#1890ff" stroke-width="2.5"/>
+            <text x="0" y="155" font-size="10" fill="#8c8c8c">Jan</text>
+            <text x="80" y="95" font-size="10" fill="#8c8c8c">Mar</text>
+            <text x="160" y="115" font-size="10" fill="#8c8c8c">May</text>
+            <text x="240" y="55" font-size="10" fill="#8c8c8c">Jul</text>
+            <text x="340" y="35" font-size="10" fill="#8c8c8c">Sep</text>
+          </svg>
+        </div>
+      </div>
+      <div class="chart-card">
+        <h3>Traffic Sources</h3>
+        <div class="chart-area">
+          <div class="bar" style="height:180px"><span class="val">4,520</span></div>
+          <div class="bar" style="height:140px"><span class="val">3,210</span></div>
+          <div class="bar" style="height:100px"><span class="val">2,450</span></div>
+          <div class="bar" style="height:70px"><span class="val">1,890</span></div>
+        </div>
+        <div style="display:flex;gap:16px;font-size:12px;color:#8c8c8c;margin-top:8px">
+          <span>Direct</span><span>Social</span><span>Organic</span><span>Referral</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-card">
+      <h3>Recent Orders</h3>
+      <div class="toolbar">
+        <input placeholder="Search customer...">
+        <select><option>All Status</option><option>Delivered</option><option>Pending</option></select>
+      </div>
+      <table>
+        <tr><th>Order ID</th><th>Customer</th><th>Product</th><th>Amount</th><th>Status</th><th>Date</th></tr>
+        <tr><td>#ORD-1042</td><td>Alice Johnson</td><td>Pro Plan</td><td>$299</td><td><span class="tag tag-ok">Delivered</span></td><td>2026-06-26</td></tr>
+        <tr><td>#ORD-1041</td><td>Bob Chen</td><td>Starter Kit</td><td>$149</td><td><span class="tag tag-ok">Delivered</span></td><td>2026-06-26</td></tr>
+        <tr><td>#ORD-1040</td><td>Carol Wang</td><td>Enterprise</td><td>$999</td><td><span class="tag tag-warn">Pending</span></td><td>2026-06-25</td></tr>
+        <tr><td>#ORD-1039</td><td>Dave Liu</td><td>Pro Plan</td><td>$299</td><td><span class="tag tag-info">Shipping</span></td><td>2026-06-25</td></tr>
+        <tr><td>#ORD-1038</td><td>Eve Zhang</td><td>Basic</td><td>$79</td><td><span class="tag tag-ok">Delivered</span></td><td>2026-06-24</td></tr>
+      </table>
+      <div class="pagination">
+        <span>‹</span><span class="active">1</span><span>2</span><span>3</span><span>›</span>
+      </div>
+    </div>
+
+    <div style="background:#fff;border-radius:8px;padding:20px;margin-top:24px;box-shadow:0 1px 2px rgba(0,0,0,0.06)">
+      <h3 style="font-size:14px;color:#262626;margin-bottom:12px">📁 项目结构</h3>
+      <pre style="color:#8c8c8c;font-size:12px;line-height:1.8">admin-dashboard/
+├── src/
+│   ├── main.tsx              ← React 入口
+│   ├── App.tsx               ← 布局 · 侧边栏 · 暗色模式 · 路由
+│   └── components/
+│       ├── Dashboard.tsx     ← KPI 卡片 + Recharts 图表
+│       └── DataTable.tsx     ← 可搜索 · 可筛选 · 分页表格
+├── package.json
+├── vite.config.ts
+└── README.md</pre>
+    </div>
+  </div>
+</div>
+<script>
+function toggleDark(){
+  const b = document.body;
+  const isDark = b.style.background === 'rgb(20, 20, 28)';
+  if(isDark){
+    b.style.background='#f0f2f5'; b.style.color='';
+    document.querySelector('.content').style.color='';
+  }else{
+    b.style.background='#14141c'; b.style.color='#c9d1d9';
+  }
+}
+</script>
+</body>
+</html>

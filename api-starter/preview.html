@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>API Starter — Preview</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0d1117; color: #c9d1d9; padding: 0}
+.topbar{background: #161b22; border-bottom: 1px solid #30363d; padding: 12px 24px; display:flex; align-items:center; gap:12px}
+.topbar .logo{font-weight:700; font-size:18px; color:#58a6ff}
+.topbar .badge{background:#23863622; color:#3fb950; border:1px solid #238636; border-radius:12px; padding:2px 10px; font-size:12px; font-weight:600}
+.main{padding: 32px 48px; max-width: 1100px; margin:0 auto}
+.info{display:flex; gap:24px; margin-bottom:32px}
+.info .card{flex:1; background:#161b22; border:1px solid #30363d; border-radius:8px; padding:20px}
+.info .card h3{color:#58a6ff; font-size:14px; margin-bottom:8px}
+.info .card p{font-size:13px; color:#8b949e; line-height:1.6}
+.endpoint{margin-bottom:16px}
+.endpoint .method{display:inline-block; padding:4px 12px; border-radius:14px; font-size:12px; font-weight:700; margin-right:10px}
+.get{background:#1f6feb22; color:#58a6ff; border:1px solid #1f6feb44}
+.post{background:#23863622; color:#3fb950; border:1px solid #23863644}
+.put{background:#d2991d22; color:#e3b341; border:1px solid #d2991d44}
+.delete{background:#da363322; color:#f85149; border:1px solid #da363344}
+.endpoint .path{font-family:Consolas,monospace; font-size:14px; color:#c9d1d9}
+.endpoint .desc{display:block; margin-left:68px; font-size:12px; color:#8b949e; margin-top:4px}
+.section{background:#161b22; border:1px solid #30363d; border-radius:8px; padding:24px; margin-bottom:24px}
+.section h2{font-size:16px; color:#58a6ff; margin-bottom:16px; border-bottom:1px solid #30363d; padding-bottom:12px}
+.try-btn{display:inline-block; padding:8px 20px; background:#238636; color:#fff; border:none; border-radius:6px; font-size:13px; cursor:pointer; font-weight:600}
+.try-btn:hover{background:#2ea043}
+.response{background:#0d1117; border:1px solid #30363d; border-radius:6px; padding:16px; margin-top:12px; font-family:Consolas,monospace; font-size:13px; display:none}
+.response.show{display:block}
+.json-key{color:#79c0ff}
+.json-string{color:#a5d6ff}
+.json-number{color:#79c0ff}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <span class="logo">API Starter</span>
+  <span class="badge">v1.0.0</span>
+  <span style="color:#8b949e;font-size:13px;margin-left:auto">OAS 3.1</span>
+</div>
+<div class="main">
+  <div class="info">
+    <div class="card">
+      <h3>📦 技术栈</h3>
+      <p>FastAPI · SQLAlchemy 2.0 · Pydantic v2 · JWT Auth · Async PostgreSQL</p>
+    </div>
+    <div class="card">
+      <h3>⚡ 性能</h3>
+      <p>全异步 · 自动 OpenAPI 文档 · CORS 预配置 · Docker 即用</p>
+    </div>
+    <div class="card">
+      <h3>🔐 认证</h3>
+      <p>JWT 登录/刷新/登出 · 密码哈希 · 令牌黑名单 · 角色权限</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>API 端点总览</h2>
+    <div class="endpoint">
+      <span class="method get">GET</span><span class="path">/health</span>
+      <span class="desc">健康检查 — 返回服务状态和版本号</span>
+    </div>
+    <div class="endpoint">
+      <span class="method post">POST</span><span class="path">/auth/register</span>
+      <span class="desc">用户注册 — email + password → JWT tokens</span>
+    </div>
+    <div class="endpoint">
+      <span class="method post">POST</span><span class="path">/auth/login</span>
+      <span class="desc">用户登录 — 返回 access_token + refresh_token</span>
+    </div>
+    <div class="endpoint">
+      <span class="method post">POST</span><span class="path">/auth/refresh</span>
+      <span class="desc">刷新令牌 — 用 refresh_token 换新 access_token</span>
+    </div>
+    <div class="endpoint">
+      <span class="method post">POST</span><span class="path">/auth/logout</span>
+      <span class="desc">登出 — 将当前 token 加入黑名单</span>
+    </div>
+    <div class="endpoint">
+      <span class="method get">GET</span><span class="path">/users/me</span>
+      <span class="desc">获取当前用户信息（需认证）</span>
+    </div>
+    <div class="endpoint">
+      <span class="method put">PUT</span><span class="path">/users/me</span>
+      <span class="desc">更新当前用户资料（需认证）</span>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>快速体验</h2>
+    <p style="color:#8b949e;font-size:13px;margin-bottom:16px">点击按钮模拟 API 调用</p>
+    <button class="try-btn" onclick="tryHealth()">GET /health</button>
+    <div id="healthResp" class="response"></div>
+  </div>
+
+  <div class="section">
+    <h2>项目结构</h2>
+    <pre style="color:#8b949e;font-size:13px;line-height:1.8">api-starter/
+├── app/
+│   ├── main.py          ← FastAPI 入口 · CORS · 健康检查
+│   ├── config.py        ← 环境变量配置
+│   ├── database.py      ← 异步 SQLAlchemy 引擎
+│   ├── models/          ← ORM 模型 (User, Token, ...)
+│   ├── schemas/         ← Pydantic 请求/响应校验
+│   └── routers/         ← API 路由 (auth, users, ...)
+├── tests/               ← pytest 测试
+├── requirements.txt
+└── README.md</pre>
+  </div>
+</div>
+<script>
+function tryHealth(){
+  const r = document.getElementById('healthResp');
+  r.classList.add('show');
+  r.innerHTML = `<span class="json-key">HTTP</span> 200 OK
+{
+  <span class="json-key">"status"</span>: <span class="json-string">"ok"</span>,
+  <span class="json-key">"version"</span>: <span class="json-string">"1.0.0"</span>,
+  <span class="json-key">"database"</span>: <span class="json-string">"connected"</span>,
+  <span class="json-key">"uptime"</span>: <span class="json-number">127.5</span>
+}`;
+}
+</script>
+</body>
+</html>

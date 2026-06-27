@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Web Scraper — Preview</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0d1117; color: #c9d1d9; padding: 24px 48px}
+.container{max-width:1000px;margin:0 auto}
+h1{font-size:24px;color:#58a6ff;margin-bottom:8px}
+.subtitle{color:#8b949e;font-size:13px;margin-bottom:32px}
+/* Terminal */
+.terminal{background:#161b22; border:1px solid #30363d; border-radius:8px; padding:20px; font-family:Consolas,monospace; font-size:13px; margin-bottom:24px}
+.cmd{color:#58a6ff}
+.output{color:#c9d1d9}
+.success{color:#3fb950}
+.warn{color:#d2991d}
+.dim{color:#8b949e}
+.stats{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:24px}
+.stat{background:#161b22; border:1px solid #30363d; border-radius:8px; padding:16px; text-align:center}
+.stat .val{font-size:28px; font-weight:700; color:#58a6ff}
+.stat .lbl{font-size:12px; color:#8b949e; margin-top:4px}
+/* Results table */
+.table-wrap{background:#161b22; border:1px solid #30363d; border-radius:8px; overflow:hidden; margin-bottom:24px}
+.table-wrap h3{padding:14px 20px; font-size:14px; border-bottom:1px solid #30363d; color:#c9d1d9}
+table{width:100%;border-collapse:collapse}
+th{text-align:left;padding:10px 20px;font-size:12px;color:#8b949e;font-weight:600;text-transform:uppercase;background:#0d1117}
+td{padding:10px 20px;font-size:13px;border-bottom:1px solid #21262d}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#1c2128}
+/* Config preview */
+.config-preview{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:24px}
+.yaml-block{background:#161b22; border:1px solid #30363d; border-radius:8px; padding:16px; font-family:Consolas,monospace; font-size:12px; line-height:1.7}
+.yaml-block .key{color:#79c0ff}
+.yaml-block .str{color:#a5d6ff}
+.yaml-block .num{color:#79c0ff}
+.yaml-block .comment{color:#8b949e; font-style:italic}
+.features{background:#161b22; border:1px solid #30363d; border-radius:8px; padding:20px; margin-bottom:24px}
+.features h3{font-size:14px; color:#c9d1d9; margin-bottom:12px}
+.feature-row{display:flex; gap:16px; flex-wrap:wrap}
+.feature-tag{background:#1f6feb22; color:#58a6ff; border:1px solid #1f6feb44; border-radius:20px; padding:6px 16px; font-size:12px}
+.structure{background:#161b22; border:1px solid #30363d; border-radius:8px; padding:20px}
+.structure h3{font-size:14px; color:#c9d1d9; margin-bottom:12px}
+.structure pre{color:#8b949e; font-size:12px; line-height:1.8}
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>🕷️ Web Scraper Template</h1>
+  <p class="subtitle">Multi-site async scraping with Playwright anti-detection</p>
+
+  <div class="stats">
+    <div class="stat"><div class="val">5</div><div class="lbl">Items Scraped</div></div>
+    <div class="stat"><div class="val">0.8s</div><div class="lbl">Total Time</div></div>
+    <div class="stat"><div class="val">CSV</div><div class="lbl">Output Format</div></div>
+  </div>
+
+  <div class="terminal">
+    <p><span class="dim">PS E:\portfolio></span> <span class="cmd">python run.py --config sites/demo.yaml</span></p>
+    <p><span class="success">[demo-jobs]</span> <span class="output">Starting scrape...</span></p>
+    <p class="output">  → file:///sites/demo.html</p>
+    <p class="output">    <span class="success">5 items extracted</span></p>
+    <p><span class="success">[demo-jobs]</span> <span class="output">Done. Total: 5 items</span></p>
+    <p><span class="warn">Saved 5 items</span> <span class="output">→ output/demo.csv</span></p>
+  </div>
+
+  <div class="table-wrap">
+    <h3>📊 输出: demo.csv</h3>
+    <table>
+      <tr><th>Title</th><th>Company</th><th>Salary</th></tr>
+      <tr><td>Senior Python Developer</td><td>TechCorp Inc.</td><td>$120k - $150k</td></tr>
+      <tr><td>Data Engineer</td><td>DataFlow Ltd.</td><td>$100k - $130k</td></tr>
+      <tr><td>Full-Stack Developer</td><td>WebWorks GmbH</td><td>$90k - $120k</td></tr>
+      <tr><td>ML Engineer</td><td>AI Labs</td><td>$130k - $160k</td></tr>
+      <tr><td>DevOps Specialist</td><td>CloudFirst</td><td>$110k - $140k</td></tr>
+    </table>
+  </div>
+
+  <div class="config-preview">
+    <div class="yaml-block">
+      <span class="comment"># sites/demo.yaml</span><br>
+      <span class="key">name:</span> <span class="str">"demo-jobs"</span><br>
+      <span class="key">start_urls:</span><br>
+      &nbsp;&nbsp;- <span class="str">"file:///sites/demo.html"</span><br>
+      <span class="key">selectors:</span><br>
+      &nbsp;&nbsp;<span class="key">title:</span> <span class="str">"h2.job-title"</span><br>
+      &nbsp;&nbsp;<span class="key">company:</span> <span class="str">"span.company"</span><br>
+      &nbsp;&nbsp;<span class="key">salary:</span> <span class="str">"span.salary"</span><br>
+      <span class="key">output_format:</span> <span class="str">"csv"</span>
+    </div>
+    <div class="features">
+      <h3>🛡️ 反检测特性</h3>
+      <div class="feature-row">
+        <span class="feature-tag">隐藏 WebDriver 标记</span>
+        <span class="feature-tag">随机 User-Agent</span>
+        <span class="feature-tag">随机视口</span>
+        <span class="feature-tag">请求间延时</span>
+        <span class="feature-tag">自动分页</span>
+        <span class="feature-tag">CSV / JSON</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="structure">
+    <h3>📁 项目结构</h3>
+    <pre>scraper-template/
+├── scraper/
+│   └── engine.py       ← 反检测爬虫引擎 (StealthScraper)
+├── sites/              ← YAML 站点配置 (零代码换站)
+│   ├── demo.yaml       ← 本地演示 (5条职位)
+│   └── hackernews.yaml ← HN 职位采集示例
+├── output/             ← 输出 CSV / JSON
+├── run.py              ← 命令行入口
+├── requirements.txt
+└── README.md</pre>
+  </div>
+</div>
+</body>
+</html>
