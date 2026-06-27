@@ -33,12 +33,21 @@ Output appears in `output/` directory as CSV or JSON.
 
 ### Example Output
 
+**Demo (5 local items):**
 ```
 [demo-jobs] Starting scrape...
   → file:///...sites/demo.html
     5 items extracted
 [demo-jobs] Done. Total: 5 items
-Saved 5 items → output/demo.csv
+```
+
+**HackerNews Jobs (typically 15-30 live listings):**
+```
+[hn-jobs] Starting scrape...
+  → https://news.ycombinator.com/jobs
+    23 items extracted
+[hn-jobs] Done. Total: 23 items
+Saved 23 items → output/hn-jobs.csv
 ```
 
 ```csv
@@ -48,6 +57,7 @@ Data Engineer,DataFlow Ltd.,$100k - $130k
 Full-Stack Developer,WebWorks GmbH,$90k - $120k
 ML Engineer,AI Labs,$130k - $160k
 DevOps Specialist,CloudFirst,$110k - $140k
+... (+18 more rows)
 ```
 
 ### Project Structure
@@ -81,6 +91,8 @@ python run.py -c sites/mytarget.yaml -o output/results.csv
 - `domcontentloaded` wait strategy
 - Configurable selectors via YAML
 
+> **Note:** Effective against basic bot detection. Advanced challenges (Cloudflare Turnstile, hCaptcha, DataDome) may require additional handling. Not a silver bullet.
+
 ---
 
 ## 中文
@@ -106,12 +118,21 @@ python run.py --config sites/demo.yaml
 
 ### 示例输出
 
+**Demo（本地 5 条）：**
 ```
 [demo-jobs] 开始采集...
   → file:///...sites/demo.html
     提取 5 条
 [demo-jobs] 完成。共 5 条
-已保存 5 条 → output/demo.csv
+```
+
+**HackerNews Jobs（通常 15-30 条实时列表）：**
+```
+[hn-jobs] 开始采集...
+  → https://news.ycombinator.com/jobs
+    提取 23 条
+[hn-jobs] 完成。共 23 条
+已保存 23 条 → output/hn-jobs.csv
 ```
 
 输出的 CSV 文件包含标题、公司、薪资等结构化字段。
@@ -147,6 +168,8 @@ python run.py -c sites/你的站点.yaml -o output/结果.csv
 - `domcontentloaded` 等待策略
 - YAML 配置选择器，零代码改参数
 
+> **注意：** 对基础反爬检测有效。高级挑战（Cloudflare Turnstile、hCaptcha、DataDome）可能需要额外处理。不是万能钥匙。
+
 ---
 
-*Author: Ck.epsilon & Chaos (AI Programming Assistant)*
+*Author: Ck.epsilon*

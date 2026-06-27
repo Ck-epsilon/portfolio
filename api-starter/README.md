@@ -8,7 +8,7 @@
 
 ![Python](https://img.shields.io/badge/python-3.10+-blue) ![FastAPI](https://img.shields.io/badge/fastapi-0.100+-009688) ![Docker](https://img.shields.io/badge/docker-ready-2496ED)
 
-Production-ready FastAPI scaffold with JWT auth, async database, CORS, health checks. 8 endpoints in <300 LOC — deploy in 30 seconds.
+Production-ready FastAPI scaffold with JWT auth, async database, CORS, health checks. 8 endpoints, minimal boilerplate — deploy in 30 seconds.
 
 ### Supported Environment
 
@@ -164,4 +164,4 @@ api-starter/
 
 ---
 
-*Author: Ck.epsilon & Chaos (AI Programming Assistant)*
+*Author: Ck.epsilon*

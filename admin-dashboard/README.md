@@ -147,4 +147,4 @@ admin-dashboard/
 
 ---
 
-*Author: Ck.epsilon & Chaos (AI Programming Assistant)*
+*Author: Ck.epsilon*

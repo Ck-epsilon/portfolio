@@ -10,7 +10,9 @@
 
 A production-grade web scraping dashboard with real-time progress streaming. Built to demonstrate async Python, WebSocket, Playwright, and task queue architecture — all in one clean project.
 
-> **Performance** (tested on i7-12700H, 32 GB DDR5): handles 50+ concurrent scrape tasks with sub-second WebSocket log streaming.
+> **Performance** (tested on i7-12700H, 32 GB DDR5): handles 50+ concurrent single-page scrape tasks with sub-second WebSocket log streaming.
+>
+> *Per-task: one URL, CSS-selector extraction, no pagination. Throughput depends on target site response time.*
 
 ### Supported Environment
 
@@ -19,6 +21,7 @@ A production-grade web scraping dashboard with real-time progress streaming. Bui
 | Python | 3.10+ | 3.10.20 ✅ |
 | FastAPI | 0.110+ | ✅ |
 | Playwright | 1.44+ | ✅ |
+| Browser | Chromium (Playwright-managed) | ✅ |
 | Uvicorn | 0.30+ | ✅ |
 
 ### Quick Start
@@ -35,7 +38,13 @@ python -m http.server 3000 --directory ../frontend
 
 Open http://localhost:3000.
 
+> Press `Ctrl+C` in each terminal to stop the backend and frontend servers.
+
+> Press `Ctrl+C` in each terminal to stop.
+
 ### Features
+
+![Scraper Dashboard — Real-time task monitoring with progress bar, log stream, and results table](./screenshots/dashboard.png)
 
 | Feature | Description |
 |---------|-------------|
@@ -45,6 +54,8 @@ Open http://localhost:3000.
 | **Structured Extraction** | JSON-defined field schemas for precise data extraction |
 | **CSV Export** | One-click download of scrape results |
 | **Live Dashboard** | Single-file HTML with progress bar, log stream, searchable results table |
+
+⚠️ **Designed for publicly accessible data.** Respect robots.txt and rate limits. Not intended for circumventing authentication, paywalls, or anti-bot protections.
 
 ### API Endpoints
 
@@ -82,7 +93,9 @@ scraper-dashboard/
 
 生产级爬虫实时监控面板，展示异步Python、WebSocket、Playwright、任务队列架构——一个项目看清全部硬实力。
 
-> **性能**（实测 i7-12700H, 32 GB DDR5）：支持 50+ 并发爬虫任务，WebSocket 日志推流延迟 < 1 秒。
+> **性能**（实测 i7-12700H, 32 GB DDR5）：支持 50+ 并发单页爬虫任务，WebSocket 日志推流延迟 < 1 秒。
+>
+> *每任务：一个 URL、CSS 选择器提取、无分页。吞吐量取决于目标站点响应速度。*
 
 ### 运行环境
 
@@ -91,6 +104,7 @@ scraper-dashboard/
 | Python | 3.10+ | 3.10.20 ✅ |
 | FastAPI | 0.110+ | ✅ |
 | Playwright | 1.44+ | ✅ |
+| 浏览器 | Chromium (Playwright 管理) | ✅ |
 | Uvicorn | 0.30+ | ✅ |
 
 ### 快速启动
@@ -107,7 +121,11 @@ python -m http.server 3000 --directory ../frontend
 
 浏览器打开 http://localhost:3000。
 
+> 在每个终端按 `Ctrl+C` 停止服务。
+
 ### 核心功能
+
+![Scraper Dashboard — 实时任务监控：进度条、日志流、结果表](./screenshots/dashboard.png)
 
 | 功能 | 说明 |
 |------|------|
@@ -117,6 +135,8 @@ python -m http.server 3000 --directory ../frontend
 | **结构化提取** | JSON 定义字段模式，精确提取数据 |
 | **CSV 导出** | 一键下载抓取结果 |
 | **实时仪表盘** | 单文件 HTML，含进度条、日志流、可搜索结果表 |
+
+⚠️ **仅用于公开可访问数据。** 请遵守 robots.txt 和速率限制。不得用于绕过认证、付费墙或反爬保护。
 
 ### API 接口
 
@@ -133,4 +153,4 @@ python -m http.server 3000 --directory ../frontend
 
 ---
 
-*Author: Ck.epsilon & Chaos (AI Programming Assistant)*
+*Author: Ck.epsilon*

@@ -10,7 +10,7 @@
 
 A full-stack AI development platform demonstrating five core AI capabilities in a single project: LLM integration, Function Calling, multi-agent orchestration, WebSocket streaming, and clean web UI.
 
-> **Performance** (tested on i7-12700H, 32 GB DDR5): 3-agent orchestration with <1s tool-call roundtrip, streaming chat at 30+ tokens/sec.
+> **Performance** (tested on i7-12700H, 32 GB DDR5): 3-agent orchestration with <1s tool-call roundtrip, sub-second first-token latency, steady streaming with no buffering pauses.
 
 ### Supported Environment
 
@@ -22,17 +22,6 @@ A full-stack AI development platform demonstrating five core AI capabilities in 
 | httpx | 0.27+ | ✅ |
 | Uvicorn | 0.30+ | ✅ |
 
-### System Requirements
-
-| Component | Minimum | Recommended |
-|-----------|---------|-------------|
-| RAM | 8 GB | 16 GB |
-| Disk | 10 GB free | 20 GB SSD |
-| GPU | Not required | NVIDIA (CUDA) for faster inference |
-| Model (qwen2.5:7b) | ~4 GB RAM | ~5 GB RAM with overhead |
-
-> 💡 On machines with <12 GB RAM, use `ollama pull qwen2.5:3b` instead for lighter resource usage.
-
 ### Quick Start
 
 ```bash
@@ -40,7 +29,7 @@ A full-stack AI development platform demonstrating five core AI capabilities in 
 # Start Ollama (local LLM server)
 ollama serve
 
-# Pull a model (first time only)
+# Pull a model (first time only — downloads ~4.5 GB, may take 5-15 min)
 ollama pull qwen2.5:7b
 
 # Start the backend
@@ -52,6 +41,8 @@ uvicorn main:app --port 8800 --reload
 Open `frontend/index.html` in a browser.
 
 ### Five Core Capabilities
+
+![AI Workbench — Three-column layout with agents, streaming chat, and tools panel](./screenshots/workbench.png)
 
 | # | Capability | Implementation |
 |---|-----------|---------------|
@@ -90,6 +81,22 @@ ai-workbench/
 └── README.md
 ```
 
+### Screenshot
+
+![AI Workbench](./screenshots/workbench.png)
+
+### System Requirements
+
+| Component | Minimum | Recommended |
+|-----------|---------|-------------|
+| RAM | 8 GB | 16 GB |
+| Disk | 10 GB free | 20 GB SSD |
+| GPU | Not required (CPU-only works; expect 2-3x slower token generation) | NVIDIA (CUDA) for faster inference |
+| Model (qwen2.5:7b) | ~4 GB RAM | ~5 GB RAM with overhead |
+
+> 💡 On machines with <12 GB RAM, use `ollama pull qwen2.5:3b` instead for lighter resource usage.
+> 💡 CPU-only inference works but expect 2-3× slower token generation compared to GPU.
+
 **→ [Open Live Preview](preview.html)** — zero-dependency interactive demo
 
 ---
@@ -117,7 +124,7 @@ ai-workbench/
 # 启动 Ollama（本地大模型服务）
 ollama serve
 
-# 首次拉取模型
+# 首次拉取模型（约 4.5 GB，可能需要 5-15 分钟）
 ollama pull qwen2.5:7b
 
 # 启动后端
@@ -129,6 +136,8 @@ uvicorn main:app --port 8800 --reload
 浏览器打开 `frontend/index.html` 即可使用。
 
 ### 五大核心能力
+
+![AI Workbench — 三栏布局：Agent面板、流式对话、工具面板](./screenshots/workbench.png)
 
 | # | 能力 | 实现方式 |
 |---|------|---------|
@@ -153,19 +162,36 @@ uvicorn main:app --port 8800 --reload
 
 **→ [打开实时预览](preview.html)** — 零依赖交互演示
 
+### 项目架构
+
+```
+ai-workbench/
+├── backend/
+│   ├── main.py            # FastAPI 应用 + WebSocket + REST
+│   ├── llm_client.py      # 多模型 LLM 客户端 (Ollama/OpenAI/通义)
+│   ├── agent_engine.py    # 多 Agent 编排引擎
+│   ├── tools.py           # Function Calling 工具注册
+│   └── requirements.txt
+├── frontend/
+│   └── index.html         # 单文件 AI 工作台（零依赖）
+├── preview.html           # 静态演示预览
+└── README.md
+```
+
 ### 系统要求
 
 | 组件 | 最低 | 推荐 |
 |------|------|------|
 | 内存 | 8 GB | 16 GB |
 | 磁盘 | 10 GB 空闲 | 20 GB SSD |
-| GPU | 不需要 | NVIDIA (CUDA) 可加速推理 |
+| GPU | 不需要 (纯 CPU 可用；预期生成速度比 GPU 慢 2-3 倍) | NVIDIA (CUDA) 可加速推理 |
 | 模型 (qwen2.5:7b) | ~4 GB 内存 | ~5 GB（含开销） |
 
 > 💡 若机器内存 < 12 GB，改用 `ollama pull qwen2.5:3b` 降低资源占用。
+> 💡 纯 CPU 推理可用，但生成速度约为 GPU 的 1/3。
 
-> **性能**（实测 i7-12700H, 32 GB DDR5）：3 Agent 编排工具调用往返 < 1 秒，流式输出 30+ tokens/秒。
+> **性能**（实测 i7-12700H, 32 GB DDR5）：3 Agent 编排工具调用往返 < 1 秒，首 Token 亚秒延迟，稳定流式无缓冲卡顿。
 
 ---
 
-*Author: Ck.epsilon & Chaos (AI Programming Assistant)*
+*Author: Ck.epsilon*
