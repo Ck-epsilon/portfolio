@@ -1,3 +1,4 @@
+# Author: Ck.epsilon & Chaos (AI Programming Assistant)
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
