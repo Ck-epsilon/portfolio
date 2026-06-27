@@ -17,10 +17,11 @@
   --link: #0066cc;
   --card-bg: #ffffff;
   --border: rgba(0,0,0,0.08);
+  --purple: #af52de;
   --nav-height: 44px;
   --max-width: 1024px;
   --font: system-ui, -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif;
-  --font-display: "SF Pro Display",system-ui, -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-display: system-ui, -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 @media (prefers-color-scheme: dark){
   :root{
@@ -39,11 +40,8 @@ body{
   background:var(--bg);
   -webkit-font-smoothing:antialiased;
   -moz-osx-font-smoothing:grayscale;
-  font-size:17px;
-  line-height:1.47059;
-  letter-spacing:-0.022em;
+  font-size:17px;line-height:1.47059;letter-spacing:-0.022em;
 }
-/* Navigation */
 nav{
   position:sticky;top:0;z-index:100;
   height:var(--nav-height);
@@ -63,112 +61,65 @@ nav .links{display:flex;gap:24px}
 nav .links a{font-size:12px;font-weight:400;color:var(--text);text-decoration:none;letter-spacing:-0.01em;opacity:0.8;transition:opacity .2s}
 nav .links a:hover{opacity:1;color:var(--link)}
 
-/* Hero — product-page style */
-.hero{
-  text-align:center;
-  padding:96px 24px 72px;
-  max-width:var(--max-width);margin:0 auto;
-}
-.hero .headline{
-  font-family:var(--font-display);
-  font-size:48px;font-weight:700;
-  letter-spacing:-0.003em;line-height:1.08349;
-  margin-bottom:12px;
-}
+.hero{text-align:center;padding:96px 24px 72px;max-width:var(--max-width);margin:0 auto}
+.hero .headline{font-family:var(--font-display);font-size:48px;font-weight:700;letter-spacing:-0.003em;line-height:1.08349;margin-bottom:12px}
 .hero .headline span{color:var(--blue)}
-.hero .subhead{
-  font-size:21px;font-weight:400;
-  color:var(--text-secondary);
-  letter-spacing:0.011em;line-height:1.381;
-  max-width:560px;margin:0 auto 32px;
-}
+.hero .subhead{font-size:21px;font-weight:400;color:var(--text-secondary);letter-spacing:0.011em;line-height:1.381;max-width:580px;margin:0 auto 32px}
 .hero .cta{display:flex;gap:16px;justify-content:center}
-.btn-primary,.btn-secondary{
-  font-size:17px;font-weight:400;
-  padding:11px 21px;border-radius:980px;
-  text-decoration:none;cursor:pointer;
-  letter-spacing:-0.022em;transition:all .15s;
-}
+.btn-primary,.btn-secondary{font-size:17px;font-weight:400;padding:11px 21px;border-radius:980px;text-decoration:none;cursor:pointer;letter-spacing:-0.022em;transition:all .15s}
 .btn-primary{background:var(--blue);color:#fff;border:none}
 .btn-primary:hover{background:var(--blue-hover)}
 .btn-secondary{background:transparent;color:var(--link);border:none}
 .btn-secondary:hover{text-decoration:underline}
 
-/* Sections */
 .section{padding:72px 24px}
 .section-inner{max-width:var(--max-width);margin:0 auto}
-.section-label{
-  font-size:12px;font-weight:600;letter-spacing:0.08em;
-  text-transform:uppercase;color:var(--text-secondary);
-  margin-bottom:16px;
-}
-.section-headline{
-  font-family:var(--font-display);
-  font-size:40px;font-weight:600;
-  letter-spacing:0em;line-height:1.1;
-  margin-bottom:12px;
-}
-.section-subhead{
-  font-size:19px;color:var(--text-secondary);
-  letter-spacing:0.012em;line-height:1.4211;
-  max-width:560px;margin-bottom:48px;
-}
+.section-label{font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-secondary);margin-bottom:16px}
+.section-headline{font-family:var(--font-display);font-size:40px;font-weight:600;letter-spacing:0em;line-height:1.1;margin-bottom:12px}
+.section-subhead{font-size:19px;color:var(--text-secondary);letter-spacing:0.012em;line-height:1.4211;max-width:560px;margin-bottom:48px}
 
-/* Project cards */
-.project-grid{
-  display:grid;grid-template-columns:repeat(3,1fr);gap:24px;
+/* Featured — horizontal cards */
+.featured-card{
+  display:grid;grid-template-columns:1fr 1fr;gap:0;
+  background:var(--card-bg);border:1px solid var(--border);
+  border-radius:18px;overflow:hidden;margin-bottom:24px;
+  transition:box-shadow .3s;
 }
+.featured-card:hover{box-shadow:0 8px 28px rgba(0,0,0,0.08)}
+.featured-preview{min-height:240px;display:flex}
+.featured-info{padding:36px 32px;display:flex;flex-direction:column;justify-content:center}
+.featured-info .tag{font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:12px;color:var(--blue)}
+.featured-info h3{font-size:24px;font-weight:600;letter-spacing:0.009em;line-height:1.16667;margin-bottom:8px}
+.featured-info p{font-size:14px;color:var(--text-secondary);line-height:1.42859;margin-bottom:16px}
+.featured-tech{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px}
+.featured-tech span{font-size:11px;font-weight:500;padding:4px 10px;background:var(--bg-elevated);border-radius:980px;color:var(--text-secondary);letter-spacing:-0.01em}
+.featured-links{display:flex;gap:16px;align-items:center}
+
+/* Project cards — 3-col grid */
+.project-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:0}
 .project-card{
-  background:var(--card-bg);
-  border-radius:18px;
-  box-shadow:0 4px 12px rgba(0,0,0,0.04);
-  overflow:hidden;
+  background:var(--card-bg);border-radius:18px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.04);overflow:hidden;
   text-decoration:none;color:var(--text);
   display:flex;flex-direction:column;
-  transition:box-shadow .3s cubic-bezier(0,0,0.2,1), transform .3s cubic-bezier(0,0,0.2,1);
+  transition:box-shadow .3s,transform .3s;
 }
-.project-card:hover{
-  box-shadow:0 8px 28px rgba(0,0,0,0.08);
-  transform:translateY(-2px);
-}
-.project-card .preview{
-  height:180px;display:flex;align-items:center;justify-content:center;
-  font-size:56px;
-}
+.project-card:hover{box-shadow:0 8px 28px rgba(0,0,0,0.08);transform:translateY(-2px)}
+.project-card .preview{height:180px;display:flex;align-items:center;justify-content:center;font-size:56px}
 .project-card .info{padding:24px 24px 28px;flex:1}
-.project-card .info .tag{
-  font-size:11px;font-weight:600;letter-spacing:0.06em;
-  text-transform:uppercase;margin-bottom:8px;display:block;
-}
-.project-card .info h3{
-  font-size:21px;font-weight:600;
-  letter-spacing:0.011em;line-height:1.19048;
-  margin-bottom:8px;
-}
-.project-card .info p{
-  font-size:14px;color:var(--text-secondary);
-  letter-spacing:-0.016em;line-height:1.42859;
-}
+.project-card .info .tag{font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:8px;display:block}
+.project-card .info h3{font-size:21px;font-weight:600;letter-spacing:0.011em;line-height:1.19048;margin-bottom:8px}
+.project-card .info p{font-size:14px;color:var(--text-secondary);line-height:1.42859}
 
 /* Tech grid */
 .tech-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border-radius:12px;overflow:hidden}
-.tech-item{
-  text-align:center;padding:28px 16px;background:var(--card-bg);
-  transition:background .2s;
-}
+.tech-item{text-align:center;padding:28px 16px;background:var(--card-bg);transition:background .2s}
 .tech-item:hover{background:var(--bg-elevated)}
 .tech-item .icon{font-size:32px;margin-bottom:8px}
 .tech-item .name{font-size:15px;font-weight:500;letter-spacing:-0.016em}
 .tech-item .detail{font-size:12px;color:var(--text-secondary);margin-top:4px}
 
-/* Footer */
-.footer{
-  max-width:var(--max-width);margin:0 auto;
-  padding:24px 24px 48px;
-  display:flex;justify-content:space-between;align-items:flex-start;
-  border-top:1px solid var(--border);
-  font-size:12px;color:var(--text-secondary);
-}
+.footer{max-width:var(--max-width);margin:0 auto;padding:24px 24px 48px;display:flex;justify-content:space-between;align-items:flex-start;border-top:1px solid var(--border);font-size:12px;color:var(--text-secondary)}
 .footer .copy{line-height:1.33337}
 .footer .links{display:flex;gap:20px}
 .footer .links a{font-size:12px;color:var(--text-secondary);text-decoration:none}
@@ -177,6 +128,9 @@ nav .links a:hover{opacity:1;color:var(--link)}
 @media (max-width:768px){
   .hero .headline{font-size:36px}
   .section-headline{font-size:32px}
+  .featured-card{grid-template-columns:1fr}
+  .featured-preview{min-height:140px}
+  .featured-links{flex-direction:column;align-items:flex-start}
   .project-grid{grid-template-columns:1fr}
   .tech-grid{grid-template-columns:repeat(2,1fr)}
 }
@@ -198,21 +152,75 @@ nav .links a:hover{opacity:1;color:var(--link)}
 
 <header class="hero">
   <h1 class="headline">Clean code.<br><span>Production ready.</span></h1>
-  <p class="subhead">Full‑stack developer. Python backends, data pipelines, React dashboards — built with obsessive attention to detail.</p>
+  <p class="subhead">Full‑stack developer. Python backends, web scraping, AI agent platforms, React dashboards — built with obsessive attention to detail.</p>
   <div class="cta">
     <a href="#work" class="btn-primary">View Work</a>
     <a href="https://github.com/Ck-epsilon/portfolio" class="btn-secondary">GitHub &#x2197;</a>
   </div>
 </header>
 
+<!-- Featured Projects -->
 <section class="section" id="work">
   <div class="section-inner">
-    <p class="section-label">Selected Work</p>
-    <h2 class="section-headline">What I build.</h2>
-    <p class="section-subhead">Three proven templates. Pick one, I customize it for your business.</p>
+    <p class="section-label">Featured Projects</p>
+    <h2 class="section-headline">Real products, not just templates.</h2>
+    <p class="section-subhead">Two fully‑built applications demonstrating end‑to‑end production capability — from web scraping pipelines to multi‑agent AI orchestration.</p>
+
+    <!-- Scraper Pro -->
+    <a href="scraper-dashboard/" class="featured-card" style="text-decoration:none;color:inherit;display:grid">
+      <div class="featured-preview" style="background:linear-gradient(135deg,#1d1d1f 0%,#2d2d2f 100%);justify-content:center;align-items:center">
+        <div style="text-align:center;color:#86868b">
+          <div style="font-size:48px">&#x2699;</div>
+          <div style="font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;margin-top:8px">scraper-dashboard</div>
+        </div>
+      </div>
+      <div class="featured-info">
+        <span class="tag">Scraper Pro</span>
+        <h3>Real‑Time Web Scraping Dashboard.</h3>
+        <p>Playwright engine + async task queue + FastAPI REST &amp; WebSocket + single‑file dashboard with live log streaming, progress tracking, and one‑click CSV export.</p>
+        <div class="featured-tech">
+          <span>Python</span><span>Playwright</span><span>FastAPI</span><span>WebSocket</span><span>Async</span><span>CSV Export</span>
+        </div>
+        <div class="featured-links">
+          <div class="btn-primary">View Project</div>
+          <span style="font-size:14px;color:var(--link)">scraper-dashboard/ →</span>
+        </div>
+      </div>
+    </a>
+
+    <!-- AI Workbench -->
+    <a href="ai-workbench/" class="featured-card" style="text-decoration:none;color:inherit;display:grid">
+      <div class="featured-preview" style="background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%);justify-content:center;align-items:center">
+        <div style="text-align:center;color:#86868b">
+          <div style="font-size:48px">&#x1f916;</div>
+          <div style="font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;margin-top:8px">ai-workbench</div>
+        </div>
+      </div>
+      <div class="featured-info">
+        <span class="tag" style="color:var(--purple)">AI Agent Workbench</span>
+        <h3>Multi‑Agent AI Development Platform.</h3>
+        <p>Five capabilities in one: LLM integration (3 providers), Function Calling (5 tools), multi‑agent orchestration, streaming WebSocket chat, and a clean single‑file UI.</p>
+        <div class="featured-tech">
+          <span>Python</span><span>FastAPI</span><span>Ollama</span><span>OpenAI</span><span>WebSocket</span><span>Function Calling</span><span>Multi-Agent</span>
+        </div>
+        <div class="featured-links">
+          <div class="btn-primary">View Project</div>
+          <span style="font-size:14px;color:var(--link)">ai-workbench/ →</span>
+        </div>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- Starter Templates -->
+<section class="section">
+  <div class="section-inner">
+    <p class="section-label">Starter Templates</p>
+    <h2 class="section-headline">Three proven templates</h2>
+    <p class="section-subhead">Battle‑tested scaffolds that save weeks of boilerplate. Production‑ready from day one.</p>
     <div class="project-grid">
       <a href="api-starter/preview.html" class="project-card">
-        <div class="preview" style="background:linear-gradient(180deg,#0071e3 0%,#40c8ff 100%);font-size:64px">⚡</div>
+        <div class="preview" style="background:linear-gradient(180deg,#0071e3 0%,#40c8ff 100%);font-size:64px">&#x26A1;</div>
         <div class="info">
           <span class="tag" style="color:var(--blue)">Python · FastAPI</span>
           <h3>REST API Starter</h3>
@@ -220,7 +228,7 @@ nav .links a:hover{opacity:1;color:var(--link)}
         </div>
       </a>
       <a href="scraper-template/preview.html" class="project-card">
-        <div class="preview" style="background:linear-gradient(180deg,#34c759 0%,#30d158 100%);font-size:64px">🕷️</div>
+        <div class="preview" style="background:linear-gradient(180deg,#34c759 0%,#30d158 100%);font-size:64px">&#x1F577;</div>
         <div class="info">
           <span class="tag" style="color:#34c759">Python · Playwright</span>
           <h3>Web Scraper</h3>
@@ -228,7 +236,7 @@ nav .links a:hover{opacity:1;color:var(--link)}
         </div>
       </a>
       <a href="admin-dashboard/preview.html" class="project-card">
-        <div class="preview" style="background:linear-gradient(180deg,#ff9500 0%,#ff9f0a 100%);font-size:64px">📊</div>
+        <div class="preview" style="background:linear-gradient(180deg,#ff9500 0%,#ff9f0a 100%);font-size:64px">&#x1F4CA;</div>
         <div class="info">
           <span class="tag" style="color:#ff9500">React · TypeScript</span>
           <h3>Admin Dashboard</h3>
@@ -239,6 +247,7 @@ nav .links a:hover{opacity:1;color:var(--link)}
   </div>
 </section>
 
+<!-- Tech Stack -->
 <section class="section" id="stack">
   <div class="section-inner">
     <p class="section-label">Tech Stack</p>
@@ -246,13 +255,17 @@ nav .links a:hover{opacity:1;color:var(--link)}
     <p class="section-subhead">Battle‑tested tools. No hype.</p>
     <div class="tech-grid">
       <div class="tech-item"><div class="icon">🐍</div><div class="name">Python 3.10+</div><div class="detail">FastAPI · Flask · Pandas</div></div>
-      <div class="tech-item"><div class="icon">⚛️</div><div class="name">React 18</div><div class="detail">TypeScript · Ant Design 5</div></div>
+      <div class="tech-item"><div class="icon">🧠</div><div class="name">LLM Integration</div><div class="detail">Ollama · OpenAI · Tongyi</div></div>
       <div class="tech-item"><div class="icon">🎭</div><div class="name">Playwright</div><div class="detail">Stealth · Pagination · ETL</div></div>
+      <div class="tech-item"><div class="icon">🤖</div><div class="name">AI Agents</div><div class="detail">Function Calling · Tool Use</div></div>
+      <div class="tech-item"><div class="icon">🌐</div><div class="name">REST &amp; WebSocket</div><div class="detail">OpenAPI · Streaming · SSE</div></div>
+      <div class="tech-item"><div class="icon">⚛️</div><div class="name">React 18</div><div class="detail">TypeScript · Ant Design 5</div></div>
       <div class="tech-item"><div class="icon">🗄️</div><div class="name">Databases</div><div class="detail">PostgreSQL · MySQL · Redis</div></div>
       <div class="tech-item"><div class="icon">🔐</div><div class="name">JWT Auth</div><div class="detail">OAuth2 · RBAC · Refresh</div></div>
       <div class="tech-item"><div class="icon">📦</div><div class="name">Docker</div><div class="detail">Compose · CI/CD · Deploy</div></div>
-      <div class="tech-item"><div class="icon">🌐</div><div class="name">REST APIs</div><div class="detail">OpenAPI · Swagger · HATEOAS</div></div>
       <div class="tech-item"><div class="icon">⚡</div><div class="name">Async</div><div class="detail">asyncio · httpx · aiohttp</div></div>
+      <div class="tech-item"><div class="icon">🔌</div><div class="name">Function Calling</div><div class="detail">JSON Schema · Tool Chains</div></div>
+      <div class="tech-item"><div class="icon">🔄</div><div class="name">Multi-Agent</div><div class="detail">Orchestration · Context</div></div>
     </div>
   </div>
 </section>

@@ -1,9 +1,9 @@
 # Ck.epsilon — Freelance Portfolio / 自由职业作品集
 
-> Python Backend · Web Scraping · Frontend Dashboards  
-> Python 后端 · 数据采集 · 前端管理面板
+> Python Backend · Web Scraping · AI Agent Platforms · Frontend Dashboards  
+> Python 后端 · 数据采集 · AI 智能体平台 · 前端管理面板
 
-🌐 **Live Preview:** [Portfolio Home](https://htmlpreview.github.io/?https://github.com/Ck-epsilon/portfolio/blob/master/index.html) | [API Starter](https://htmlpreview.github.io/?https://github.com/Ck-epsilon/portfolio/blob/master/api-starter/preview.html) | [Web Scraper](https://htmlpreview.github.io/?https://github.com/Ck-epsilon/portfolio/blob/master/scraper-template/preview.html) | [Admin Dashboard](https://htmlpreview.github.io/?https://github.com/Ck-epsilon/portfolio/blob/master/admin-dashboard/preview.html)
+🌐 **Live Preview:** [Portfolio Home](https://htmlpreview.github.io/?https://github.com/Ck-epsilon/portfolio/blob/master/index.html) | [Scraper Pro](https://htmlpreview.github.io/?https://github.com/Ck-epsilon/portfolio/blob/master/scraper-dashboard/preview.html) | [AI Workbench](https://htmlpreview.github.io/?https://github.com/Ck-epsilon/portfolio/blob/master/ai-workbench/preview.html)
 
 > 💡 For cleaner URLs, enable **GitHub Pages** in repo Settings → Pages → Source: `master` branch, folder: `/ (root)`. Then visit `https://ck-epsilon.github.io/portfolio/`.
 
@@ -15,7 +15,7 @@
 
 ### About
 
-Full-stack developer specializing in Python REST APIs, web scraping pipelines, and modern admin dashboards. Clean code, production-ready, bilingual documentation.
+Full-stack developer specializing in Python REST APIs, web scraping pipelines, AI agent platforms, and modern admin dashboards. Clean code, production-ready, bilingual documentation.
 
 ### Supported Environments
 
@@ -27,30 +27,53 @@ Full-stack developer specializing in Python REST APIs, web scraping pipelines, a
 | npm | 9+ | 11.12.1 ✅ |
 | Browser | Chromium (for Playwright) | Edge/Chrome ✅ |
 
-### Sample Projects
+### Featured Projects
 
-#### 1. REST API Starter — [api-starter/](./api-starter)
-Production-ready FastAPI scaffold with JWT auth, async SQLAlchemy, Swagger docs.
+#### Scraper Pro — Real-Time Scraping Dashboard — [scraper-dashboard/](./scraper-dashboard)
 
-→ [Live Preview](https://htmlpreview.github.io/?https://github.com/Ck-epsilon/portfolio/blob/master/api-starter/preview.html)
-
-#### 2. Web Scraper Template — [scraper-template/](./scraper-template)
-Multi-site async scraper with Playwright, anti-detection, CSV/JSON export.
-
-→ [Live Preview](https://htmlpreview.github.io/?https://github.com/Ck-epsilon/portfolio/blob/master/scraper-template/preview.html)
-
-#### 3. Admin Dashboard — [admin-dashboard/](./admin-dashboard)
-React + TypeScript + Ant Design dashboard with dark mode, charts, data tables.
-
-→ [Live Preview](https://htmlpreview.github.io/?https://github.com/Ck-epsilon/portfolio/blob/master/admin-dashboard/preview.html)
-
-### Tech Stack
+A complete web scraping platform with Playwright engine, async task queue, FastAPI REST + WebSocket, and a single-file dashboard with live log streaming, progress tracking, and one-click CSV export.
 
 | Layer | Technologies |
 |-------|-------------|
+| Engine | Playwright (headless Chromium), CSS selectors, pagination |
+| Queue | asyncio.Queue + Semaphore, full task lifecycle |
+| API | FastAPI, REST (CRUD), WebSocket (real-time logs), CSV export |
+| Frontend | Single-file HTML5, WebSocket streaming, search, filter |
+
+→ [Live Preview](https://htmlpreview.github.io/?https://github.com/Ck-epsilon/portfolio/blob/master/scraper-dashboard/preview.html)
+
+#### AI Agent Workbench — Multi-Agent AI Platform — [ai-workbench/](./ai-workbench)
+
+A five-capability platform: LLM integration (3 providers), Function Calling (5 tools), multi-agent orchestration, streaming WebSocket chat, and a clean single-file UI.
+
+| Layer | Technologies |
+|-------|-------------|
+| LLM | Ollama (local), OpenAI-compatible, Tongyi Qwen |
+| Tools | Calculator, Get Time, Web Search, File Read, Code Executor |
+| Agents | Multi-agent orchestration with tool-calling loops (max 5 turns) |
+| API | FastAPI, WebSocket streaming, REST fallback |
+| Frontend | Single-file HTML5, 3-column layout, streaming chat |
+
+→ [Live Preview](https://htmlpreview.github.io/?https://github.com/Ck-epsilon/portfolio/blob/master/ai-workbench/preview.html)
+
+### Starter Templates
+
+| Project | Description | Stack | Preview |
+|---------|-------------|-------|---------|
+| [API Starter](./api-starter) | FastAPI + JWT auth + async database | Python, FastAPI, SQLAlchemy 2.0 | [Preview](https://htmlpreview.github.io/?https://github.com/Ck-epsilon/portfolio/blob/master/api-starter/preview.html) |
+| [Web Scraper](./scraper-template) | Playwright multi-site scraper + anti-detection | Python, Playwright, Pandas | [Preview](https://htmlpreview.github.io/?https://github.com/Ck-epsilon/portfolio/blob/master/scraper-template/preview.html) |
+| [Admin Dashboard](./admin-dashboard) | React + Ant Design dark mode | TypeScript, React 18, Ant Design 5 | [Preview](https://htmlpreview.github.io/?https://github.com/Ck-epsilon/portfolio/blob/master/admin-dashboard/preview.html) |
+
+### Tech Stack
+
+| Category | Technologies |
+|----------|-------------|
 | Backend | Python (FastAPI, Flask), REST APIs, JWT Auth |
+| LLM / AI | Ollama, OpenAI API, Tongyi Qwen, Function Calling |
+| AI Agents | Multi-Agent Orchestration, Tool Chains, Context Management |
 | Data | Playwright, Requests, Pandas, ETL Pipelines |
 | Frontend | React 18, TypeScript, Ant Design 5, Recharts |
+| Real-Time | WebSocket, SSE, Streaming Responses |
 | Database | PostgreSQL, MySQL, SQLite, Redis |
 | DevOps | Docker, Git, GitHub Actions |
 
@@ -66,7 +89,7 @@ React + TypeScript + Ant Design dashboard with dark mode, charts, data tables.
 
 ### 关于
 
-全栈开发者，专注 Python REST API、数据采集管道和现代化管理面板。代码整洁，可直接投产，文档中英双语。
+全栈开发者，专注 Python REST API、数据采集管道、AI 智能体平台和现代化管理面板。代码整洁，可直接投产，文档中英双语。
 
 ### 支持环境
 
@@ -78,13 +101,40 @@ React + TypeScript + Ant Design dashboard with dark mode, charts, data tables.
 | npm | 9+ | 11.12.1 ✅ |
 | 浏览器 | Chromium (Playwright用) | Edge/Chrome ✅ |
 
-### 示例项目
+### 重点项目
+
+#### Scraper Pro — 实时爬虫控制面板 — [scraper-dashboard/](./scraper-dashboard)
+
+完整的网页数据采集平台：Playwright 引擎、异步任务队列、FastAPI REST + WebSocket、单文件 Dashboard（实时日志流、进度跟踪、一键 CSV 导出）。
+
+→ [在线预览](https://htmlpreview.github.io/?https://github.com/Ck-epsilon/portfolio/blob/master/scraper-dashboard/preview.html)
+
+#### AI Agent Workbench — 多智能体 AI 平台 — [ai-workbench/](./ai-workbench)
+
+五能力合一平台：多模型 LLM 集成（3 家 Provider）、Function Calling（5 种工具）、多 Agent 编排、流式 WebSocket 对话、单文件 UI。
+
+→ [在线预览](https://htmlpreview.github.io/?https://github.com/Ck-epsilon/portfolio/blob/master/ai-workbench/preview.html)
+
+### 模板项目
 
 | 项目 | 描述 | 技术栈 | 预览 |
 |------|------|--------|------|
 | [API 后端脚手架](./api-starter) | FastAPI + JWT认证 + 异步数据库 | Python, FastAPI, SQLAlchemy 2.0 | [预览](https://htmlpreview.github.io/?https://github.com/Ck-epsilon/portfolio/blob/master/api-starter/preview.html) |
 | [爬虫模板](./scraper-template) | Playwright 多站采集 + 反检测 | Python, Playwright, Pandas | [预览](https://htmlpreview.github.io/?https://github.com/Ck-epsilon/portfolio/blob/master/scraper-template/preview.html) |
 | [管理面板](./admin-dashboard) | React + Ant Design 暗色模式 | TypeScript, React 18, Ant Design 5 | [预览](https://htmlpreview.github.io/?https://github.com/Ck-epsilon/portfolio/blob/master/admin-dashboard/preview.html) |
+
+### 技术栈
+
+| 类别 | 技术 |
+|------|------|
+| 后端 | Python (FastAPI, Flask), REST APIs, JWT 认证 |
+| LLM / AI | Ollama, OpenAI API, Tongyi Qwen, Function Calling |
+| AI 智能体 | 多 Agent 编排, 工具链, 上下文管理 |
+| 数据采集 | Playwright, Requests, Pandas, ETL 管道 |
+| 前端 | React 18, TypeScript, Ant Design 5, Recharts |
+| 实时通信 | WebSocket, SSE, 流式响应 |
+| 数据库 | PostgreSQL, MySQL, SQLite, Redis |
+| DevOps | Docker, Git, GitHub Actions |
 
 ### 联系方式
 
