@@ -1,0 +1,79 @@
+# ──────────────────────────────────────────────────────────────
+# Scraper Stack — Docker Compose
+# ──────────────────────────────────────────────────────────────
+# Services:
+#   scrapyd       — Scrapy daemon (HTTP API on :6800)
+#   backend       — FastAPI dashboard (API + WebSocket on :8000)
+#   frontend      — Nginx serving the dashboard UI on :80
+#
+# Start:  docker compose up -d
+# Stop:   docker compose down
+# Logs:   docker compose logs -f scrapyd
+# ──────────────────────────────────────────────────────────────
+
+version: "3.9"
+
+services:
+  # ── Scrapyd: Scrapy daemon ──────────────────────────────────
+  scrapyd:
+    build:
+      context: ./scrapy_project
+      dockerfile: ../Dockerfile.scrapyd
+    container_name: scraper-stack-scrapyd
+    ports:
+      - "6800:6800"
+    volumes:
+      - ./configs:/app/configs:ro
+      - scrapyd_output:/app/output
+      - scrapyd_logs:/app/logs
+      - scrapyd_eggs:/app/eggs
+      - scrapyd_dbs:/app/dbs
+    environment:
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      - CONFIGS_DIR=/app/configs
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6800/daemonstatus.json"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  # ── Backend: FastAPI dashboard API ──────────────────────────
+  backend:
+    build:
+      context: ./backend
+      dockerfile: ../Dockerfile.backend
+    container_name: scraper-stack-backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./configs:/app/configs:ro
+      - scrapyd_output:/app/output:ro
+    environment:
+      - SCRAPYD_URL=http://scrapyd:6800
+      - SCRAPYD_PROJECT=scraper_stack
+      - CONFIGS_DIR=/app/configs
+      - RESULTS_DIR=/app/output
+    depends_on:
+      scrapyd:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # ── Frontend: Nginx serving dashboard UI ────────────────────
+  frontend:
+    image: nginx:1.27-alpine
+    container_name: scraper-stack-frontend
+    ports:
+      - "${FRONTEND_PORT:-80}:80"
+    volumes:
+      - ./frontend/index.html:/usr/share/nginx/html/index.html:ro
+      - ./frontend/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  scrapyd_output:
+  scrapyd_logs:
+  scrapyd_eggs:
+  scrapyd_dbs:

@@ -1,0 +1,57 @@
+FROM python:3.11-slim
+
+# Install Scrapy system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
+    gcc \
+    libffi-dev \
+    libssl-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Install Python dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Install Scrapy project
+COPY scrapy.cfg .
+COPY scraper_stack/ scraper_stack/
+
+# Create output directories
+RUN mkdir -p /app/output /app/logs /app/eggs /app/dbs
+
+# Scrapyd configuration
+RUN echo '[scrapyd]\n\
+eggs_dir    = /app/eggs\n\
+logs_dir    = /app/logs\n\
+items_dir   =\n\
+jobs_to_keep = 50\n\
+dbs_dir     = /app/dbs\n\
+max_proc    = 0\n\
+max_proc_per_cpu = 4\n\
+finished_to_keep = 100\n\
+poll_interval = 5.0\n\
+bind_address = 0.0.0.0\n\
+http_port   = 6800\n\
+debug       = off\n\
+runner      = scrapyd.runner\n\
+application = scrapyd.app.application\n\
+launcher    = scrapyd.launcher.Launcher\n\
+webroot     = scrapyd.website.Root\n\
+[services]\n\
+schedule.json     = scrapyd.webservice.Schedule\n\
+cancel.json       = scrapyd.webservice.Cancel\n\
+addversion.json   = scrapyd.webservice.AddVersion\n\
+listprojects.json = scrapyd.webservice.ListProjects\n\
+listversions.json = scrapyd.webservice.ListVersions\n\
+listspiders.json  = scrapyd.webservice.ListSpiders\n\
+delproject.json   = scrapyd.webservice.DeleteProject\n\
+delversion.json   = scrapyd.webservice.DeleteVersion\n\
+listjobs.json     = scrapyd.webservice.ListJobs\n\
+daemonstatus.json = scrapyd.webservice.DaemonStatus\n\
+' > /etc/scrapyd/scrapyd.conf || true
+
+EXPOSE 6800
+
+CMD ["scrapyd"]

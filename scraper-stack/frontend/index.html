@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<!-- Author: Ck.epsilon & Chaos (AI Programming Assistant) -->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scraper Stack — Dashboard</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='28' font-size='28' font-family='serif' font-style='italic'>ε</text></svg>">
+<style>
+:root{
+  --bg: #ffffff;
+  --bg-elevated: #f5f5f7;
+  --bg-inset: #e8e8ed;
+  --text: #1d1d1f;
+  --text-secondary: #6e6e73;
+  --text-tertiary: #aeaeb2;
+  --blue: #0071e3;
+  --blue-hover: #0077ed;
+  --green: #30d158;
+  --red: #ff453a;
+  --orange: #ff9f0a;
+  --border: rgba(0,0,0,0.08);
+  --border-strong: rgba(0,0,0,0.16);
+  --radius: 12px;
+  --radius-sm: 8px;
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+  --font-mono: "SF Mono", "Fira Code", "Consolas", monospace;
+  --nav-h: 52px;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg: #000000;
+    --bg-elevated: #1c1c1e;
+    --bg-inset: #2c2c2e;
+    --text: #f5f5f7;
+    --text-secondary: #98989d;
+    --text-tertiary: #636366;
+    --border: rgba(255,255,255,0.10);
+    --border-strong: rgba(255,255,255,0.18);
+  }
+}
+
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:var(--font);
+  color:var(--text);
+  background:var(--bg);
+  -webkit-font-smoothing:antialiased;
+  font-size:15px;line-height:1.47;letter-spacing:-0.015em;
+}
+
+/* ── Nav ─────────────────────────────────── */
+nav{
+  position:sticky;top:0;z-index:100;
+  height:var(--nav-h);
+  background:rgba(255,255,255,0.72);
+  -webkit-backdrop-filter:saturate(180%) blur(20px);
+  backdrop-filter:saturate(180%) blur(20px);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;padding:0 24px;gap:8px;
+}
+@media (prefers-color-scheme: dark){
+  nav{background:rgba(0,0,0,0.72)}
+}
+nav .logo{font-weight:600;font-size:16px;letter-spacing:-0.01em}
+nav .badge{
+  font-size:11px;font-weight:500;color:var(--text-secondary);
+  background:var(--bg-elevated);padding:2px 8px;border-radius:99px;
+  border:1px solid var(--border);
+}
+nav .spacer{flex:1}
+nav .status{
+  font-size:13px;color:var(--text-secondary);display:flex;align-items:center;gap:6px;
+}
+nav .dot{width:7px;height:7px;border-radius:50%;background:var(--green)}
+nav .dot.degraded{background:var(--orange)}
+
+/* ── Layout ──────────────────────────────── */
+main{max-width:1024px;margin:0 auto;padding:32px 24px 80px}
+section{margin-bottom:40px}
+section h2{
+  font-size:13px;font-weight:600;text-transform:uppercase;
+  letter-spacing:0.04em;color:var(--text-secondary);margin-bottom:16px;
+}
+
+/* ── Config Cards ────────────────────────── */
+.config-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+.config-card{
+  background:var(--bg-elevated);border-radius:var(--radius);
+  padding:18px 20px;cursor:pointer;transition:transform 0.12s,box-shadow 0.12s;
+  border:1px solid var(--border);
+}
+.config-card:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(0,0,0,0.06)}
+.config-card h3{font-size:16px;font-weight:600;margin-bottom:4px}
+.config-card .url{font-size:13px;color:var(--text-secondary);margin-bottom:10px;word-break:break-all}
+.config-card .fields{display:flex;flex-wrap:wrap;gap:4px}
+.config-card .field{
+  font-size:11px;padding:2px 8px;border-radius:99px;
+  background:var(--bg);color:var(--text-secondary);border:1px solid var(--border);
+}
+.config-card .run-btn{
+  margin-top:14px;display:inline-flex;align-items:center;gap:6px;
+  font-size:13px;font-weight:500;color:var(--blue);cursor:pointer;
+  background:none;border:none;padding:0;
+}
+
+/* ── Jobs Table ──────────────────────────── */
+.job-table{width:100%;border-collapse:separate;border-spacing:0}
+.job-table th{
+  text-align:left;font-size:12px;font-weight:600;text-transform:uppercase;
+  letter-spacing:0.03em;color:var(--text-secondary);
+  padding:8px 12px;border-bottom:1px solid var(--border);
+}
+.job-table td{padding:10px 12px;font-size:14px;border-bottom:1px solid var(--border)}
+.job-table tr:hover td{background:var(--bg-elevated)}
+.job-table .mono{font-family:var(--font-mono);font-size:12px}
+.job-table .status-badge{
+  font-size:12px;font-weight:500;padding:2px 10px;border-radius:99px;
+  display:inline-block;
+}
+.status-badge.pending{background:var(--bg-inset);color:var(--text-secondary)}
+.status-badge.running{background:rgba(0,113,227,0.1);color:var(--blue)}
+.status-badge.finished{background:rgba(48,209,88,0.1);color:var(--green)}
+.status-badge.failed{background:rgba(255,69,58,0.1);color:var(--red)}
+.job-table .action-btn{
+  font-size:12px;font-weight:500;color:var(--blue);
+  background:none;border:none;cursor:pointer;padding:4px 8px;
+  border-radius:var(--radius-sm);
+}
+.job-table .action-btn:hover{background:rgba(0,113,227,0.08)}
+.job-table .action-btn.danger{color:var(--red)}
+.job-table .action-btn.danger:hover{background:rgba(255,69,58,0.08)}
+
+/* ── Log Stream ──────────────────────────── */
+.log-panel{
+  background:var(--bg-inset);border-radius:var(--radius);
+  padding:16px;max-height:360px;overflow-y:auto;
+  font-family:var(--font-mono);font-size:12px;line-height:1.6;
+}
+.log-panel .empty{color:var(--text-tertiary);font-family:var(--font)}
+.log-line{margin-bottom:2px;white-space:pre-wrap;word-break:break-all}
+.log-line.error{color:var(--red)}
+.log-line.warn{color:var(--orange)}
+.log-line.info{color:var(--text-secondary)}
+.log-line .ts{color:var(--text-tertiary);margin-right:8px}
+
+/* ── Empty State ─────────────────────────── */
+.empty-state{
+  text-align:center;padding:48px 24px;color:var(--text-tertiary);
+}
+.empty-state p{font-size:14px;margin-top:8px}
+
+/* ── Responsive ──────────────────────────── */
+@media(max-width:640px){
+  main{padding:20px 16px 60px}
+  .config-grid{grid-template-columns:1fr}
+  .job-table{font-size:13px}
+  .job-table th,.job-table td{padding:8px 6px}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="logo">Scraper Stack</span>
+  <span class="badge">v2</span>
+  <span class="spacer"></span>
+  <span class="status"><span class="dot" id="healthDot"></span><span id="healthText">checking</span></span>
+</nav>
+
+<main>
+  <!-- Configs -->
+  <section>
+    <h2>Scraper Configs</h2>
+    <div class="config-grid" id="configs"></div>
+    <div class="empty-state" id="noConfigs" style="display:none">
+      <p>No config files found. Add YAML files to the configs/ directory.</p>
+    </div>
+  </section>
+
+  <!-- Jobs -->
+  <section>
+    <h2>Jobs <span id="jobCount" style="font-weight:400;color:var(--text-tertiary);font-size:13px"></span></h2>
+    <div style="overflow-x:auto">
+      <table class="job-table">
+        <thead>
+          <tr>
+            <th>Job ID</th>
+            <th>Config</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="jobList"></tbody>
+      </table>
+    </div>
+    <div class="empty-state" id="noJobs">
+      <p>No jobs yet. Click "Run" on a config to start scraping.</p>
+    </div>
+  </section>
+
+  <!-- Log Stream -->
+  <section id="logSection" style="display:none">
+    <h2>Live Logs <span id="logJobId" style="font-weight:400;color:var(--text-secondary);font-size:13px"></span></h2>
+    <div class="log-panel" id="logPanel">
+      <span class="empty">Select a running job to view live logs.</span>
+    </div>
+  </section>
+</main>
+
+<script>
+// ── API Helpers ─────────────────────────────────────────────
+const API = '/api';
+
+async function get(path) {
+  const r = await fetch(API + path);
+  if (!r.ok) throw new Error(r.statusText);
+  return r.json();
+}
+
+async function post(path, body) {
+  const r = await fetch(API + path, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(body),
+  });
+  if (!r.ok) {
+    const err = await r.json().catch(() => ({}));
+    throw new Error(err.detail || r.statusText);
+  }
+  return r.json();
+}
+
+// ── Health ──────────────────────────────────────────────────
+async function checkHealth() {
+  try {
+    const h = await get('/health');
+    const dot = document.getElementById('healthDot');
+    const text = document.getElementById('healthText');
+    if (h.status === 'ok') {
+      dot.className = 'dot';
+      text.textContent = 'Scrapyd connected';
+    } else {
+      dot.className = 'dot degraded';
+      text.textContent = 'Scrapyd unreachable';
+    }
+  } catch {
+    document.getElementById('healthDot').className = 'dot degraded';
+    document.getElementById('healthText').textContent = 'backend offline';
+  }
+}
+
+// ── Configs ─────────────────────────────────────────────────
+async function loadConfigs() {
+  try {
+    const data = await get('/configs');
+    const grid = document.getElementById('configs');
+    const noCfg = document.getElementById('noConfigs');
+
+    if (!data.configs || data.configs.length === 0) {
+      grid.innerHTML = '';
+      noCfg.style.display = 'block';
+      return;
+    }
+    noCfg.style.display = 'none';
+    grid.innerHTML = data.configs.map(c => `
+      <div class="config-card">
+        <h3>${esc(c.display || c.name)}</h3>
+        <div class="url">${esc((c.start_urls||[])[0] || 'No URL')}</div>
+        <div class="fields">${(c.fields||[]).map(f => `<span class="field">${esc(f)}</span>`).join('')}</div>
+        <button class="run-btn" onclick="runConfig('${esc(c.name)}')">
+          ▶ Run Scraper
+        </button>
+      </div>
+    `).join('');
+  } catch(e) {
+    console.error('loadConfigs:', e);
+  }
+}
+
+async function runConfig(name) {
+  try {
+    const result = await post('/jobs', {config: name});
+    document.getElementById('logJobId').textContent = `— ${result.job_id}`;
+    document.getElementById('logSection').style.display = 'block';
+    document.getElementById('logPanel').innerHTML = '<span class="empty">Job scheduled — waiting for logs...</span>';
+    loadJobs();
+    connectLogs(result.job_id);
+  } catch(e) {
+    alert('Failed to start job: ' + e.message);
+  }
+}
+
+// ── Jobs ────────────────────────────────────────────────────
+async function loadJobs() {
+  try {
+    const data = await get('/jobs');
+    const tbody = document.getElementById('jobList');
+    const noJobs = document.getElementById('noJobs');
+    const count = document.getElementById('jobCount');
+
+    const allJobs = [];
+    const states = ['pending', 'running', 'finished'];
+    for (const s of states) {
+      for (const j of (data[s] || [])) {
+        allJobs.push({...j, _state: s});
+      }
+    }
+
+    count.textContent = allJobs.length ? `(${allJobs.length})` : '';
+
+    if (allJobs.length === 0) {
+      tbody.innerHTML = '';
+      noJobs.style.display = 'block';
+      return;
+    }
+    noJobs.style.display = 'none';
+
+    tbody.innerHTML = allJobs.slice(0, 50).map(j => `
+      <tr>
+        <td><span class="mono">${esc(j.id||'')}</span></td>
+        <td>${esc(j.spider||'generic')}</td>
+        <td><span class="status-badge ${j._state}">${j._state}</span></td>
+        <td>
+          ${j._state==='running'?`<button class="action-btn" onclick="viewLogs('${esc(j.id)}')">Logs</button>`:''}
+          ${j._state==='finished'?`<button class="action-btn" onclick="exportResults('${esc(j.id)}')">Export</button>`:''}
+          ${j._state!=='finished'?`<button class="action-btn danger" onclick="cancelJob('${esc(j.id)}')">Cancel</button>`:''}
+        </td>
+      </tr>
+    `).join('');
+  } catch(e) {
+    console.error('loadJobs:', e);
+  }
+}
+
+async function cancelJob(id) {
+  if (!confirm('Cancel job ' + id + '?')) return;
+  try {
+    await post('/jobs/' + id + '/cancel');
+    loadJobs();
+  } catch(e) {
+    alert('Cancel failed: ' + e.message);
+  }
+}
+
+function exportResults(id) {
+  window.open(API + '/jobs/' + id + '/export', '_blank');
+  window.open(API + '/jobs/' + id + '/export?export_format=json', '_blank');
+}
+
+// ── WebSocket Logs ──────────────────────────────────────────
+let ws = null;
+
+function viewLogs(jobId) {
+  document.getElementById('logJobId').textContent = `— ${jobId}`;
+  document.getElementById('logSection').style.display = 'block';
+  connectLogs(jobId);
+}
+
+function connectLogs(jobId) {
+  if (ws) { ws.close(); ws = null; }
+
+  const panel = document.getElementById('logPanel');
+  panel.innerHTML = '<span class="empty">Connecting...</span>';
+
+  const proto = location.protocol === 'https:' ? 'wss:' : 'ws:';
+  ws = new WebSocket(proto + '//' + location.host + '/ws/' + jobId);
+
+  ws.onopen = () => {
+    panel.innerHTML = '';
+  };
+
+  ws.onmessage = (e) => {
+    try {
+      const evt = JSON.parse(e.data);
+      const line = document.createElement('div');
+      line.className = 'log-line ' + (evt.level || 'info');
+      const now = new Date().toLocaleTimeString();
+      line.innerHTML = `<span class="ts">${now}</span>${esc(evt.message||'')}`;
+      panel.appendChild(line);
+      panel.scrollTop = panel.scrollHeight;
+    } catch {}
+  };
+
+  ws.onerror = () => {
+    if (!panel.innerHTML.includes('Connection lost')) {
+      panel.innerHTML += '<div class="log-line error"><span class="ts">---</span>Connection lost</div>';
+    }
+  };
+
+  ws.onclose = () => {
+    ws = null;
+  };
+}
+
+// ── Utils ───────────────────────────────────────────────────
+function esc(s) {
+  if (!s) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── Init ────────────────────────────────────────────────────
+checkHealth();
+loadConfigs();
+loadJobs();
+setInterval(() => { checkHealth(); loadJobs(); }, 5000);
+</script>
+</body>
+</html>

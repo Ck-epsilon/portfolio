@@ -1,0 +1,27 @@
+# Example scraper config: Hacker News front page
+# item_selector defines the repeating container element — each match = one item
+name: hackernews
+start_urls:
+  - https://news.ycombinator.com/
+item_selector: tr.athing
+selectors:
+  title: span.titleline > a::text
+  link: span.titleline > a::attr(href)
+  score: span.score::text
+pagination_selector: "a.morelink::attr(href)"
+max_pages: 3
+js_render: false
+
+output:
+  formats: [csv, json]
+  dir: output/
+
+# ── Optional: login example ────────────────────────────────
+# login:
+#   url: https://example.com/login
+#   username_selector: input[name="email"]
+#   password_selector: input[name="password"]
+#   submit_selector: button[type="submit"]
+#   credentials:
+#     username: "${LOGIN_USER}"
+#     password: "${LOGIN_PASS}"
