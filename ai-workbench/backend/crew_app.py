@@ -9,6 +9,9 @@ All agents instrumented via LangFuse for trace/span/cost observability.
 """
 
 import os
+# NOTE: P4 (import modules, not classes) intentionally relaxed for CrewAI —
+# `from crewai import Agent, Task` is the framework's documented convention.
+# See https://docs.crewai.com/core-concepts/Agents/
 from crewai import Agent, Task, Crew, Process
 from crewai_tools import SerperDevTool, ScrapeWebsiteTool, FileReadTool
 

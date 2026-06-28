@@ -8,56 +8,56 @@
  *  Connected to api-starter FastAPI backend via JWT auth.
  */
 
-import { Admin, Resource, CustomRoutes, Layout, AppBar, Menu } from "react-admin";
-import { Route } from "react-router-dom";
-import { Box, Typography } from "@mui/material";
-import PeopleIcon from "@mui/icons-material/People";
-import InventoryIcon from "@mui/icons-material/Inventory";
-import DashboardIcon from "@mui/icons-material/Dashboard";
+import { Admin, Resource, CustomRoutes, Layout, AppBar, Menu } from 'react-admin';
+import { Route } from 'react-router-dom';
+import { Box, Typography } from '@mui/material';
+import PeopleIcon from '@mui/icons-material/People';
+import InventoryIcon from '@mui/icons-material/Inventory';
+import DashboardIcon from '@mui/icons-material/Dashboard';
 
-import { authProvider } from "./authProvider";
-import { dataProvider } from "./dataProvider";
-import { epsilonTheme, epsilonDarkTheme } from "./theme";
-import { Dashboard } from "./resources/dashboard/Dashboard";
+import { authProvider } from './authProvider';
+import { dataProvider } from './dataProvider';
+import { epsilonTheme, epsilonDarkTheme } from './theme';
+import { Dashboard } from './resources/dashboard/Dashboard';
 import {
   UserList,
   UserEdit,
   UserCreate,
   UserShow,
-} from "./resources/users";
+} from './resources/users';
 import {
   ItemList,
   ItemEdit,
   ItemCreate,
   ItemShow,
-} from "./resources/items";
+} from './resources/items';
 
 // ── ε-style AppBar ────────────────────────────────────────
-const EpsilonAppBar = () => (
+const EpsilonAppBar = (): React.ReactElement => (
   <AppBar
     sx={{
-      backgroundColor: "background.paper",
-      color: "text.primary",
-      boxShadow: "0 1px 3px rgba(0,0,0,0.04)",
-      "& .RaAppBar-title": {
+      backgroundColor: 'background.paper',
+      color: 'text.primary',
+      boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
+      '& .RaAppBar-title': {
         fontSize: 18,
         fontWeight: 700,
-        letterSpacing: "-0.022em",
+        letterSpacing: '-0.022em',
       },
     }}
   />
 );
 
 // ── ε-style Menu ──────────────────────────────────────────
-const EpsilonMenu = () => (
+const EpsilonMenu = (): React.ReactElement => (
   <Menu
     sx={{
-      "& .RaMenuItemLink-root": {
+      '& .RaMenuItemLink-root': {
         borderRadius: 2,
         mx: 0.5,
-        "&.RaMenuItemLink-active": {
-          backgroundColor: "rgba(0,113,227,0.08)",
-          "& .RaMenuItemLink-icon": { color: "primary.main" },
+        '&.RaMenuItemLink-active': {
+          backgroundColor: 'rgba(0,113,227,0.08)',
+          '& .RaMenuItemLink-icon': { color: 'primary.main' },
         },
       },
     }}
@@ -65,12 +65,16 @@ const EpsilonMenu = () => (
 );
 
 // ── ε-style Layout ────────────────────────────────────────
-const EpsilonLayout = (props: any) => (
+interface EpsilonLayoutProps {
+  children: React.ReactNode;
+  [key: string]: unknown;
+}
+const EpsilonLayout = (props: EpsilonLayoutProps): React.ReactElement => (
   <Layout {...props} appBar={EpsilonAppBar} menu={EpsilonMenu} />
 );
 
 // ── App ───────────────────────────────────────────────────
-const App = () => (
+const App = (): React.ReactElement => (
   <Admin
     authProvider={authProvider}
     dataProvider={dataProvider}

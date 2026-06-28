@@ -8,44 +8,53 @@
  *  data provider that speaks your backend's exact pagination format.
  */
 
-import { fetchUtils, DataProvider } from "react-admin";
+import { fetchUtils, DataProvider } from 'react-admin';
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
 const httpClient = (url: string, options: fetchUtils.Options = {}) => {
-  const token = localStorage.getItem("access_token");
+  const token = localStorage.getItem('access_token');
   const headers = new Headers(options.headers as HeadersInit);
   if (token) {
-    headers.set("Authorization", `Bearer ${token}`);
+    headers.set('Authorization', `Bearer ${token}`);
   }
   return fetchUtils.fetchJson(url, { ...options, headers });
 };
+
+/** Generic record shape used by React-Admin data provider callbacks. */
+interface Record {
+  id: string | number;
+  [key: string]: unknown;
+}
 
 export const dataProvider: DataProvider = {
   // ── List ──────────────────────────────────────────────────
   getList: async (resource, params) => {
     const { page, perPage } = params.pagination || { page: 1, perPage: 10 };
-    const { field, order } = params.sort || { field: "id", order: "ASC" };
+    const { field, order } = params.sort || { field: 'id', order: 'ASC' };
     const skip = (page - 1) * perPage;
-    const search = params.filter?.q || "";
+    const search = params.filter?.q || '';
 
     const url = `${API_URL}/${resource}?skip=${skip}&limit=${perPage}` +
-      (search ? `&search=${encodeURIComponent(search)}` : "");
+      (search ? `&search=${encodeURIComponent(search)}` : '') +
+      (field ? `&sort=${encodeURIComponent(field)}&order=${encodeURIComponent(order)}` : '');
 
     const { json } = await httpClient(url);
-    const data = Array.isArray(json) ? json : json.items || [];
+    const data: Record[] = Array.isArray(json) ? json : json.items || [];
 
-    // Apply client-side sort if backend doesn't support it
-    if (field) {
-      data.sort((a: any, b: any) => {
-        if (a[field] < b[field]) return order === "ASC" ? -1 : 1;
-        if (a[field] > b[field]) return order === "ASC" ? 1 : -1;
+    // Client-side fallback: sort if backend didn't apply it
+    if (field && !url.includes('sort=')) {
+      data.sort((a, b) => {
+        const av = a[field] as string | number;
+        const bv = b[field] as string | number;
+        if (av < bv) return order === 'ASC' ? -1 : 1;
+        if (av > bv) return order === 'ASC' ? 1 : -1;
         return 0;
       });
     }
 
     return {
-      data: data.map((item: any) => ({ ...item, id: item.id })),
+      data: data.map((item) => ({ ...item, id: item.id })),
       total: data.length < perPage ? skip + data.length : skip + perPage + 1,
     };
   },
@@ -75,7 +84,7 @@ export const dataProvider: DataProvider = {
   // ── Mutations ─────────────────────────────────────────────
   create: async (resource, params) => {
     const { json } = await httpClient(`${API_URL}/${resource}`, {
-      method: "POST",
+      method: 'POST',
       body: JSON.stringify(params.data),
     });
     return { data: { ...json, id: json.id } };
@@ -83,7 +92,7 @@ export const dataProvider: DataProvider = {
 
   update: async (resource, params) => {
     const { json } = await httpClient(`${API_URL}/${resource}/${params.id}`, {
-      method: "PUT",
+      method: 'PUT',
       body: JSON.stringify(params.data),
     });
     return { data: { ...json, id: json.id } };
@@ -95,7 +104,7 @@ export const dataProvider: DataProvider = {
 
   delete: async (resource, params) => {
     await httpClient(`${API_URL}/${resource}/${params.id}`, {
-      method: "DELETE",
+      method: 'DELETE',
     });
     return { data: params.previousData };
   },

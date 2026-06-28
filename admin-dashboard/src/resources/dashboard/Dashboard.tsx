@@ -1,8 +1,9 @@
 // Author: Ck.epsilon & Chaos (AI Programming Assistant)
 /** Dashboard page — summary cards + recent activity using Recharts. */
 
-import { Card, CardContent, Typography, Box, Grid } from "@mui/material";
-import { useGetList, Loading, Error } from "react-admin";
+import { useMemo } from 'react';
+import { Card, CardContent, Typography, Box, Grid } from '@mui/material';
+import { useGetList, Loading, Error } from 'react-admin';
 import {
   BarChart,
   Bar,
@@ -11,30 +12,40 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-} from "recharts";
+} from 'recharts';
 
-export const Dashboard = () => {
-  const { data: users, isLoading: usersLoading, error: usersError } = useGetList("users", {
+interface UserRecord {
+  id: string | number;
+  is_active?: boolean;
+  [key: string]: unknown;
+}
+
+export const Dashboard = (): React.ReactElement => {
+  const { data: users, isLoading: usersLoading, error: usersError } = useGetList('users', {
     pagination: { page: 1, perPage: 100 },
-    sort: { field: "id", order: "ASC" },
+    sort: { field: 'id', order: 'ASC' },
   });
 
-  const { data: items, isLoading: itemsLoading } = useGetList("items", {
+  const { data: items, isLoading: itemsLoading } = useGetList('items', {
     pagination: { page: 1, perPage: 100 },
-    sort: { field: "id", order: "ASC" },
+    sort: { field: 'id', order: 'ASC' },
   });
 
   if (usersLoading || itemsLoading) return <Loading />;
   if (usersError) return <Error />;
 
-  const activeUsers = (users || []).filter((u: any) => u.is_active).length;
+  const activeUsers = (users || []).filter(
+    (u: UserRecord) => u.is_active
+  ).length;
 
-  const chartData = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map(
-    (day, i) => ({
-      day,
-      users: Math.floor(Math.random() * 10) + i,
-      items: Math.floor(Math.random() * 15) + i * 2,
-    })
+  const chartData = useMemo(
+    () =>
+      ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day, i) => ({
+        day,
+        users: Math.floor(Math.random() * 10) + i,
+        items: Math.floor(Math.random() * 15) + i * 2,
+      })),
+    [] // static data — compute once
   );
 
   return (
@@ -79,15 +90,15 @@ function StatCard({
   label: string;
   value: string | number;
   color?: string;
-}) {
+}): React.ReactElement {
   return (
     <Grid item xs={12} sm={6} md={3}>
-      <Card sx={{ height: "100%" }}>
+      <Card sx={{ height: '100%' }}>
         <CardContent>
           <Typography variant="overline" color="text.secondary">
             {label}
           </Typography>
-          <Typography variant="h3" sx={{ color: color || "text.primary", mt: 0.5 }}>
+          <Typography variant="h3" sx={{ color: color || 'text.primary', mt: 0.5 }}>
             {value}
           </Typography>
         </CardContent>
