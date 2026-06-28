@@ -16,6 +16,7 @@
 |----------|----------|--------|
 | Python | 3.10+ | 3.10.20 ✅ |
 | Playwright | 1.30+ | ✅ |
+| Browser | Chromium (Playwright-managed) | ✅ |
 | Pandas | 1.5+ | ✅ |
 
 ### Quick Start
@@ -103,6 +104,7 @@ python run.py -c sites/mytarget.yaml -o output/results.csv
 |------|---------|------|
 | Python | 3.10+ | 3.10.20 ✅ |
 | Playwright | 1.30+ | ✅ |
+| Browser | Chromium (Playwright-managed) | ✅ |
 | Pandas | 1.5+ | ✅ |
 
 ### 快速启动

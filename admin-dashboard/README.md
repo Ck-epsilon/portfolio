@@ -29,6 +29,8 @@ npm run dev
 
 Open http://localhost:3000.
 
+> See `package.json` for full dependency details.
+
 **→ [Open Live Preview](preview.html)** — full dashboard mockup with working dark mode
 
 ### Project Structure
@@ -61,6 +63,8 @@ admin-dashboard/
 | Dashboard | Data Table |
 |-----------|------------|
 | ![Dashboard](./screenshots/dashboard.png) | ![Table](./screenshots/table.png) |
+
+> 🎬 **Dark mode demo:** [screenshots/dark-mode.mp4](./screenshots/dark-mode.mp4) — 15-second toggle + table sort walkthrough
 
 ### Customizing Data Sources
 

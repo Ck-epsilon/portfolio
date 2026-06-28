@@ -1,0 +1,90 @@
+# Author: Ck.epsilon
+
+name: CI — Portfolio Projects
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+    branches: [master, main]
+
+jobs:
+  # ------------------------------------------------------------------
+  # Python projects
+  # ------------------------------------------------------------------
+  scraper-dashboard:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: scraper-dashboard/backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - run: python -m pytest test_api.py test_direct.py -v
+
+  api-starter:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: api-starter
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - name: Run tests (or verify install if no tests exist)
+        run: |
+          python -m pytest tests/ -v
+          ret=$?
+          if [ $ret -eq 5 ]; then
+            echo "⚠️  No tests yet — only install verified"
+            exit 0
+          fi
+          exit $ret
+
+  ai-workbench:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ai-workbench/backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - run: python -c "import compileall; compileall.compile_dir('.', quiet=1)" && echo "✅ Syntax OK"
+
+  scraper-template:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: scraper-template
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - run: python -c "import compileall; compileall.compile_dir('.', quiet=1)" && echo "✅ Syntax OK"
+
+  # ------------------------------------------------------------------
+  # Frontend project
+  # ------------------------------------------------------------------
+  admin-dashboard:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: admin-dashboard
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - run: npm ci
+      - run: npx tsc --noEmit
+      - run: npm run build

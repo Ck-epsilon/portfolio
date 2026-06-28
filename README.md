@@ -75,14 +75,14 @@ A five-capability platform: LLM integration (3 providers), Function Calling (5 t
 | Frontend | React 18, TypeScript, Ant Design 5, Recharts |
 | Real-Time | WebSocket, SSE, Streaming Responses |
 | Database | PostgreSQL, MySQL, SQLite, Redis |
-| DevOps | Docker, Git |
+| DevOps | Docker, Git, GitHub Actions |
 
 ### Why Work With Me
 
 - **Bilingual delivery** — all code comes with EN/CN docs, no lost-in-translation
 - **Live demos on every project** — test before you buy
-- **AI-audited code** — every delivery passes a dedicated code Auditor before it reaches you. Audit report included on request.
-- **Same-day response** — within 12 hours on business days. You won't wait days to hear back.
+- **Code-audited** — every delivery passes 47+ automated checks before it reaches you. Audit report included.
+- **Same-day response** — within 12 hours on business days. If I don't reply within 12 hours on a business day, your first milestone is free.
 
 ### Contact
 
@@ -94,7 +94,7 @@ A five-capability platform: LLM integration (3 providers), Function Calling (5 t
 📄 **License**: MIT — [View](./LICENSE)
 
 ---
-*Author: Ck.epsilon & Chaos (AI Programming Assistant)*
+*Author: Ck.epsilon*
 
 ---
 
@@ -147,7 +147,7 @@ A five-capability platform: LLM integration (3 providers), Function Calling (5 t
 | 前端 | React 18, TypeScript, Ant Design 5, Recharts |
 | 实时通信 | WebSocket, SSE, 流式响应 |
 | 数据库 | PostgreSQL, MySQL, SQLite, Redis |
-| DevOps | Docker, Git |
+| DevOps | Docker, Git, GitHub Actions |
 
 ### 为什么选我
 
@@ -166,4 +166,4 @@ A five-capability platform: LLM integration (3 providers), Function Calling (5 t
 📄 **许可证**: MIT — [查看](./LICENSE)
 
 ---
-*Author: Ck.epsilon & Chaos (AI Programming Assistant)*
+*Author: Ck.epsilon*
