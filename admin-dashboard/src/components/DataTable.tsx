@@ -1,7 +1,7 @@
 // Author: Ck.epsilon & Chaos (AI Programming Assistant)
 
 import { useMemo, useState } from 'react';
-import { Table, Tag, Input, Select, Space, Card } from 'antd';
+import { Table, Tag, Input, Select, DatePicker, InputNumber, Space, Card } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
 
@@ -29,7 +29,6 @@ const STATUS_COLORS: Record<string, string> = {
   pending: 'gold',
   cancelled: 'red',
 };
-const STATUS_FALLBACK_COLOR = 'default';
 
 const STATUS_OPTIONS: { value: string; text: string }[] = [
   { value: 'completed', text: 'Completed' },
@@ -45,15 +44,24 @@ const STATUS_SELECT_OPTIONS = STATUS_OPTIONS.map(({ value, text }) => ({
 export default function DataTablePage() {
   const [searchText, setSearchText] = useState('');
   const [statusFilter, setStatusFilter] = useState<string | null>(null);
+  const [dateFrom, setDateFrom] = useState<string | null>(null);
+  const [dateTo, setDateTo] = useState<string | null>(null);
+  const [amountMin, setAmountMin] = useState<number | null>(null);
+  const [amountMax, setAmountMax] = useState<number | null>(null);
 
   const filteredData = useMemo(() => {
     return mockData.filter((item) => {
       const matchSearch = !searchText
-        || item.customer.toLowerCase().includes(searchText.toLowerCase());
+        || item.customer.toLowerCase().includes(searchText.toLowerCase())
+        || item.id.toLowerCase().includes(searchText.toLowerCase());
       const matchStatus = !statusFilter || item.status === statusFilter;
-      return matchSearch && matchStatus;
+      const matchDateFrom = !dateFrom || item.date >= dateFrom;
+      const matchDateTo = !dateTo || item.date <= dateTo;
+      const matchAmountMin = amountMin === null || item.amount >= amountMin;
+      const matchAmountMax = amountMax === null || item.amount <= amountMax;
+      return matchSearch && matchStatus && matchDateFrom && matchDateTo && matchAmountMin && matchAmountMax;
     });
-  }, [searchText, statusFilter]);
+  }, [searchText, statusFilter, dateFrom, dateTo, amountMin, amountMax]);
 
   const columns: ColumnsType<Order> = useMemo(() => [
     {
@@ -75,7 +83,7 @@ export default function DataTablePage() {
       filteredValue: statusFilter ? [statusFilter] : null,
       onFilter: (value, record) => record.status === value,
       render: (s: string) => (
-        <Tag color={STATUS_COLORS[s] || STATUS_FALLBACK_COLOR}>
+        <Tag color={STATUS_COLORS[s] || 'default'}>
           {s.toUpperCase()}
         </Tag>
       ),
@@ -90,13 +98,13 @@ export default function DataTablePage() {
 
   return (
     <Card title="Orders">
-      <Space style={{ marginBottom: 16 }}>
+      <Space wrap style={{ marginBottom: 16 }}>
         <Input.Search
-          placeholder="Search customer..."
+          placeholder="Search customer or order ID"
+          allowClear
           onChange={(e) => setSearchText(e.target.value)}
           onSearch={setSearchText}
-          style={{ width: 240 }}
-          allowClear
+          style={{ width: 280 }}
         />
         <Select
           placeholder="Filter status"
@@ -105,11 +113,33 @@ export default function DataTablePage() {
           onChange={(v) => setStatusFilter(v || null)}
           options={STATUS_SELECT_OPTIONS}
         />
+        <DatePicker
+          placeholder="Date from"
+          onChange={(d) => setDateFrom(d ? d.format('YYYY-MM-DD') : null)}
+          allowClear
+        />
+        <DatePicker
+          placeholder="Date to"
+          onChange={(d) => setDateTo(d ? d.format('YYYY-MM-DD') : null)}
+          allowClear
+        />
+        <InputNumber
+          placeholder="Min $"
+          min={0}
+          onChange={(v) => setAmountMin(v ?? null)}
+          style={{ width: 110 }}
+        />
+        <InputNumber
+          placeholder="Max $"
+          min={0}
+          onChange={(v) => setAmountMax(v ?? null)}
+          style={{ width: 110 }}
+        />
       </Space>
       <Table
         columns={columns}
         dataSource={filteredData}
-        pagination={{ pageSize: 5, showSizeChanger: true }}
+        pagination={{ pageSize: 5, showSizeChanger: true, showTotal: (total) => `${total} orders` }}
         locale={{ emptyText: 'No orders found' }}
       />
     </Card>

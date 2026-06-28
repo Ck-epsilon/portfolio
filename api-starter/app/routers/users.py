@@ -1,11 +1,11 @@
 # Author: Ck.epsilon & Chaos (AI Programming Assistant)
 """Users router: CRUD operations (authenticated)."""
 
-from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy import select
+from fastapi import APIRouter, Depends, HTTPException, Query, status
+from sqlalchemy import asc, desc, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.auth.dependencies import get_current_user
+from app.auth.dependencies import get_current_admin, get_current_user
 from app.database import get_db
 from app.models.user import User
 from app.schemas.user import UserResponse, UserUpdate
@@ -17,11 +17,27 @@ router = APIRouter(prefix="/users", tags=["Users"])
 async def list_users(
     skip: int = 0,
     limit: int = 100,
+    search: str | None = Query(None, description="Search by username or email"),
+    sort_by: str | None = Query(None, description="Column to sort: username, email, created_at"),
+    order: str = Query("asc", description="Sort order: asc or desc"),
     db: AsyncSession = Depends(get_db),
     _current_user: User = Depends(get_current_user),
 ):
-    """List all users (paginated). Requires authentication."""
-    result = await db.execute(select(User).offset(skip).limit(limit))
+    """List all users (paginated). Requires authentication.
+    Supports search, sorting, and pagination."""
+    stmt = select(User)
+
+    if search:
+        stmt = stmt.where(
+            (User.username.ilike(f"%{search}%")) | (User.email.ilike(f"%{search}%"))
+        )
+
+    if sort_by and hasattr(User, sort_by):
+        col = getattr(User, sort_by)
+        stmt = stmt.order_by(desc(col) if order == "desc" else asc(col))
+
+    stmt = stmt.offset(skip).limit(limit)
+    result = await db.execute(stmt)
     return result.scalars().all()
 
 

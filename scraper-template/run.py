@@ -16,7 +16,7 @@ import yaml
 
 from scraper.engine import ScraperConfig, StealthScraper
 
-_VALID_FORMATS = frozenset({"csv", "json"})
+_VALID_FORMATS = frozenset({"csv", "json", "excel"})
 
 
 def _sanitize_name(name: str) -> str:
@@ -57,6 +57,9 @@ def load_config(path: str) -> ScraperConfig:
         max_retries=raw.get("max_retries", 3),
         retry_backoff=raw.get("retry_backoff", 2.0),
         output_format=fmt,
+        login_url=raw.get("login_url"),
+        login_selector=raw.get("login_selector"),
+        login_credentials=raw.get("login_credentials"),
     )
 
 

@@ -27,5 +27,8 @@ class Settings(BaseSettings):
     # CORS
     CORS_ORIGINS: list[str] = ["*"]
 
+    # Redis (optional — uncomment and set REDIS_URL to enable caching)
+    # REDIS_URL: str = "redis://localhost:6379/0"
+
 
 settings = Settings()

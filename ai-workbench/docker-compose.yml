@@ -1,0 +1,28 @@
+# Author: Ck.epsilon & Chaos (AI Programming Assistant)
+# AI Agent Workbench — Docker Compose (Premium tier)
+#
+# Start:  docker compose up -d
+# Stop:   docker compose down
+
+version: "3.9"
+
+services:
+  workbench:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - SMTP_HOST=${SMTP_HOST:-smtp.qq.com}
+      - SMTP_PORT=${SMTP_PORT:-587}
+      - SMTP_USER=${SMTP_USER:-}
+      - SMTP_PASSWORD=${SMTP_PASSWORD:-}
+      - ALERT_EMAIL_TO=${ALERT_EMAIL_TO:-}
+      - SLACK_WEBHOOK_URL=${SLACK_WEBHOOK_URL:-}
+    volumes:
+      - ./backend/workbench.db:/app/workbench.db
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 30s
+      timeout: 5s
+      retries: 3

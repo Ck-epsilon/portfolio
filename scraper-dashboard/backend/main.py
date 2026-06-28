@@ -3,6 +3,7 @@
 
 FastAPI application providing REST endpoints for task management,
 WebSocket for live log streaming, and CSV export of scrape results.
+Premium tier adds: rate limiting, proxy rotation, stealth, DB, alerts, K8s.
 """
 
 import asyncio
@@ -10,9 +11,12 @@ import csv
 import io
 from typing import Any
 
-from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, HTTPException, Request, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
+from slowapi import Limiter
+from slowapi.errors import RateLimitExceeded
+from slowapi.util import get_remote_address
 
 from task_queue import TaskManager, TaskStatus
 from scraper import scrape_task

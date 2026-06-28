@@ -33,6 +33,17 @@ class TokenRefresh(BaseModel):
     refresh_token: str
 
 
+class PasswordForgot(BaseModel):
+    """Payload for forgot-password request."""
+    email: EmailStr
+
+
+class PasswordReset(BaseModel):
+    """Payload for password reset with token."""
+    token: str
+    new_password: str = Field(min_length=6, max_length=128)
+
+
 # ---------------------------------------------------------------------------
 # Response Schemas
 # ---------------------------------------------------------------------------

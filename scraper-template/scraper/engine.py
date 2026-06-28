@@ -52,7 +52,11 @@ class ScraperConfig:
         "AppleWebKit/537.36 (KHTML, like Gecko) "
         "Chrome/125.0.0.0 Safari/537.36"
     )
-    output_format: str = "csv"  # csv | json
+    output_format: str = "csv"  # csv | json | excel
+    # Login config (optional — for authenticated scraping)
+    login_url: str | None = None
+    login_selector: str | None = None  # CSS selector for login form submit button
+    login_credentials: dict[str, str] | None = None  # map field names → values
 
 
 class StealthScraper:
@@ -193,8 +197,28 @@ class StealthScraper:
 
         return all_items
 
+    async def login(self, context: BrowserContext) -> Page:
+        """Handle login flow: navigate to login page, fill credentials, submit.
+        Returns an authenticated Page ready for scraping."""
+        if not self.config.login_url or not self.config.login_credentials:
+            raise ValueError("login_url and login_credentials required for login")
+        page = await self._stealth_page(context)
+        await self._goto_with_retry(page, self.config.login_url)
+        await page.wait_for_timeout(1500)
+        for field_name, value in self.config.login_credentials.items():
+            await page.fill(f'input[name="{field_name}"]', value)
+        if self.config.login_selector:
+            await page.click(self.config.login_selector)
+        else:
+            await page.click('button[type="submit"]')
+        await page.wait_for_timeout(3000)
+        logger.info("Login flow completed")
+        return page
+
     async def run(self) -> list[dict]:
         """Execute full scrape across all configured URLs."""
+        if self.config.login_url:
+            print(f"[{self.config.name}] Logging in via {self.config.login_url}...")
         print(f"[{self.config.name}] Starting scrape...")
 
         for url in self.config.start_urls:
@@ -226,9 +250,13 @@ class StealthScraper:
         return value
 
     def save(self, output_path: str):
-        """Save results to CSV (injection-safe) or JSON."""
+        """Save results to CSV (injection-safe), JSON, or Excel."""
         output = Path(output_path)
         output.parent.mkdir(parents=True, exist_ok=True)
+
+        if self.config.output_format == "excel":
+            self.save_excel(str(output))
+            return
 
         if self.config.output_format == "json":
             with open(output, "w", encoding="utf-8") as f:
@@ -248,3 +276,103 @@ class StealthScraper:
                 writer.writerows(sanitized)
 
         print(f"Saved {len(self.results)} items → {output.absolute()}")
+
+    def save_db(self, db_path: str = "scraper.db", table_name: str = "results"):
+        """Save results to SQLite database. Creates table if not exists."""
+        import sqlite3
+        if not self.results:
+            print("Warning: No results to save to DB.")
+            return
+        conn = sqlite3.connect(db_path)
+        try:
+            fieldnames = list(self.results[0].keys())
+            cols = ", ".join(f'"{f}" TEXT' for f in fieldnames)
+            conn.execute(f'CREATE TABLE IF NOT EXISTS "{table_name}" ({cols})')
+            placeholders = ", ".join("?" for _ in fieldnames)
+            rows = [[str(row.get(f, "")) for f in fieldnames] for row in self.results]
+            conn.executemany(f'INSERT INTO "{table_name}" VALUES ({placeholders})', rows)
+            conn.commit()
+            print(f"Saved {len(self.results)} items to SQLite → {db_path}::{table_name}")
+        finally:
+            conn.close()
+
+    def save_excel(self, output_path: str):
+        """Save results to a formatted .xlsx file using openpyxl."""
+        try:
+            from openpyxl import Workbook
+            from openpyxl.styles import Font, PatternFill, Alignment
+        except ImportError:
+            logger.error("openpyxl not installed. Run: pip install openpyxl")
+            raise
+
+        if not self.results:
+            print("Warning: No results to save.")
+            return
+
+        wb = Workbook()
+        ws = wb.active
+        ws.title = self.config.name[:31]  # Excel sheet name max 31 chars
+
+        fieldnames = list(self.results[0].keys())
+
+        # Header styling
+        header_font = Font(bold=True, color="FFFFFF")
+        header_fill = PatternFill(start_color="2F5496", end_color="2F5496", fill_type="solid")
+        header_align = Alignment(horizontal="center")
+
+        for col_idx, field in enumerate(fieldnames, 1):
+            cell = ws.cell(row=1, column=col_idx, value=field)
+            cell.font = header_font
+            cell.fill = header_fill
+            cell.alignment = header_align
+
+        # Data rows with CSV injection protection
+        for row_idx, item in enumerate(self.results, 2):
+            for col_idx, field in enumerate(fieldnames, 1):
+                value = str(item.get(field, ""))
+                cell = ws.cell(row=row_idx, column=col_idx, value=self._sanitize_csv_cell(value))
+                # Auto-width: max(current width, len(value) * 1.2)
+                ws.column_dimensions[chr(64 + col_idx) if col_idx <= 26 else "A"].width = max(
+                    ws.column_dimensions[chr(64 + col_idx) if col_idx <= 26 else "A"].width or 0,
+                    len(value) * 1.2 + 2,
+                )
+
+        wb.save(output_path)
+        print(f"Saved {len(self.results)} items to Excel → {output_path}")
+
+    def clean_data(
+        self,
+        dedup_keys: list[str] | None = None,
+        normalize_fields: list[str] | None = None,
+        required_fields: list[str] | None = None,
+    ) -> list[dict]:
+        """Clean scraped data: deduplicate, normalize whitespace, validate required fields.
+        Returns the cleaned subset. Also stores back into self.results."""
+        cleaned = self.results[:]
+
+        # Deduplicate by specified keys
+        if dedup_keys:
+            seen = set()
+            deduped = []
+            for row in cleaned:
+                key = tuple(row.get(k, "") for k in dedup_keys)
+                if key not in seen:
+                    seen.add(key)
+                    deduped.append(row)
+            cleaned = deduped
+
+        # Normalize whitespace on specified fields
+        if normalize_fields:
+            for row in cleaned:
+                for field in normalize_fields:
+                    if field in row and isinstance(row[field], str):
+                        row[field] = " ".join(row[field].split())
+
+        # Validate required fields (drop rows with empty required fields)
+        if required_fields:
+            before = len(cleaned)
+            cleaned = [row for row in cleaned if all(row.get(f, "").strip() for f in required_fields)]
+            logger.info("Validation dropped %d rows (missing required fields)", before - len(cleaned))
+
+        self.results = cleaned
+        return cleaned

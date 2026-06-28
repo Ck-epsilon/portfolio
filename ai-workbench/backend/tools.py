@@ -192,3 +192,25 @@ async def execute_tool(name: str, arguments: dict) -> str:
         return await tool.execute(**arguments)
     except Exception as e:
         return f"Tool execution error: {e}"
+
+
+# ---------------------------------------------------------------------------
+# Custom tool registration (Premium tier)
+# ---------------------------------------------------------------------------
+def register_tool(name: str, description: str, parameters: dict, handler) -> Tool:
+    """Register a custom tool dynamically at runtime.
+    Returns the registered Tool instance.
+    Raises ValueError if tool name already exists as built-in."""
+    if name in BUILTIN_TOOLS:
+        raise ValueError(f"Tool '{name}' conflicts with built-in tool")
+    tool = Tool(name=name, description=description, parameters=parameters, handler=handler)
+    BUILTIN_TOOLS[name] = tool
+    return tool
+
+
+def list_registered_tools() -> list[dict]:
+    """List all registered tools (built-in + custom)."""
+    return [
+        {"name": t.name, "description": t.description, "parameters": t.parameters}
+        for t in BUILTIN_TOOLS.values()
+    ]
