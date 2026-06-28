@@ -1,273 +1,197 @@
-# Author: Ck.epsilon
-"""AI Agent Workbench — Multi-model AI development platform backend.
+# Author: Ck.epsilon & Chaos (AI Programming Assistant)
+"""AI Workbench Backend — CrewAI-powered multi-agent research platform.
 
-FastAPI application providing:
-- Multi-model chat with streaming (Ollama / OpenAI / Tongyi)
-- WebSocket for real-time token-by-token output
-- Agent creation and management
-- Function calling with tool execution
-- Model listing
-- Rate limiting (Premium tier)
-- Task history persistence (Premium tier)
+Endpoints:
+  POST /research          — Start a research+analysis crew run
+  GET  /research/{id}     — Get crew run status and result
+  WS   /ws/research/{id}  — Stream crew progress in real time
+  GET  /health            — Service health check
 """
 
+import asyncio
 import json
+import logging
+import os
+import uuid
+from datetime import datetime, timezone
+from pathlib import Path
 from typing import Any
 
-from fastapi import FastAPI, HTTPException, Request, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
-from slowapi import Limiter
-from slowapi.util import get_remote_address
-from slowapi.errors import RateLimitExceeded
+from fastapi.responses import JSONResponse
 
-from llm_client import create_client
-from agent_engine import Orchestrator
-from tools import BUILTIN_TOOLS, execute_tool, get_tool_schemas
-from db import create_task, finish_task, add_message
-from alerter import alerter
+from crew_app import build_crew
 
+logger = logging.getLogger(__name__)
 
-# ---------------------------------------------------------------------------
-# Rate limiter setup (Premium tier)
-# ---------------------------------------------------------------------------
-limiter = Limiter(key_func=get_remote_address)
-app = FastAPI(title="AI Agent Workbench", version="1.1.0")
-app.state.limiter = limiter
+# ── Config ───────────────────────────────────────────────────
+RESULTS_DIR = os.getenv("RESULTS_DIR", "./results")
+Path(RESULTS_DIR).mkdir(parents=True, exist_ok=True)
 
-
-@app.exception_handler(RateLimitExceeded)
-async def rate_limit_handler(request: Request, exc: RateLimitExceeded):
-    raise HTTPException(status_code=429, detail="Too many requests. Please try again later.")
-
+# ── App ──────────────────────────────────────────────────────
+app = FastAPI(
+    title="AI Workbench",
+    version="2.0.0",
+    docs_url="/docs",
+)
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
-    allow_credentials=True,
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-orchestrator = Orchestrator()
+# In-memory store for running/completed research runs
+_research_runs: dict[str, dict[str, Any]] = {}
 
-# Pre-create default agents
-orchestrator.create_agent(
-    name="assistant",
-    system_prompt="You are a helpful AI assistant. Use tools when appropriate to answer questions accurately.",
-    model="qwen2.5:7b",
-    provider="ollama",
-    tools=["calculator", "get_time", "web_search"],
-)
+# ── Endpoints ────────────────────────────────────────────────
 
-orchestrator.create_agent(
-    name="coder",
-    system_prompt="You are a senior software engineer. Write clean, production-ready code. Use code_executor and calculator tools when needed. Explain your reasoning briefly.",
-    model="qwen2.5:7b",
-    provider="ollama",
-    tools=["calculator", "code_executor", "file_read"],
-)
-
-orchestrator.create_agent(
-    name="researcher",
-    system_prompt="You are a research analyst. Gather information, synthesize findings, and present clear conclusions. Use web_search extensively.",
-    model="qwen2.5:7b",
-    provider="ollama",
-    tools=["web_search", "get_time", "file_read"],
-)
+@app.get("/health")
+async def health() -> dict:
+    """Health check — verifies CrewAI and LangFuse config."""
+    status = {
+        "status": "ok",
+        "service": "AI Workbench v2.0.0",
+        "crewai": "available",
+        "langfuse": "configured" if os.getenv("LANGFUSE_PUBLIC_KEY") else "disabled",
+    }
+    return status
 
 
-# ---------------------------------------------------------------------------
-# REST endpoints
-# ---------------------------------------------------------------------------
-@app.get("/models")
-async def list_models(provider: str = "ollama"):
-    """List available models for a given provider."""
-    try:
-        client = create_client(provider)
-        models = await client.list_models()
-        return {"provider": provider, "models": models}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+@app.post("/research")
+async def start_research(body: dict[str, Any]):
+    """Start a new research run.
 
+    Request body::
 
-@app.get("/providers")
-async def list_providers():
-    """List available LLM providers."""
-    return {
-        "providers": [
-            {"id": "ollama", "name": "Ollama (Local)", "requires_key": False},
-            {"id": "openai", "name": "OpenAI", "requires_key": True},
-            {"id": "tongyi", "name": "Tongyi Qwen", "requires_key": True},
-        ]
+        {"topic": "Current state of quantum computing in 2026"}
+    """
+    topic = body.get("topic", "").strip()
+    if not topic:
+        raise HTTPException(status_code=400, detail="topic is required")
+
+    run_id = uuid.uuid4().hex[:12]
+    _research_runs[run_id] = {
+        "id": run_id,
+        "topic": topic,
+        "status": "pending",
+        "created_at": datetime.now(timezone.utc).isoformat(),
+        "result": None,
+        "logs": [],
     }
 
+    # Run crew in background
+    asyncio.create_task(_run_crew(run_id, topic))
 
-@app.get("/tools")
-async def list_tools():
-    """List all available tools (built-in + custom)."""
-    from tools import list_registered_tools
-    return {"tools": list_registered_tools()}
+    return {"id": run_id, "status": "pending", "topic": topic}
 
 
-@app.post("/tools/register")
-async def register_custom_tool(body: dict[str, Any]):
-    """Register a custom tool at runtime (Premium tier).
-    Body: {name, description, parameters: {...}}.
-    Handler is a Python function name from sandbox.py for safety.
-    """
-    name = body.get("name", "").strip()
-    if not name:
-        raise HTTPException(status_code=400, detail="name is required")
-    description = body.get("description", "")
-    parameters = body.get("parameters", {})
-    if not parameters:
-        raise HTTPException(status_code=400, detail="parameters (JSON Schema) required")
-
-    try:
-        from tools import register_tool
-        register_tool(name, description, parameters, lambda **kw: f"Custom tool '{name}' executed with {kw}")
-        return {"status": "registered", "tool": name}
-    except ValueError as e:
-        raise HTTPException(status_code=409, detail=str(e))
+@app.get("/research/{run_id}")
+async def get_research(run_id: str):
+    """Get the status and result of a research run."""
+    run = _research_runs.get(run_id)
+    if not run:
+        raise HTTPException(status_code=404, detail="Research run not found")
+    return run
 
 
-@app.post("/agents")
-async def create_agent(body: dict[str, Any]):
-    """Create a new agent with specified role, model, and tools."""
-    name = body.get("name", "").strip()
-    if not name:
-        raise HTTPException(status_code=400, detail="Agent name is required")
-
-    agent = orchestrator.create_agent(
-        name=name,
-        system_prompt=body.get("system_prompt", "You are a helpful assistant."),
-        model=body.get("model", "qwen2.5:7b"),
-        provider=body.get("provider", "ollama"),
-        tools=body.get("tools", []),
+@app.get("/research")
+async def list_research():
+    """List all research runs (newest first)."""
+    runs = sorted(
+        _research_runs.values(),
+        key=lambda r: r["created_at"],
+        reverse=True,
     )
-    return agent.to_dict()
+    return {"runs": runs[:50]}
 
 
-@app.get("/agents")
-async def list_agents():
-    """List all configured agents."""
-    return {"agents": orchestrator.list_agents()}
+@app.websocket("/ws/research/{run_id}")
+async def stream_research(ws: WebSocket, run_id: str):
+    """Stream crew progress in real time."""
+    await ws.accept()
 
+    run = _research_runs.get(run_id)
+    if not run:
+        await ws.send_json({"type": "error", "message": "Run not found"})
+        await ws.close()
+        return
 
-@app.get("/tasks")
-async def list_tasks(agent_name: str | None = None, limit: int = 20):
-    """List recent task history (Premium tier)."""
-    from db import get_task_history
-    return {"tasks": get_task_history(agent_name=agent_name, limit=limit)}
-
-
-# ---------------------------------------------------------------------------
-# WebSocket — real-time streaming chat
-# ---------------------------------------------------------------------------
-@app.websocket("/ws/chat")
-async def websocket_chat(websocket: WebSocket):
-    """Stream AI responses token-by-token with tool call visualization.
-
-    Client sends JSON::
-
-        {"agent": "assistant", "message": "Hello!", "provider": "ollama", "model": "qwen2.5:7b"}
-
-    Server responds with streaming JSON::
-
-        {"type": "text", "content": "He"}
-        {"type": "text", "content": "llo"}
-        {"type": "tool_call", "name": "calculator", "arguments": {...}}
-        {"type": "tool_result", "name": "calculator", "result": "42"}
-        {"type": "done", "usage": {...}}
-    """
-    await websocket.accept()
-
+    last_log_count = 0
     try:
-        while True:
-            raw = await websocket.receive_text()
-            try:
-                msg = json.loads(raw)
-            except json.JSONDecodeError:
-                await websocket.send_json({"type": "error", "message": "Invalid JSON"})
-                continue
+        while run["status"] not in ("completed", "failed"):
+            # Stream new logs
+            logs = run.get("logs", [])
+            for log in logs[last_log_count:]:
+                await ws.send_json(log)
+            last_log_count = len(logs)
 
-            agent_name = msg.get("agent", "assistant")
-            user_message = msg.get("message", "")
+            await asyncio.sleep(0.5)
 
-            if not user_message:
-                await websocket.send_json({"type": "error", "message": "message is required"})
-                continue
+        # Send final logs + result
+        for log in run.get("logs", [])[last_log_count:]:
+            await ws.send_json(log)
 
-            # Persist task (Premium tier)
-            task_id = create_task(agent_name, user_message)
-            add_message(task_id, "user", user_message)
-
-            try:
-                async for chunk in orchestrator.chat_stream(
-                    agent_name=agent_name,
-                    user_message=user_message,
-                ):
-                    if chunk["type"] == "text":
-                        add_message(task_id, "assistant", chunk["content"])
-                    await websocket.send_json(chunk)
-                finish_task(task_id, "completed")
-                alerter.notify_task_complete(task_id, agent_name, user_message[:100])
-            except Exception as e:
-                finish_task(task_id, "failed", str(e))
-                await websocket.send_json({"type": "error", "message": str(e)})
-
+        await ws.send_json({
+            "type": "complete",
+            "status": run["status"],
+            "result": run.get("result", ""),
+        })
     except WebSocketDisconnect:
         pass
-    except Exception as exc:
-        await websocket.send_json({"type": "error", "message": f"WebSocket error: {exc}"})
 
 
-# ---------------------------------------------------------------------------
-# REST streaming endpoint (alternative to WebSocket)
-# ---------------------------------------------------------------------------
-@app.post("/chat")
-@limiter.limit("10/minute")
-async def chat_rest(request: Request, body: dict[str, Any]):
-    """Non-streaming chat endpoint. Rate limited: 10 req/min. Returns complete response."""
-    agent_name = body.get("agent", "assistant")
-    user_message = body.get("message", "")
+# ── Internal ─────────────────────────────────────────────────
 
-    if not user_message:
-        raise HTTPException(status_code=400, detail="message is required")
+async def _run_crew(run_id: str, topic: str):
+    """Execute a CrewAI research run in the background."""
+    run = _research_runs.get(run_id)
+    if not run:
+        return
 
-    task_id = create_task(agent_name, user_message)
-    add_message(task_id, "user", user_message)
-
-    full_response = ""
-    tool_calls = []
+    run["status"] = "running"
+    run["logs"].append({
+        "type": "log",
+        "level": "info",
+        "message": f"Starting research on: {topic}",
+    })
 
     try:
-        async for chunk in orchestrator.chat_stream(
-            agent_name=agent_name,
-            user_message=user_message,
-        ):
-            if chunk["type"] == "text":
-                full_response += chunk["content"]
-                add_message(task_id, "assistant", chunk["content"])
-            elif chunk["type"] == "tool_call":
-                tool_calls.append({"name": chunk["name"], "arguments": chunk["arguments"]})
-        finish_task(task_id, "completed")
-        alerter.notify_task_complete(task_id, agent_name, user_message[:100])
-    except Exception as e:
-        finish_task(task_id, "failed", str(e))
-        raise HTTPException(status_code=500, detail=str(e))
+        crew = build_crew(topic)
+        result = crew.kickoff()
 
+        run["status"] = "completed"
+        run["result"] = str(result)
+        run["finished_at"] = datetime.now(timezone.utc).isoformat()
+        run["logs"].append({
+            "type": "log",
+            "level": "info",
+            "message": "Research completed successfully",
+        })
+
+        # Save to disk
+        output_path = Path(RESULTS_DIR) / f"{run_id}.json"
+        output_path.write_text(json.dumps(run, indent=2, default=str), encoding="utf-8")
+
+    except Exception as exc:
+        logger.exception("Crew run %s failed", run_id)
+        run["status"] = "failed"
+        run["error"] = str(exc)
+        run["finished_at"] = datetime.now(timezone.utc).isoformat()
+        run["logs"].append({
+            "type": "log",
+            "level": "error",
+            "message": f"Research failed: {exc}",
+        })
+
+
+@app.get("/")
+async def root():
     return {
-        "agent": agent_name,
-        "response": full_response,
-        "tool_calls": tool_calls,
-        "task_id": task_id,
+        "service": "AI Workbench",
+        "version": "2.0.0",
+        "docs": "/docs",
     }
-
-
-# ---------------------------------------------------------------------------
-# Health check
-# ---------------------------------------------------------------------------
-@app.get("/health")
-async def health():
-    return {"status": "ok"}

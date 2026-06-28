@@ -1,17 +1,11 @@
-# Author: Ck.epsilon
-# AI Agent Workbench — Docker image (Premium tier)
-#
-# Build:  docker build -t ai-workbench .
-# Run:    docker run -p 8000:8000 ai-workbench
-
-FROM python:3.12-slim
+FROM python:3.11-slim
 
 WORKDIR /app
 
-COPY backend/requirements.txt .
+COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY backend/ .
+COPY . .
 
 EXPOSE 8000
 
