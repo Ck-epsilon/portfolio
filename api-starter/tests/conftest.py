@@ -1,11 +1,27 @@
 # Author: Ck.epsilon
-"""Test fixtures: clean database state per module."""
+"""Test fixtures: clean database state per module, Redis disabled."""
 
 import asyncio
+import os
+
+# Disable Redis + Celery before any app modules are imported.
+# Rate limiting falls back to in-memory; caching becomes no-op.
+os.environ["REDIS_URL"] = ""
+os.environ["CELERY_BROKER_URL"] = ""
+os.environ["CELERY_RESULT_BACKEND"] = ""
 
 import pytest
 
 from app import database
+from app import redis_client
+
+
+@pytest.fixture(scope="session", autouse=True)
+def _disable_redis():
+    """Force Redis to unavailable for all tests."""
+    redis_client._redis_checked = True
+    redis_client._redis = None
+    redis_client.REDIS_AVAILABLE = False
 
 
 @pytest.fixture(scope="session")
