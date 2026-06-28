@@ -11,7 +11,6 @@ All LLM calls traced via LangFuse for observability (cost, latency, token usage)
 """
 
 import asyncio
-import json
 import logging
 import os
 import uuid
@@ -42,7 +41,6 @@ app.add_middleware(
 # NOTE: Module-level mutable dicts flagged by P9. Acceptable for MVP;
 # production should use Redis (aioredis) or a database with TTL.
 _runs: dict[str, dict[str, Any]] = {}
-_run_locks: dict[str, asyncio.Lock] = {}
 
 
 def _new_run(topic: str) -> str:

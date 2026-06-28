@@ -32,7 +32,8 @@ export const Dashboard = (): React.ReactElement => {
   });
 
   if (usersLoading || itemsLoading) return <Loading />;
-  if (usersError) return <Error />;
+  if (usersError) return <Error error={usersError} />;
+  if (itemsError) return <Error error={itemsError} />;
 
   const activeUsers = (users || []).filter(
     (u: UserRecord) => u.is_active

@@ -13,7 +13,6 @@ import { Route } from 'react-router-dom';
 import { Box, Typography } from '@mui/material';
 import PeopleIcon from '@mui/icons-material/People';
 import InventoryIcon from '@mui/icons-material/Inventory';
-import DashboardIcon from '@mui/icons-material/Dashboard';
 
 import { authProvider } from './authProvider';
 import { dataProvider } from './dataProvider';
