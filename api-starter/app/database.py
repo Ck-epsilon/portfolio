@@ -1,4 +1,4 @@
-# Author: Ck.epsilon & Chaos (AI Programming Assistant)
+# Author: Ck.epsilon
 """Async SQLAlchemy engine and session management."""
 
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine

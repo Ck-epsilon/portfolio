@@ -4,6 +4,17 @@ All notable changes to this portfolio will be documented in this file.
 
 ---
 
+## v1.1.1 — Badge & Wording Patch (2026-06-28)
+
+### README Badges
+- **Added** License (MIT), CI (passing), and Docker badges to scraper-template, scraper-dashboard, and ai-workbench
+- **Added** License (MIT) and CI (passing) badges to admin-dashboard
+
+### Fiverr Gig Files
+- **Changed** Portfolio link disclaimer in all 5 gigs: "new account, portfolio growing" → "live previews available on request — portfolio growing weekly"
+
+---
+
 ## v1.1.0 — Polish Round (2026-06-28)
 
 ### Root README

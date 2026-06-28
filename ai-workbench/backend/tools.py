@@ -1,4 +1,4 @@
-# Author: Ck.epsilon & Chaos (AI Programming Assistant)
+# Author: Ck.epsilon
 """Function Calling tool registry for AI Agent Workbench.
 
 Provides a set of built-in tools that AI agents can invoke during

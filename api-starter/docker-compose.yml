@@ -1,6 +1,25 @@
-# Author: Ck.epsilon & Chaos (AI Programming Assistant)
+# Author: Ck.epsilon
+# Development + Production compose file
+#
+# Dev:   docker compose watch            (hot reload, code mounts)
+#        docker compose up api-dev       (manual)
+# Prod:  docker compose up -d            (build + postgres + api)
 
 services:
+  # ---- Development: hot reload via volume mount ----
+  api-dev:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./app:/app/app:ro
+    env_file:
+      - .env
+    command: uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+    profiles:
+      - dev
+
+  # ---- Production ----
   api:
     build: .
     ports:
@@ -10,6 +29,7 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+    restart: unless-stopped
 
   postgres:
     image: postgres:16-alpine

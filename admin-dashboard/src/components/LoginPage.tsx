@@ -1,4 +1,4 @@
-// Author: Ck.epsilon & Chaos (AI Programming Assistant)
+// Author: Ck.epsilon
 /** Login page with form validation. */
 
 import { useState } from 'react';

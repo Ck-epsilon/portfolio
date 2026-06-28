@@ -81,7 +81,7 @@ A five-capability platform: LLM integration (3 providers), Function Calling (5 t
 
 - **Bilingual delivery** — all code comes with EN/CN docs, no lost-in-translation
 - **Live demos on every project** — test before you buy
-- **Code-audited** — every delivery passes 47+ automated checks before it reaches you. Audit report included.
+- **Code-audited** — every delivery passes 20+ automated checks before it reaches you. Audit report included.
 - **Same-day response** — within 12 hours on business days. If I don't reply within 12 hours on a business day, your first milestone is free.
 
 ### Contact

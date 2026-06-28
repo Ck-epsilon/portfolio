@@ -1,9 +1,9 @@
-# Author: Ck.epsilon & Chaos (AI Programming Assistant)
-"""Authentication router: register, login, token refresh, user profile."""
+# Author: Ck.epsilon
+"""Authentication router: register, login, token refresh, password reset."""
 
 from datetime import timedelta
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Request, status
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -16,6 +16,7 @@ from app.auth.utils import (
     verify_password,
 )
 from app.database import get_db
+from app.logging import logger
 from app.models.user import User
 from app.schemas.user import (
     PasswordForgot,
@@ -31,9 +32,8 @@ router = APIRouter(prefix="/auth", tags=["Auth"])
 
 
 @router.post("/register", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
-async def register(payload: UserRegister, db: AsyncSession = Depends(get_db)):
+async def register(payload: UserRegister, request: Request, db: AsyncSession = Depends(get_db)):
     """Register a new user account."""
-    # Check for existing email or username
     existing = await db.execute(
         select(User).where((User.email == payload.email) | (User.username == payload.username))
     )
@@ -51,11 +51,12 @@ async def register(payload: UserRegister, db: AsyncSession = Depends(get_db)):
     db.add(user)
     await db.commit()
     await db.refresh(user)
+    logger.info("User registered: {} ({})", user.username, user.email)
     return user
 
 
 @router.post("/login", response_model=Token)
-async def login(payload: UserLogin, db: AsyncSession = Depends(get_db)):
+async def login(payload: UserLogin, request: Request, db: AsyncSession = Depends(get_db)):
     """Authenticate and return access + refresh tokens."""
     result = await db.execute(select(User).where(User.email == payload.email))
     user = result.scalar_one_or_none()
@@ -66,9 +67,11 @@ async def login(payload: UserLogin, db: AsyncSession = Depends(get_db)):
             detail="Invalid email or password",
         )
     if not user.is_active:
+        logger.warning("Login attempt on disabled account: {}", payload.email)
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Account disabled")
 
     token_data = {"sub": user.id}
+    logger.info("User logged in: {} ({})", user.username, user.email)
     return Token(
         access_token=create_access_token(token_data),
         refresh_token=create_refresh_token(token_data),
@@ -89,7 +92,11 @@ async def refresh_token(payload: TokenRefresh, db: AsyncSession = Depends(get_db
     result = await db.execute(select(User).where(User.id == user_id, User.is_active == True))
     user = result.scalar_one_or_none()
     if user is None:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found")
+        # Don't reveal whether user exists
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid or expired refresh token",
+        )
 
     new_token_data = {"sub": user.id}
     return Token(

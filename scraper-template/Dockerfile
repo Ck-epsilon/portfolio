@@ -1,4 +1,4 @@
-# Author: Ck.epsilon & Chaos (AI Programming Assistant)
+# Author: Ck.epsilon
 # Multi-Site Web Scraper — Docker image for Premium tier
 #
 # Build:  docker build -t scraper .

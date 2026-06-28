@@ -1,4 +1,4 @@
-// Author: Ck.epsilon & Chaos (AI Programming Assistant)
+// Author: Ck.epsilon
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';

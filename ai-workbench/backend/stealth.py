@@ -1,4 +1,4 @@
-# Author: Ck.epsilon & Chaos (AI Programming Assistant)
+# Author: Ck.epsilon
 """
 Stealth module: randomized headers, user-agent rotation, request jitter.
 Integrates with proxy_pool for IP rotation.

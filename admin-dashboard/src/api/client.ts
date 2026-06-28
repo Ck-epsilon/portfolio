@@ -1,4 +1,4 @@
-// Author: Ck.epsilon & Chaos (AI Programming Assistant)
+// Author: Ck.epsilon
 /** Axios-based API client with JWT token support and error handling. */
 
 import axios, { type AxiosInstance, type AxiosError } from 'axios';

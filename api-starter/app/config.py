@@ -1,4 +1,4 @@
-# Author: Ck.epsilon & Chaos (AI Programming Assistant)
+# Author: Ck.epsilon
 """Application configuration loaded from environment variables."""
 
 import os

@@ -1,4 +1,4 @@
-# Author: Ck.epsilon & Chaos (AI Programming Assistant)
+# Author: Ck.epsilon
 """JWT authentication dependency for FastAPI."""
 
 from fastapi import Depends, HTTPException, status

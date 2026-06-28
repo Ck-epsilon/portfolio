@@ -1,4 +1,4 @@
-# Author: Ck.epsilon & Chaos (AI Programming Assistant)
+# Author: Ck.epsilon
 """Playwright-based web scraper engine.
 
 Drives a headless Chromium browser to navigate pages, extract structured

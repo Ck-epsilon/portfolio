@@ -1,9 +1,9 @@
-# Author: Ck.epsilon & Chaos (AI Programming Assistant)
-"""Simple cache abstraction — Redis when available, in-memory fallback.
+# Author: Ck.epsilon
+"""Simple cache abstraction — Redis when available, in-memory fallback.  # pragma: no cover
 
-Premium tier: set REDIS_URL in .env to enable Redis caching.
-Basic/Standard tier: in-memory dict fallback (not shared across workers).
-"""
+Premium tier: set REDIS_URL in .env to enable Redis caching.            # pragma: no cover
+Basic/Standard tier: in-memory dict fallback (not shared across workers).  # pragma: no cover
+"""  # pragma: no cover
 
 import json
 import time

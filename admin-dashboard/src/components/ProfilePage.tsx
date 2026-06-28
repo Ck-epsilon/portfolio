@@ -1,4 +1,4 @@
-// Author: Ck.epsilon & Chaos (AI Programming Assistant)
+// Author: Ck.epsilon
 /** User profile page with editable fields. */
 
 import { Card, Descriptions, Button, Form, Input, message, Space, Tag } from 'antd';

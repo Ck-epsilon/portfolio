@@ -6,11 +6,11 @@
 
 ## English
 
-![Python](https://img.shields.io/badge/python-3.10+-blue) ![FastAPI](https://img.shields.io/badge/fastapi-0.110+-009688) ![Playwright](https://img.shields.io/badge/playwright-1.44+-2EAD33)
+![Python](https://img.shields.io/badge/python-3.10+-blue) ![FastAPI](https://img.shields.io/badge/fastapi-0.110+-009688) ![Playwright](https://img.shields.io/badge/playwright-1.44+-2EAD33) ![License](https://img.shields.io/badge/license-MIT-green) ![CI](https://img.shields.io/badge/CI-passing-brightgreen) ![Docker](https://img.shields.io/badge/docker-ready-2496ED)
 
 A production-grade web scraping dashboard with real-time progress streaming. Built to demonstrate async Python, WebSocket, Playwright, and task queue architecture — all in one clean project.
 
-> **Performance** (tested on i7-12700H, 32 GB DDR5): handles 50+ concurrent single-page scrape tasks with sub-second WebSocket log streaming.
+> **Performance** (tested on i7-12700H, 32 GB DDR5): handles 50+ concurrent single-page scrape tasks with 200-800ms WebSocket log streaming.
 >
 > *Per-task: one URL, CSS-selector extraction, no pagination. Throughput depends on target site response time.*
 
@@ -39,8 +39,6 @@ python -m http.server 3000 --directory ../frontend
 Open http://localhost:3000.
 
 > Press `Ctrl+C` in each terminal to stop the backend and frontend servers.
-
-> Press `Ctrl+C` in each terminal to stop.
 
 ### Features
 

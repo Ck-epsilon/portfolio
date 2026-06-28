@@ -1,8 +1,8 @@
 # Fiverr Gig #4: Scraper Pro — Real-Time Web Scraping Dashboard
 
-> **Author:** Ck.epsilon & Chaos (AI Programming Assistant)
+> **Author:** Ck.epsilon
 > **Stack:** Python · FastAPI · Playwright · WebSocket · asyncio · Docker · Nginx
-> **Portfolio:** [github.com/ck-epsilon](https://github.com/ck-epsilon) *(new account, portfolio growing — live previews available on request)*
+> **Portfolio:** [github.com/ck-epsilon](https://github.com/ck-epsilon) *(live previews available on request — portfolio growing weekly)*
 > **See it in action:** Live demo available on request — contact me for a walkthrough.
 
 ## Gig 基本信息

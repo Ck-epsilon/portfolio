@@ -1,8 +1,8 @@
 # Fiverr Gig #3: Admin Dashboard (React + Ant Design)
 
-> **Author:** Ck.epsilon & Chaos (AI Programming Assistant)
+> **Author:** Ck.epsilon
 > **Stack:** React 18 · TypeScript · Vite · Ant Design 5 · Recharts · Docker
-> **Portfolio:** [github.com/ck-epsilon](https://github.com/ck-epsilon) *(new account, portfolio growing — live previews available on request)*
+> **Portfolio:** [github.com/ck-epsilon](https://github.com/ck-epsilon) *(live previews available on request — portfolio growing weekly)*
 > **Live preview included** — every order ships with a `preview.html` so you can see it before deployment.
 
 ## Gig 基本信息

@@ -1,8 +1,8 @@
 # Fiverr Gig #2: Web Scraping & Data Pipeline
 
-> **Author:** Ck.epsilon & Chaos (AI Programming Assistant)
+> **Author:** Ck.epsilon
 > **Stack:** Python · Playwright · asyncio · CSV/JSON/Excel · SQLite/PostgreSQL · Docker
-> **Portfolio:** [github.com/ck-epsilon](https://github.com/ck-epsilon) *(new account, portfolio growing — live previews available on request)*
+> **Portfolio:** [github.com/ck-epsilon](https://github.com/ck-epsilon) *(live previews available on request — portfolio growing weekly)*
 
 ## Gig 基本信息
 

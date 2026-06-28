@@ -1,2 +1,2 @@
-# Author: Ck.epsilon & Chaos (AI Programming Assistant)
+# Author: Ck.epsilon
 # Empty — tests package

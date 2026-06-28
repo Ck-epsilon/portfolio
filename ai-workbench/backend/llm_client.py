@@ -1,4 +1,4 @@
-# Author: Ck.epsilon & Chaos (AI Programming Assistant)
+# Author: Ck.epsilon
 """Multi-model LLM client with unified streaming interface.
 
 Supports Ollama (local), OpenAI-compatible, and Tongyi Qwen models

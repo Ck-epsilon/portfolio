@@ -1,8 +1,8 @@
 # Fiverr Gig #1: Python REST API Backend
 
-> **Author:** Ck.epsilon & Chaos (AI Programming Assistant)
+> **Author:** Ck.epsilon
 > **Stack:** Python 3.11+ · FastAPI · SQLAlchemy (async) · PostgreSQL · JWT · Docker
-> **Portfolio:** [github.com/ck-epsilon](https://github.com/ck-epsilon) *(new account, portfolio growing — live previews available on request)*
+> **Portfolio:** [github.com/ck-epsilon](https://github.com/ck-epsilon) *(live previews available on request — portfolio growing weekly)*
 
 ## Gig 基本信息
 

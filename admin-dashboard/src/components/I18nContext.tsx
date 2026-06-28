@@ -1,4 +1,4 @@
-// Author: Ck.epsilon & Chaos (AI Programming Assistant)
+// Author: Ck.epsilon
 /** Lightweight i18n for Chinese/English switching. No external deps. */
 
 import { createContext, useContext, useState, useCallback, type ReactNode } from 'react';

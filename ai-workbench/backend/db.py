@@ -1,4 +1,4 @@
-# Author: Ck.epsilon & Chaos (AI Programming Assistant)
+# Author: Ck.epsilon
 """
 SQLite task history database for the AI Workbench.
 Persists agent conversations, tool calls, and task outcomes.

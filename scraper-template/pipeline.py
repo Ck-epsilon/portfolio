@@ -1,4 +1,4 @@
-# Author: Ck.epsilon & Chaos (AI Programming Assistant)
+# Author: Ck.epsilon
 """End-to-end pipeline: scrape → clean → store. Premium tier feature.
 
 Reads YAML config including optional pipeline stages.

@@ -1,6 +1,6 @@
 """
 Multi-Site Web Scraper — production-ready template.
-Author: Ck.epsilon & Chaos (AI Programming Assistant)
+Author: Ck.epsilon
 
 Features:
 - Playwright-based with stealth mode (anti-detection)

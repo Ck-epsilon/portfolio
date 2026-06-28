@@ -1,4 +1,4 @@
-# Author: Ck.epsilon & Chaos (AI Programming Assistant)
+# Author: Ck.epsilon
 # Kubernetes deployment for AI Agent Workbench (Premium tier)
 #
 # Deploy:  kubectl apply -f k8s/

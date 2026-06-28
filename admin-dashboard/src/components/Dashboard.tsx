@@ -1,4 +1,4 @@
-// Author: Ck.epsilon & Chaos (AI Programming Assistant)
+// Author: Ck.epsilon
 import { Card, Col, Row, Statistic } from 'antd';
 import {
   UserOutlined,

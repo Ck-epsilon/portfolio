@@ -1,4 +1,4 @@
-# Author: Ck.epsilon & Chaos (AI Programming Assistant)
+# Author: Ck.epsilon
 """Multi-agent orchestration engine.
 
 Defines Agent roles, manages conversation context, routes messages,

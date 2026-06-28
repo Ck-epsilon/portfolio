@@ -1,4 +1,4 @@
-// Author: Ck.epsilon & Chaos (AI Programming Assistant)
+// Author: Ck.epsilon
 /** Order CRUD form page with validation and API integration. */
 
 import { useState, useEffect, useMemo } from 'react';

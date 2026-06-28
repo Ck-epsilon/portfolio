@@ -1,4 +1,4 @@
-// Author: Ck.epsilon & Chaos (AI Programming Assistant)
+// Author: Ck.epsilon
 /** Settings page with theme/language toggles and notification prefs. */
 
 import { Card, Switch, Select, Divider, Typography, Space, Tag } from 'antd';

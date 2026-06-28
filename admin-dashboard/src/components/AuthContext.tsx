@@ -1,4 +1,4 @@
-// Author: Ck.epsilon & Chaos (AI Programming Assistant)
+// Author: Ck.epsilon
 /** Authentication context with login state, token management, and user info. */
 
 import { createContext, useContext, useState, useCallback, type ReactNode } from 'react';

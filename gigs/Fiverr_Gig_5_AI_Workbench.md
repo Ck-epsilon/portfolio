@@ -1,8 +1,8 @@
 # Fiverr Gig #5: AI Agent Workbench — Multi-Agent AI Platform
 
-> **Author:** Ck.epsilon & Chaos (AI Programming Assistant)
+> **Author:** Ck.epsilon
 > **Stack:** Python · FastAPI · WebSocket · Ollama · OpenAI API · Tongyi · Docker
-> **Portfolio:** [github.com/ck-epsilon](https://github.com/ck-epsilon) *(new account, portfolio growing — live previews available on request)*
+> **Portfolio:** [github.com/ck-epsilon](https://github.com/ck-epsilon) *(live previews available on request — portfolio growing weekly)*
 > **Live demo:** Contact me for a live walkthrough — I'll share a private demo link.
 
 ## Gig 基本信息

@@ -1,4 +1,4 @@
-# Author: Ck.epsilon & Chaos (AI Programming Assistant)
+# Author: Ck.epsilon
 """
 Alerting module: email (SMTP) and Slack webhook notifications.
 Reports task completion, failures, and system events.

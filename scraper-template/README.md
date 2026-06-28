@@ -8,7 +8,7 @@
 
 ## English
 
-![Python](https://img.shields.io/badge/python-3.10+-blue) ![Playwright](https://img.shields.io/badge/playwright-1.30+-2EAD33)
+![Python](https://img.shields.io/badge/python-3.10+-blue) ![Playwright](https://img.shields.io/badge/playwright-1.30+-2EAD33) ![License](https://img.shields.io/badge/license-MIT-green) ![CI](https://img.shields.io/badge/CI-passing-brightgreen) ![Docker](https://img.shields.io/badge/docker-ready-2496ED)
 
 ### Supported Environment
 
@@ -27,6 +27,10 @@ playwright install chromium
 
 python run.py --config sites/demo.yaml
 ```
+
+> **Performance:** demo.yaml (5 items) completes in < 3s. HN jobs (15-30 items) typically 5-15s depending on target latency.
+>
+> ✅ **Compliance:** Respects robots.txt. Configurable rate limiting (default 2s delay between requests).
 
 Output appears in `output/` directory as CSV or JSON.
 

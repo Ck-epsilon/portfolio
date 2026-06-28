@@ -1,4 +1,4 @@
-// Author: Ck.epsilon & Chaos (AI Programming Assistant)
+// Author: Ck.epsilon
 
 import { useMemo, useState } from 'react';
 import { Table, Tag, Input, Select, DatePicker, InputNumber, Space, Card } from 'antd';

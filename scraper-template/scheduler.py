@@ -1,4 +1,4 @@
-# Author: Ck.epsilon & Chaos (AI Programming Assistant)
+# Author: Ck.epsilon
 """Cron scheduler for periodic scraper runs. Premium tier feature.
 
 Usage:

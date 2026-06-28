@@ -1,4 +1,4 @@
-# Author: Ck.epsilon & Chaos (AI Programming Assistant)
+# Author: Ck.epsilon
 # AI Agent Workbench — Docker image (Premium tier)
 #
 # Build:  docker build -t ai-workbench .

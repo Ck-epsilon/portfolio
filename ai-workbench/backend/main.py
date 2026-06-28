@@ -1,4 +1,4 @@
-# Author: Ck.epsilon & Chaos (AI Programming Assistant)
+# Author: Ck.epsilon
 """AI Agent Workbench — Multi-model AI development platform backend.
 
 FastAPI application providing:

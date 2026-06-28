@@ -1,33 +1,52 @@
-# Author: Ck.epsilon & Chaos (AI Programming Assistant)
-"""Tests for authentication endpoints."""
+# Author: Ck.epsilon
+"""Integration tests for auth, health, root, and token endpoints — 12 tests with DB isolation."""
 
 import asyncio
-from httpx import ASGITransport, AsyncClient
 
-# Allow running tests from project root
-import sys
-sys.path.insert(0, ".")
+from httpx import ASGITransport, AsyncClient
 
 from app.main import app
 
 
 def _run(async_fn):
-    """Helper: run an async test function in a fresh event loop."""
+    """Helper: run an async test function. Each test gets a fresh event loop
+    and DB isolation is guaranteed by conftest.py `clean_db`."""
     return asyncio.run(async_fn)
 
+
+# ---- Infrastructure ----
 
 async def _health_check():
     transport = ASGITransport(app=app)
     async with AsyncClient(transport=transport, base_url="http://test") as c:
         r = await c.get("/health")
         assert r.status_code == 200
-        assert r.json()["status"] == "ok"
+        data = r.json()
+        assert data["status"] in ("ok", "degraded")
+        assert "version" in data
+        assert "database" in data
     return True
 
 
 def test_health_check():
     assert _run(_health_check())
 
+
+async def _root():
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as c:
+        r = await c.get("/")
+        assert r.status_code == 200
+        data = r.json()
+        assert data["app"] == "API Starter"
+    return True
+
+
+def test_root():
+    assert _run(_root())
+
+
+# ---- Authentication ----
 
 async def _register_user():
     transport = ASGITransport(app=app)
@@ -56,6 +75,7 @@ async def _register_duplicate_fails():
         assert r1.status_code == 201
         r2 = await c.post("/auth/register", json=p)
         assert r2.status_code == 409
+        assert "already exists" in r2.json()["detail"]
     return True
 
 
@@ -69,7 +89,9 @@ async def _login_success():
         await c.post("/auth/register", json={
             "email": "login@example.com", "username": "loginuser", "password": "secret123",
         })
-        r = await c.post("/auth/login", json={"email": "login@example.com", "password": "secret123"})
+        r = await c.post("/auth/login", json={
+            "email": "login@example.com", "password": "secret123",
+        })
         assert r.status_code == 200
         data = r.json()
         assert "access_token" in data
@@ -87,8 +109,11 @@ async def _login_wrong_password():
         await c.post("/auth/register", json={
             "email": "wrong@example.com", "username": "wronguser", "password": "correct123",
         })
-        r = await c.post("/auth/login", json={"email": "wrong@example.com", "password": "wrong"})
+        r = await c.post("/auth/login", json={
+            "email": "wrong@example.com", "password": "wrong",
+        })
         assert r.status_code == 401
+        assert "Invalid email or password" in r.json()["detail"]
     return True
 
 
@@ -96,39 +121,38 @@ def test_login_wrong_password():
     assert _run(_login_wrong_password())
 
 
-async def _auth_required():
+async def _auth_required_endpoint():
     transport = ASGITransport(app=app)
     async with AsyncClient(transport=transport, base_url="http://test") as c:
-        r = await c.get("/users/")
-        # HTTPBearer returns 401 for missing credentials (HTTP standard)
+        r = await c.get("/users/me")
         assert r.status_code == 401
     return True
 
 
 def test_auth_required_endpoint():
-    assert _run(_auth_required())
+    assert _run(_auth_required_endpoint())
 
 
-async def _get_me():
+async def _get_me_with_token():
     transport = ASGITransport(app=app)
     async with AsyncClient(transport=transport, base_url="http://test") as c:
         await c.post("/auth/register", json={
-            "email": "mee@example.com", "username": "meuser", "password": "secret123",
+            "email": "me@example.com", "username": "meuser", "password": "mypassword",
         })
         login_r = await c.post("/auth/login", json={
-            "email": "mee@example.com", "password": "secret123",
+            "email": "me@example.com", "password": "mypassword",
         })
         token = login_r.json()["access_token"]
         r = await c.get("/users/me", headers={"Authorization": f"Bearer {token}"})
         assert r.status_code == 200
         data = r.json()
-        assert data["email"] == "mee@example.com"
-        assert data["username"] == "meuser"
+        assert data["email"] == "me@example.com"
+        assert "hashed_password" not in data
     return True
 
 
 def test_get_me_with_token():
-    assert _run(_get_me())
+    assert _run(_get_me_with_token())
 
 
 async def _username_validation():
@@ -136,8 +160,8 @@ async def _username_validation():
     async with AsyncClient(transport=transport, base_url="http://test") as c:
         r = await c.post("/auth/register", json={
             "email": "short@example.com",
-            "username": "ab",  # too short (<3)
-            "password": "test123456",
+            "username": "ab",
+            "password": "testpass123",
         })
         assert r.status_code == 422
     return True
@@ -145,3 +169,50 @@ async def _username_validation():
 
 def test_username_validation():
     assert _run(_username_validation())
+
+
+async def _missing_field_returns_422():
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as c:
+        r = await c.post("/auth/register", json={
+            "email": "missing@example.com",
+        })
+        assert r.status_code == 422
+    return True
+
+
+def test_missing_field_returns_422():
+    assert _run(_missing_field_returns_422())
+
+
+async def _token_refresh():
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as c:
+        await c.post("/auth/register", json={
+            "email": "refresh@example.com", "username": "refreshuser", "password": "refresh123",
+        })
+        login_r = await c.post("/auth/login", json={
+            "email": "refresh@example.com", "password": "refresh123",
+        })
+        refresh_token = login_r.json()["refresh_token"]
+        r = await c.post("/auth/refresh", json={"refresh_token": refresh_token})
+        assert r.status_code == 200
+        data = r.json()
+        assert "access_token" in data
+    return True
+
+
+def test_token_refresh():
+    assert _run(_token_refresh())
+
+
+async def _token_refresh_invalid():
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as c:
+        r = await c.post("/auth/refresh", json={"refresh_token": "invalid.token.here"})
+        assert r.status_code == 401
+    return True
+
+
+def test_token_refresh_invalid():
+    assert _run(_token_refresh_invalid())

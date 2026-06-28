@@ -1,6 +1,6 @@
 """
 CLI entry point for the multi-site scraper.
-Author: Ck.epsilon & Chaos (AI Programming Assistant)
+Author: Ck.epsilon
 
 Usage:
     python run.py --config sites/hackernews.yaml

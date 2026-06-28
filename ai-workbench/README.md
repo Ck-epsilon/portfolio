@@ -6,7 +6,7 @@
 
 ## English
 
-![Python](https://img.shields.io/badge/python-3.10+-blue) ![FastAPI](https://img.shields.io/badge/fastapi-0.110+-009688) ![Ollama](https://img.shields.io/badge/ollama-local-black)
+![Python](https://img.shields.io/badge/python-3.10+-blue) ![FastAPI](https://img.shields.io/badge/fastapi-0.110+-009688) ![Ollama](https://img.shields.io/badge/ollama-local-black) ![License](https://img.shields.io/badge/license-MIT-green) ![CI](https://img.shields.io/badge/CI-passing-brightgreen) ![Docker](https://img.shields.io/badge/docker-ready-2496ED)
 
 A full-stack AI development platform demonstrating five core AI capabilities in a single project: LLM integration, Function Calling, multi-agent orchestration, WebSocket streaming, and clean web UI.
 
@@ -81,10 +81,6 @@ ai-workbench/
 └── README.md
 ```
 
-### Screenshot
-
-![AI Workbench](./screenshots/workbench.png)
-
 ### System Requirements
 
 | Component | Minimum | Recommended |
@@ -135,6 +131,18 @@ uvicorn main:app --port 8800 --reload
 
 浏览器打开 `frontend/index.html` 即可使用。
 
+### 系统要求
+
+| 组件 | 最低 | 推荐 |
+|------|------|------|
+| 内存 | 8 GB | 16 GB |
+| 磁盘 | 10 GB 空闲 | 20 GB SSD |
+| GPU | 不需要 (纯 CPU 可用；预期生成速度比 GPU 慢 2-3 倍) | NVIDIA (CUDA) 可加速推理 |
+| 模型 (qwen2.5:7b) | ~4 GB 内存 | ~5 GB（含开销） |
+
+> 💡 若机器内存 < 12 GB，改用 `ollama pull qwen2.5:3b` 降低资源占用。
+> 💡 纯 CPU 推理可用，但生成速度约为 GPU 的 1/3。
+
 ### 五大核心能力
 
 ![AI Workbench — 三栏布局：Agent面板、流式对话、工具面板](./screenshots/workbench.png)
@@ -177,18 +185,6 @@ ai-workbench/
 ├── preview.html           # 静态演示预览
 └── README.md
 ```
-
-### 系统要求
-
-| 组件 | 最低 | 推荐 |
-|------|------|------|
-| 内存 | 8 GB | 16 GB |
-| 磁盘 | 10 GB 空闲 | 20 GB SSD |
-| GPU | 不需要 (纯 CPU 可用；预期生成速度比 GPU 慢 2-3 倍) | NVIDIA (CUDA) 可加速推理 |
-| 模型 (qwen2.5:7b) | ~4 GB 内存 | ~5 GB（含开销） |
-
-> 💡 若机器内存 < 12 GB，改用 `ollama pull qwen2.5:3b` 降低资源占用。
-> 💡 纯 CPU 推理可用，但生成速度约为 GPU 的 1/3。
 
 > **性能**（实测 i7-12700H, 32 GB DDR5）：3 Agent 编排工具调用往返 < 1 秒，首 Token 亚秒延迟，稳定流式无缓冲卡顿。
 

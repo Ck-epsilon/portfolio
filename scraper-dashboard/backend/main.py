@@ -1,4 +1,4 @@
-# Author: Ck.epsilon & Chaos (AI Programming Assistant)
+# Author: Ck.epsilon
 """Scraper Pro — Real-time web scraping dashboard backend.
 
 FastAPI application providing REST endpoints for task management,

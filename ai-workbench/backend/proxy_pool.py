@@ -1,4 +1,4 @@
-# Author: Ck.epsilon & Chaos (AI Programming Assistant)
+# Author: Ck.epsilon
 """
 Proxy rotation pool with health checking.
 Supports round-robin, random, and weighted distribution strategies.

@@ -1,4 +1,4 @@
-# Author: Ck.epsilon & Chaos (AI Programming Assistant)
+# Author: Ck.epsilon
 """Async task queue manager for Scraper Pro.
 
 Manages scrape task lifecycle: creation, queuing, execution, and result storage.

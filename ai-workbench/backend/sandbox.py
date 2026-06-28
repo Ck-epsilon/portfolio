@@ -1,4 +1,4 @@
-# Author: Ck.epsilon & Chaos (AI Programming Assistant)
+# Author: Ck.epsilon
 """
 Sandboxed subprocess execution for untrusted code.
 Uses subprocess with resource limits and timeout for safe execution.
